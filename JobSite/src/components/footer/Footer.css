@@ -1,0 +1,9 @@
+.footer-container{
+    background-color: rgb(238, 239, 240);
+    margin: 20px;
+}
+.footer-content{
+    display: flex;
+    justify-content: start;
+    padding: 50px;
+}

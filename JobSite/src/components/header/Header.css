@@ -1,0 +1,74 @@
+.header-container{
+    position: sticky;
+    display: flex;
+    top: 0;
+    opacity: 0.99;
+    background-color: white;
+    height: 10vh;
+    width: 90vw;
+    padding: 20px;
+}
+.admin-login{
+    position: relative;
+    bottom: 1vh;
+    left: 20vw;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(143, 143, 143);
+}
+.header-content{
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    box-sizing: border-box;
+    
+}
+.username{
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(143, 143, 143);
+    padding: 10px;
+}
+.navbar{
+    position: relative;
+    top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    background-color: rgb(238, 239, 240);
+    padding: 20px;
+    border-radius: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 20vw;
+    
+}
+.navbar-item{
+    display: flex;
+    color: black;
+    text-decoration: none;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.navbar-container{
+    width: 50%;
+}
+.bethel-image{
+    padding: 20px;
+}
+.image-container{
+    padding: 10px;
+}
+.header-title{
+    position:relative;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    bottom: 25px;
+    left: 25px;
+    color: rgb(143, 143, 143);
+    border: none;
+}
+
+@media (max-width: 1800px){
+    .admin-login{
+        bottom: 5.5vh;
+        left: 2vw;
+    }
+}

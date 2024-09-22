@@ -53,13 +53,20 @@ function connectWithRetry() {
 }   
 connectWithRetry(); 
 
-app.get('/api', (req, res, next) => {
-    console.log(req.method + ' request for ' + req.url);
-    res.send({ response: 'Hello World' });
+app.get('/api/staff', (req, res, next) => {
+    con.query(`SELECT * from jobs WHERE employment = 0`, function(err, rows){
+        console.log(req.method + ' request for ' + req.url);
+        if(err){
+            console.error('Error executing query ', err);
+            res.status(500).send('Error executing query');
+            return;
+        }
+        res.send(rows);
+    })
 });
-app.get('/api/city', (req, res, next) => {
+app.get('/api/faculty', (req, res, next) => {
     console.log(req.method + ' request for ' + req.url);
-    con.query('SELECT * from jobApplication', function(err, rows){
+    con.query(`SELECT * from jobs WHERE employment = 1`, function(err, rows){
         if(err){
             console.error('Error executing query ', err);
             res.status(500).send('Error executing query');
