@@ -5,10 +5,10 @@
     opacity: 0.99;
     background-color: white;
     height: 10vh;
-    width: 90vw;
+    width: 100vw;
     padding: 20px;
 }
-.admin-login{
+.google-login{
     position: relative;
     bottom: 1vh;
     left: 20vw;
@@ -18,7 +18,7 @@
 .header-content{
     display: flex;
     justify-content: start;
-    width: 100%;
+    width: 99vw;
     box-sizing: border-box;
     
 }
@@ -33,7 +33,7 @@
     top: 10px;
     display: flex;
     justify-content: flex-start;
-    background-color: rgb(238, 239, 240);
+    
     padding: 20px;
     border-radius: 30px;
     font-family: Arial, Helvetica, sans-serif;
@@ -66,9 +66,8 @@
     border: none;
 }
 
-@media (max-width: 1800px){
-    .admin-login{
-        bottom: 5.5vh;
+@media (max-width: 1000px){
+    .google-login{
         left: 2vw;
     }
 }

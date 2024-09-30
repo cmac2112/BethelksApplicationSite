@@ -1,8 +1,10 @@
 //import { useState } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from './components/landingPage/Landing';
+import LandingPage from './components/landingPage'
 import JobDescription from './components/JobDescription/JobDescription';
+import NotFound from './components/notfound/NotFound';
+import ApplicationPage from './components/applicationPage';
 /*
 interface Faculty{
 id: number;
@@ -54,12 +56,13 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path="*" element={<LandingPage />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="faculty/:title" element={<JobDescription />} />
         <Route path="staff/:title" element={<JobDescription />} />
-        <Route path="apply" element={<LandingPage />} />
+        <Route path="apply" element={<ApplicationPage />} />
       </Routes>
-      </Router>
+    </Router>
   )
 }
 export default App

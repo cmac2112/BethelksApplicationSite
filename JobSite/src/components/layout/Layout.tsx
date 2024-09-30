@@ -6,6 +6,13 @@ interface LayoutProps {
     }
 
     //add footer later
+    //pass all body content as a child of this layout component to put it on every page
+    /* ex: return (
+    <Layout>{stuff}</Layout>)
+    */
+   
+
+    //add footer later
 export const Layout:React.FC<LayoutProps> = ({children}) => {
   return (
     <>

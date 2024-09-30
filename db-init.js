@@ -31,11 +31,12 @@ con.query("USE jobSite", function(err, result){
     if (err) throw err;
     console.log('Using jobSite database');
 })
+//
 con.query(`
     CREATE TABLE IF NOT EXISTS jobs (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255),
-        employment TINYINT(1),
+        employment VARCHAR(255),
         description LONGTEXT,
         department VARCHAR(255),
         classification VARCHAR(255),
@@ -45,47 +46,47 @@ con.query(`
     if (err) throw err;
     console.log('Table created');
 })
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Data Analyst', 1, 'Analyzes data to provide insights', 'Data Science', 'Analyst', '<h2>Data Analysis</h2><p>Analyzing data to provide insights.</p><script>alert("xss detected")</script>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Data Analyst', 'faculty', 'Analyzes data to provide insights', 'Data Science', 'Analyst', '<h2>Data Analysis</h2><p>Analyzing data to provide insights.</p><script>alert("xss detected")</script>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Project Manager', 0, 'Manages projects and coordinates teams', 'Management', 'Manager', '<h3>Project Management</h3><ul><li>Coordinate teams</li><li>Manage projects</li></ul>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Project Manager', 'staff', 'Manages projects and coordinates teams', 'Management', 'Manager', '<h3>Project Management</h3><ul><li>Coordinate teams</li><li>Manage projects</li></ul>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('UX Designer', 0, 'Designs user interfaces and experiences', 'Design', 'Designer', '<h3>UX Design</h3><p>Designing user interfaces and experiences.</p><img src="https://example.com/image.jpg" alt="Design Image">')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('UX Designer', 'staff', 'Designs user interfaces and experiences', 'Design', 'Designer', '<h3>UX Design</h3><p>Designing user interfaces and experiences.</p><img src="https://example.com/image.jpg" alt="Design Image">')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Network Engineer', 1, 'Maintains and troubleshoots network infrastructure', 'IT', 'Engineer', '<h3>Network Engineering</h3><p>Maintaining and troubleshooting network infrastructure.</p><a href="https://example.com">Learn more</a>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Network Engineer', 'faculty', 'Maintains and troubleshoots network infrastructure', 'IT', 'Engineer', '<h3>Network Engineering</h3><p>Maintaining and troubleshooting network infrastructure.</p><a href="https://example.com">Learn more</a>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Marketing Specialist', 0, 'Develops marketing strategies and campaigns', 'Marketing', 'Specialist', '<h3>Marketing Strategies</h3><p>Developing marketing strategies and campaigns.</p><blockquote>Marketing is key to success.</blockquote>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Marketing Specialist', 'staff', 'Develops marketing strategies and campaigns', 'Marketing', 'Specialist', '<h3>Marketing Strategies</h3><p>Developing marketing strategies and campaigns.</p><blockquote>Marketing is key to success.</blockquote>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('HR Coordinator', 1, 'Coordinates HR activities and processes', 'Human Resources', 'Coordinator', '<h3>HR Coordination</h3><p>Coordinating HR activities and processes.</p><table><tr><td>Policy</td><td>Procedure</td></tr><tr><td>Recruitment</td><td>Onboarding</td></tr></table>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('HR Coordinator', 'faculty', 'Coordinates HR activities and processes', 'Human Resources', 'Coordinator', '<h3>HR Coordination</h3><p>Coordinating HR activities and processes.</p><table><tr><td>Policy</td><td>Procedure</td></tr><tr><td>Recruitment</td><td>Onboarding</td></tr></table>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Financial Analyst', 0, 'Analyzes financial data and prepares reports', 'Finance', 'Analyst', '<h3>Financial Analysis</h3><p>Analyzing financial data and preparing reports.</p><code>SELECT * FROM financial_data;</code>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Financial Analyst', 'staff', 'Analyzes financial data and prepares reports', 'Finance', 'Analyst', '<h3>Financial Analysis</h3><p>Analyzing financial data and preparing reports.</p><code>SELECT * FROM financial_data;</code>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Content Writer', 0, 'Writes and edits content for various platforms', 'Content', 'Writer', '<h3>Content Writing</h3><p>Writing and editing content for various platforms.</p><pre>Content is king.</pre>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Content Writer', 'staff', 'Writes and edits content for various platforms', 'Content', 'Writer', '<h3>Content Writing</h3><p>Writing and editing content for various platforms.</p><pre>Content is king.</pre>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
 
-con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Customer Support Representative', 1, 'Provides support to customers and resolves issues', 'Customer Support', 'Representative', '<h3>Customer Support</h3><p>Providing support to customers and resolving issues.</p><strong>Customer satisfaction is our priority.</strong>')`, function(err, result) {
+con.query(`INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('Customer Support Representative', 'faculty', 'Provides support to customers and resolves issues', 'Customer Support', 'Representative', '<h3>Customer Support</h3><p>Providing support to customers and resolving issues.</p><strong>Customer satisfaction is our priority.</strong>')`, function(err, result) {
     if (err) throw err;
     console.log('Row inserted');
 });
