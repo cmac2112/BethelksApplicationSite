@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 app.use(cors());
+app.use(express.json())
 
 
 const connectionConfig = {
@@ -75,6 +76,23 @@ app.get('/api/faculty', (req, res, next) => {
         res.send(rows);
     })
 }); 
+app.get('/api/jobs', (req, res)=>{
+    console.log(req.method + ' request for ' + req.url);
+    con.query(`SELECT * FROM jobs`, function(err, rows){
+        if(err){
+            console.error("error executing query", err);
+            res.status(500).send('error executing query');
+            return;
+        }
+        res.send(rows);
+    })
+})
+app.post('/api/apply', (req, res)=>{
+    console.log(req.method + ' reqest for ' + req.url)
+    console.log('recieved data:', req.body)
+    const query = `INSERT INTO applications (hear_about, additional_info)`
+    res.json({message: 'received data', data: req.body})
+})
 const port = process.env.SERVER_PORT || 3000;
     app.listen(port, () =>{
         console.log('Server started on port ' + port);

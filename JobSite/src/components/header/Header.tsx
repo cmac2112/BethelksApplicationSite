@@ -1,9 +1,9 @@
 //import React from 'react'
-import "./Header.css";
 import BcImage from "../../assets/Bethel College_signature_trimmed.png";
 import { useState, useEffect } from 'react'
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 interface User {
   access_token: string;
   // Add other properties if needed
@@ -12,8 +12,6 @@ interface User {
 export const Header = () => {
   const [ user, setUser ] = useState<User | null>(null); //figure out typing
   const [ profile, setProfile ] = useState<any>(null);
-  console.log(user)
-  console.log(profile)
 
   //put this log in stuff in some sort of context provider to tell if a user is logged in on any page
   
@@ -47,30 +45,23 @@ const logOut = () => {
     setProfile(null);
 };
   return (
-    <div className="header-container">
-      <div className="header-content">
-        <div className="image-container">
-          <img src={BcImage} alt="Bethel College Logo" height={40} />
-          <h1 className="header-title">Careers</h1>
-        </div>
-        <div className="navbar-container">
-          <div className="navbar">
-            <a className="navbar-item" href="/">
-              Careers Home
-            </a>
-            <a className="navbar-item" href="/apply">
-              Apply
-            </a>
-            
-          </div>
-          
-        </div>
-        {profile ? (<button onClick={()=>logOut()} className="google-login">Logout</button>)
-        : 
-        (<button className="google-login" onClick={() => login()}>Adminstrator Login</button>)}
+    <div className="container p-3 flex items-center justify-start drop-shadow-md" id="header-container">
+      <div className="px-3" id="logo-container">
+      <img src={BcImage} className="w-28 md:w-48"></img>
+      <h2 className="antialiased text-slate-600 text-center font-sans text-sm md:text-3xl">Careers</h2>
       </div>
+      <div className="inline-flex bg-slate-100 rounded-full max-w-screen-sm justify-start p-3" id="navbar-container">
+        <Link to="/" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Home</Link>
+        <Link to="/apply" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Apply</Link>
+        <Link to="https://www.bethelks.edu" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Main Site</Link>
       </div>
-      
+      <div className="ml-auto flex flex-col items-end">
+        <div className="text-2xl">
+          test
+        </div>
+        <p>test</p>
+      </div>
+    </div>
       
     
   );
