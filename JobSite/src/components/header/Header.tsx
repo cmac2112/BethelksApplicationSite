@@ -48,7 +48,7 @@ const logOut = () => {
     <div className="container p-3 flex items-center justify-start drop-shadow-md" id="header-container">
       <div className="px-3" id="logo-container">
       <img src={BcImage} className="w-28 md:w-48"></img>
-      <h2 className="antialiased text-slate-600 text-center font-sans text-sm md:text-3xl">Careers</h2>
+      <h2 className="antialiased text-slate-600 text-center font-sans text-sm md:text-2xl font-bold">Careers</h2>
       </div>
       <div className="inline-flex bg-slate-100 rounded-full max-w-screen-sm justify-start p-3" id="navbar-container">
         <Link to="/" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Home</Link>
@@ -56,11 +56,7 @@ const logOut = () => {
         <Link to="https://www.bethelks.edu" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Main Site</Link>
       </div>
       <div className="ml-auto flex flex-col items-end">
-        <div className="text-2xl">
-          test
         </div>
-        <p>test</p>
-      </div>
     </div>
       
     

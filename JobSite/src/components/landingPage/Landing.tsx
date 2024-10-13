@@ -38,21 +38,19 @@ const LandingPage = () => {
       <Link
         to={`/faculty/${faculty.title.replace(/\s+/g, "-").toLowerCase()}`}
         state={{ job: [faculty] }}
-        className="text-maroon underline"
+        className="text-maroon underline hover:text-gray-500"
       >
         {typeof faculty.title === "string" ? faculty.title : faculty.title}
       </Link>
     </li>
   ));
 
-  //overlay the job description on the landing page as a floating div possibly
-  //or redirect to a new page and pass related data to the new page
   const mapStaff = staff.map((staff: jobPost) => (
     <li key={staff.id}>
       <Link
         to={`/staff/${staff.title.replace(/\s+/g, "-").toLowerCase()}`}
         state={{ job: [staff] }}
-        className="text-maroon underline"
+        className="text-maroon underline hover:text-gray-500"
       >
         {staff.title}
       </Link>
@@ -72,10 +70,10 @@ const LandingPage = () => {
           </h2>
         </div>
         <div
-          className="bg-gray-100 flex justify-center p-5"
-          id="positions-container"
+          className="bg-gray-100 flex justify-center p-16"
+          id="background-container"
         >
-          <div className="px-5 bg-white w-3/4" id="positions-faculty">
+          <div className="p-5 bg-white w-3/4" id="positions-faculty">
             <h2
               className="text-3xl  border-b-2 border-gray-400 px-5 py-1"
               id="position-header-faculty"
@@ -83,7 +81,7 @@ const LandingPage = () => {
               Faculty
             </h2>
             <div id="list-container">
-              <ol id="faculty">{mapFaculty}</ol>
+              <ol id="faculty" className="py-5">{mapFaculty}</ol>
             </div>
 
             <h2
@@ -93,7 +91,7 @@ const LandingPage = () => {
               Staff
             </h2>
             <div id="list-container">
-              <ol id="staff">{mapStaff}</ol>
+              <ol id="staff" className="py-5">{mapStaff}</ol>
               <p className="non-dis">Non Discrimination Statement</p>
             </div>
           </div>
