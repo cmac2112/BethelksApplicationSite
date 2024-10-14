@@ -70,7 +70,7 @@ const LandingPage = () => {
           </h2>
         </div>
         <div
-          className="bg-gray-100 flex justify-center p-16"
+          className="bg-gray-100 flex justify-center p-2 md:p-16"
           id="background-container"
         >
           <div className="p-5 bg-white w-3/4" id="positions-faculty">

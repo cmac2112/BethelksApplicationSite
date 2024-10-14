@@ -1,4 +1,3 @@
-import "./Footer.css"
 import Bcimage from "../../assets/Bethel College_signature_trimmed.png"
 import { Link } from "react-router-dom"
 const Footer = () => {

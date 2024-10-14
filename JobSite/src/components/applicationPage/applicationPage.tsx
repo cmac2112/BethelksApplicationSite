@@ -1,6 +1,5 @@
-import React, { useState, useEffect, HtmlHTMLAttributes } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../layout/Layout";
-import "./applicationPage.css";
 
 /*
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,6 +59,13 @@ const applicationPage = () => {
   const [permCity, setpermCity] = useState('')
   const [permState, setpermState] = useState('')
   const [permZip, setpermZip] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [preferredContact, setPreferredContact] = useState('')
+  const [legalWork, setLegalWork] = useState('')
+  const [sponsorship, setSponsorship] = useState('')
+  const [applied, setApplied] = useState('')
+
 
   useEffect(() => {
     getPositionOpenings();
@@ -109,7 +115,12 @@ const applicationPage = () => {
         permAdress: permAdress,
         permCity: permCity,
         permState: permState,
-        permZip: permZip
+        permZip: permZip,
+        phone: phone,
+        email: email,
+        preferredContact: preferredContact,
+        legalWork: legalWork,
+        sponsorship: sponsorship,
       }),
     });
     if (response.ok) {
@@ -119,14 +130,18 @@ const applicationPage = () => {
     }
   };
 
+  //setup requirement
+  // name attribute groups items
+  //then set required attribute
+
   return (
     <>
       <Layout>
         <div className="container mx-auto bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2">Application</h2>
         </div>
-        <div id="bg" className="bg-gray-100 flex justify-center p-5">
-          <form className="job-form" onSubmit={handleSubmit}>
+        <div id="bg" className="bg-gray-100 flex justify-center p-1 md:p-5">
+          <form className="px-5 bg-white md:w-3/4 w-full" onSubmit={handleSubmit}>
             <h2 className="p-5 text-xl" id="position-header">How did you hear about Bethel?</h2>
             <div className="px-5">
               <div>
@@ -140,7 +155,7 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label htmlFor="Indeed">Indeed</label>
+                <label className="px-1" htmlFor="Indeed">Indeed</label>
               </div>
               <div>
                 <input
@@ -153,7 +168,7 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label htmlFor="HACU">HACU</label>
+                <label className="px-1" htmlFor="HACU">HACU</label>
               </div>
               <div>
                 <input
@@ -166,7 +181,7 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label htmlFor="Academic-Diversity-Search">
+                <label className="px-1" htmlFor="Academic-Diversity-Search">
                   Academic Diversity Search
                 </label>
               </div>
@@ -181,7 +196,7 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label htmlFor="Higher-Ed-Jobs">Higher Ed Jobs</label>
+                <label className="px-1" htmlFor="Higher-Ed-Jobs">Higher Ed Jobs</label>
               </div>
               <div>
                 <input
@@ -194,7 +209,7 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label htmlFor="other">Other</label>
+                <label className="px-1" htmlFor="other">Other</label>
               </div>
             </div>
             <h2 className="p-5 text-xl">Position applying for</h2>
@@ -227,7 +242,7 @@ const applicationPage = () => {
                 checked={workTime.fullTime}
                 onChange={handleWorkTimeChange}
               />
-              <label htmlFor="fullTime">Full Time</label>
+              <label className="px-1" htmlFor="fullTime">Full Time</label>
             </div>
             <div>
               <input
@@ -238,7 +253,7 @@ const applicationPage = () => {
                 checked={workTime.partTime}
                 onChange={handleWorkTimeChange}
               />
-              <label htmlFor="partTime">Part Time</label>
+              <label className="px-1" htmlFor="partTime">Part Time</label>
             </div>
             <div>
               <input
@@ -249,7 +264,7 @@ const applicationPage = () => {
                 checked={workTime.temporary}
                 onChange={handleWorkTimeChange}
               />
-              <label htmlFor="temporary">Temporary</label>
+              <label className="px-1" htmlFor="temporary">Temporary</label>
             </div>
             <div>
               <input
@@ -260,7 +275,7 @@ const applicationPage = () => {
                 checked={workTime.evenings}
                 onChange={handleWorkTimeChange}
               />
-              <label htmlFor="evenings">Evenings</label>
+              <label className="px-1" htmlFor="evenings">Evenings</label>
             </div>
             <div>
               <input
@@ -271,7 +286,7 @@ const applicationPage = () => {
                 checked={workTime.weekends}
                 onChange={handleWorkTimeChange}
               />
-              <label htmlFor="weekends">Weekends</label>
+              <label className="px-1" htmlFor="weekends">Weekends</label>
               <div>
                 <input
                   type="checkbox"
@@ -281,12 +296,12 @@ const applicationPage = () => {
                   checked={workTime.nights}
                   onChange={handleWorkTimeChange}
                 />
-                <label htmlFor="nights">Nights</label>
+                <label className="px-1" htmlFor="nights">Nights</label>
               </div>
             </div>
             </div>
             <h2 className="p-5 text-xl">When are you available to start?</h2>
-            <div className="applying-for">
+            <div className="px-5">
                 <input
                 type="date"
                 name="start-time"
@@ -377,6 +392,153 @@ const applicationPage = () => {
                 onChange={(e) => setpermZip(e.target.value)} />
                 <label htmlFor="perm-zip">Zip</label>
               </div>
+              <h2 className="p-5 text-xl">Contact Information</h2>
+              <div className="px-5 flex flex-col-reverse">
+                <input
+                type="number"
+                id="phone"
+                name="phone"
+                required
+                className="border border-gray-200 rounded-xl p-2 w-1/2"
+                onChange={(e) => setPhone(e.target.value)} />
+                <label htmlFor="phone">Cell/Home Phone</label>
+              </div>
+              <div className="px-5 flex flex-col-reverse">
+                <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                className="border border-gray-200 rounded-xl p-2 w-1/2"
+                onChange={(e) => setEmail(e.target.value)} />
+                <label htmlFor="email">Email</label>
+              </div>
+              <h2 className="p-5 text-xl">Preferred Contact Method</h2>
+              <div className="px-5">
+              <div>
+                <input
+                type="radio"
+                id="phone"
+                name="phone"
+                value="phone"
+                checked={preferredContact === "phone"}
+                onChange={(e) =>{
+                  setPreferredContact(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="phone">Phone</label>
+              </div>
+              <div>
+                <input
+                type="radio"
+                id="email"
+                name="email"
+                value="email"
+                checked={preferredContact === "email"}
+                onChange={(e) =>{
+                  setPreferredContact(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="email">Email</label>
+              </div>
+              <div>
+                <input
+                type="radio"
+                id="no-preference"
+                name="no-preference"
+                value="no-preference"
+                checked={preferredContact === "no-preference"}
+                onChange={(e) =>{
+                  setPreferredContact(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="no-preference">No Preference</label>
+              </div>
+              </div>
+              <h2 className="p-5 text-xl">Are You Leagally Allowed To Work In The United States?</h2>
+              <div className="px-5">
+                <input
+                type="radio"
+                name="legal-work"
+                id="legal-yes"
+                value="allowed-to-work"
+                checked={legalWork === "allowed-to-work"}
+                onChange={(e) =>{
+                  setLegalWork(e.target.value)
+                }}
+                required />
+                <label className="px-1" htmlFor="legal-yes">Yes</label>
+                
+              </div>
+              <div className="px-5">
+              <input
+                type="radio"
+                name="legal-work"
+                id="legal-no"
+                value="not-allowed-to-work"
+                checked={legalWork === "not-allowed-to-work"}
+                onChange={(e) =>{
+                  setLegalWork(e.target.value)
+                }}
+                required />
+                <label className="px-1" htmlFor="legal-no">No</label>
+              </div>
+              <h2 className="p-5 text-xl">Will You Require Sponsorship In The Next 1-3 Years?</h2>
+              <div className="px-5">
+                <input
+                type="radio"
+                name="sponsorship"
+                id="sponsor-yes"
+                value="sponsorship-yes"
+                checked={legalWork === "sponsorship-yes"}
+                onChange={(e) =>{
+                  setSponsorship(e.target.value)
+                }}
+                required />
+                <label className="px-1" htmlFor="legal-yes">Yes</label>
+                
+              </div>
+              <div className="px-5">
+              <input
+                type="radio"
+                name="sponsorship"
+                id="sponsorship-no"
+                value="sponsorship-no"
+                checked={legalWork === "sponsorship-no"}
+                onChange={(e) =>{
+                  setSponsorship(e.target.value)
+                }}
+                required />
+                <label className="px-1" htmlFor="legal-no">No</label>
+                </div>
+                <h2 className="p-5 text-xl">Have You Ever Applied For Employment With Our Organization?*</h2>
+              <div className="px-5">
+                <input
+                type="radio"
+                name="ever-applied"
+                id="applied-yes"
+                value="applied-yes"
+                checked={legalWork === "sponsorship-yes"}
+                onChange={(e) =>{
+                  setSponsorship(e.target.value)
+                }}
+                required />
+                <label className="px-1" htmlFor="legal-yes">Yes</label>
+                
+              </div>
+              <div className="px-5">
+              <input
+                type="radio"
+                name="sponsorship"
+                id="sponsorship-no"
+                value="sponsorship-no"
+                checked={legalWork === "sponsorship-no"}
+                onChange={(e) =>{
+                  setSponsorship(e.target.value)
+                }}
+                required />
+                <label className="px-1" htmlFor="legal-no">No</label>
+                </div>
             <input type="submit"></input>
           </form>
         </div>
