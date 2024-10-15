@@ -1,10 +1,12 @@
 require('dotenv').config()
 const mysql = require('mysql');
 const express = require('express');
+const multer = require('multer')
 const app = express();
 const cors = require('cors');
 app.use(cors());
 app.use(express.json())
+
 
 
 const connectionConfig = {
@@ -87,13 +89,13 @@ app.get('/api/jobs', (req, res)=>{
         res.send(rows);
     })
 })
-/*
+
 app.post('/api/apply', (req, res)=>{
     console.log(req.method + ' reqest for ' + req.url)
     console.log('recieved data:', req.body)
     const query = `INSERT INTO applications (hear_about, additional_info)`
     res.json({message: 'received data', data: req.body})
-}) */
+}) 
 const port = process.env.SERVER_PORT || 3000;
     app.listen(port, () =>{
         console.log('Server started on port ' + port);

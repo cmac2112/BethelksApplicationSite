@@ -37,10 +37,21 @@ const applicationPage = () => {
   
   //can either have one big state variable, or seperate them out into their own, either works fine
   //separating them here for easier bug fixing
-  const [openPositions, setOpenPositions] = useState<Positions[]>([]);
 
-  const [hearAbout, setHearAbout] = useState<string | null>(null);
-  const [position, setPosition] = useState<string | null>(null);
+  //this is a little bit of an amalgamation though, may change this
+  //to one use state somehow.
+
+  //below states are for page rendering
+  const [openPositions, setOpenPositions] = useState<Positions[]>([]);
+  //state management for fetching open positions
+  const [isFaculty, setisFaculty] = useState(true) 
+  //if a position is faculty or not, display other upload file inputs
+
+  const [optout, setOptout] = useState(false) //opt out of experience section
+
+  //below are application information
+  const [hearAbout, setHearAbout] = useState('');
+  const [position, setPosition] = useState('');
   const [workTime, setWorkTime] = useState({
     fullTime: false,
     partTime: false,
@@ -61,15 +72,95 @@ const applicationPage = () => {
   const [permZip, setpermZip] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
-  const [preferredContact, setPreferredContact] = useState('')
+  const [preferredContact, setPreferredContact] = useState('') // so many, one big one may be more confusing though
   const [legalWork, setLegalWork] = useState('')
   const [sponsorship, setSponsorship] = useState('')
   const [applied, setApplied] = useState('')
+  const [employed, setEmployed] = useState('');
+  const [related, setRelated] = useState('');
+  const [resume, setResume] = useState<File | null>(null)
+  const [coverLetter, setCoverLetter] = useState<File | null>(null)
+  const [references, setReferences] = useState<File | null>(null)
+  const [statementOfTeach, setStatementOfTeach] = useState<File | null>(null)
+  const [diversityStatement, setDiversityStatement] = useState<File | null>(null)
+  const [graduateTranscript, setGraduateTranscript] = useState<File | null>(null)
+  const [performanceRec, setPerformanceRec] = useState<File | null>(null)
+  const [employmentHistory1, setEmploymentHistory1] = useState({
+    employer: '',
+    address: '',
+    positionTitle: '',
+    startDate: '',
+    endDate: '',
+    duties: '',
+    supervisor: '',
+    supervisorTitle: '',
+    contact: null,
+    reasonLeft: ''
+  })
+  const [employmentHistory2, setEmploymentHistory2] = useState({
+    employer: '',
+    address: '',
+    positionTitle: '',
+    startDate: '',
+    endDate: '',
+    duties: '',
+    supervisor: '',
+    supervisorTitle: '',
+    contact: null,
+    reasonLeft: ''
+  })
+  const [employmentHistory3, setEmploymentHistory3] = useState({
+    employer: '',
+    address: '',
+    positionTitle: '',
+    startDate: '',
+    endDate: '',
+    duties: '',
+    supervisor: '',
+    supervisorTitle: '',
+    contact: null,
+    reasonLeft: ''
+  })
+  const [employmentHistory4, setEmploymentHistory4] = useState({
+    employer: '',
+    address: '',
+    positionTitle: '',
+    startDate: '',
+    endDate: '',
+    duties: '',
+    supervisor: '',
+    supervisorTitle: '',
+    contact: null,
+    reasonLeft: ''
+  })
+  const [highSchool, setHighSchool] = useState({
+    name: '',
+    address: '',
+    diploma: '',
+  })
+  const [undergrad, setUndergrad] = useState({
+    name: '',
+    address: '',
+    courseStudy: '',
+    diploma: ''
+  })
+  const [grad, setGrad] = useState({
+    name: '',
+    address: '',
+    courseStudy: '',
+    diploma: ''
+  })
+  const [other, setOther] = useState({
+    name: '',
+    address: '',
+    courseStudy: '',
+    diploma: '',
+  })
+  const [skills, setSkills] = useState('')
 
 
   useEffect(() => {
     getPositionOpenings();
-    console.log(workTime)
   }, []);
 
   //get current posisitions for <select>
@@ -93,46 +184,52 @@ const applicationPage = () => {
       [name]: checked
     }))
   }
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    //store urls in env variable, but keep this local host for now
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(resume)
+    const formData = new FormData();
+    formData.append("hear_about", hearAbout);
+    formData.append("position", position);
+    formData.append("work_time", JSON.stringify(workTime)); // Assuming workTime is an object
+    formData.append("start_time", startTime);
+    formData.append("fullName", fullName);
+    formData.append("address", address);
+    formData.append("city", city);
+    formData.append("state", state);
+    formData.append("zip", zip);
+    formData.append("permAdress", permAdress);
+    formData.append("permCity", permCity);
+    formData.append("permState", permState);
+    formData.append("permZip", permZip);
+    formData.append("phone", phone);
+    formData.append("email", email);
+    formData.append("preferredContact", preferredContact);
+    formData.append("legalWork", legalWork);
+    formData.append("sponsorship", sponsorship);
+    formData.append("applied", applied);
+    formData.append("employed", employed);
+    formData.append("related", related);
+    if (resume) {
+      formData.append("resume", resume);
+    }
+  
     const response = await fetch(`http://localhost:3000/api/apply`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        hear_about: hearAbout,
-        position: position,
-        work_time: workTime,
-        start_time: startTime,
-        fullName: fullName,
-        address: address,
-        city: city,
-        state: state,
-        zip: zip,
-        permAdress: permAdress,
-        permCity: permCity,
-        permState: permState,
-        permZip: permZip,
-        phone: phone,
-        email: email,
-        preferredContact: preferredContact,
-        legalWork: legalWork,
-        sponsorship: sponsorship,
-      }),
+      body: formData,
     });
     if (response.ok) {
-      console.log("form submitted");
+      console.log("form submitted", formData);
+      for(let [key, value] of formData.entries()){
+        console.log(`${key}: ${value}`)
+      }
     } else {
       console.error("error submitting form");
     }
   };
-
   //setup requirement
   // name attribute groups items
   //then set required attribute
+
 
   return (
     <>
@@ -196,7 +293,7 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label className="px-1" htmlFor="Higher-Ed-Jobs">Higher Ed Jobs</label>
+               <label className="px-1" htmlFor="Higher-Ed-Jobs">Higher Ed Jobs</label>
               </div>
               <div>
                 <input
@@ -218,15 +315,24 @@ const applicationPage = () => {
                 name="job-applying-for"
                 id="job-applying-for"
                 className="bg-slate-200"
-                onChange={(e) => {
-                  const selectedOption = e.target.selectedOptions[0];
-                  setPosition(selectedOption.text);
-                }}
+                onChange={(e) =>{
+                  const selectedTitle = e.target.value;
+                  setPosition(selectedTitle);
+                
+                  // Find the position that matches the selected title
+                  const selectedPosition = openPositions.find(
+                    (positions) => positions.title === selectedTitle
+                  );
+                
+                  // If found, set the employment type to state
+                  if (selectedPosition) {
+                    setisFaculty(selectedPosition.employment === "faculty" ? true : false)
+                  }}}
               >
                 <option value="">Choose an option</option>
                 {openPositions.map((positions) => (
-                  <option key={positions.id} value={positions.id} className="bg-white">
-                    {positions.title}
+                  <option key={positions.id} value={positions.title} className="bg-white">
+                    {positions.title}{positions.employment}
                   </option>
                 ))}
               </select>
@@ -398,7 +504,7 @@ const applicationPage = () => {
                 type="number"
                 id="phone"
                 name="phone"
-                required
+                
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) => setPhone(e.target.value)} />
                 <label htmlFor="phone">Cell/Home Phone</label>
@@ -408,7 +514,7 @@ const applicationPage = () => {
                 type="email"
                 id="email"
                 name="email"
-                required
+                
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="email">Email</label>
@@ -455,7 +561,7 @@ const applicationPage = () => {
                 <label className="px-1" htmlFor="no-preference">No Preference</label>
               </div>
               </div>
-              <h2 className="p-5 text-xl">Are You Leagally Allowed To Work In The United States?</h2>
+              <h2 className="p-5 text-xl">Are You Leagally Allowed To Work In The United States?*</h2>
               <div className="px-5">
                 <input
                 type="radio"
@@ -466,7 +572,7 @@ const applicationPage = () => {
                 onChange={(e) =>{
                   setLegalWork(e.target.value)
                 }}
-                required />
+                 />
                 <label className="px-1" htmlFor="legal-yes">Yes</label>
                 
               </div>
@@ -480,36 +586,36 @@ const applicationPage = () => {
                 onChange={(e) =>{
                   setLegalWork(e.target.value)
                 }}
-                required />
+                 />
                 <label className="px-1" htmlFor="legal-no">No</label>
               </div>
-              <h2 className="p-5 text-xl">Will You Require Sponsorship In The Next 1-3 Years?</h2>
+              <h2 className="p-5 text-xl">Will You Require Sponsorship In The Next 1-3 Years?*</h2>
               <div className="px-5">
                 <input
                 type="radio"
                 name="sponsorship"
                 id="sponsor-yes"
-                value="sponsorship-yes"
-                checked={legalWork === "sponsorship-yes"}
+                value="yes"
+                checked={sponsorship === "yes"}
                 onChange={(e) =>{
                   setSponsorship(e.target.value)
                 }}
-                required />
-                <label className="px-1" htmlFor="legal-yes">Yes</label>
+                 />
+                <label className="px-1" htmlFor="sponsor-yes">Yes</label>
                 
               </div>
               <div className="px-5">
               <input
                 type="radio"
                 name="sponsorship"
-                id="sponsorship-no"
-                value="sponsorship-no"
-                checked={legalWork === "sponsorship-no"}
+                id="sponsor-no"
+                value="no"
+                checked={sponsorship === "no"}
                 onChange={(e) =>{
                   setSponsorship(e.target.value)
                 }}
-                required />
-                <label className="px-1" htmlFor="legal-no">No</label>
+                 />
+                <label className="px-1" htmlFor="sponsor-no">No</label>
                 </div>
                 <h2 className="p-5 text-xl">Have You Ever Applied For Employment With Our Organization?*</h2>
               <div className="px-5">
@@ -517,28 +623,191 @@ const applicationPage = () => {
                 type="radio"
                 name="ever-applied"
                 id="applied-yes"
-                value="applied-yes"
-                checked={legalWork === "sponsorship-yes"}
+                value="yes"
+                checked={applied === "yes"}
                 onChange={(e) =>{
-                  setSponsorship(e.target.value)
+                  setApplied(e.target.value)
                 }}
-                required />
-                <label className="px-1" htmlFor="legal-yes">Yes</label>
+                 />
+                <label className="px-1" htmlFor="applied-yes">Yes</label>
                 
               </div>
               <div className="px-5">
               <input
                 type="radio"
-                name="sponsorship"
-                id="sponsorship-no"
-                value="sponsorship-no"
-                checked={legalWork === "sponsorship-no"}
+                name="ever-applied"
+                id="applied-no"
+                value="no"
+                checked={applied === "no"}
                 onChange={(e) =>{
-                  setSponsorship(e.target.value)
+                  setApplied(e.target.value)
                 }}
-                required />
-                <label className="px-1" htmlFor="legal-no">No</label>
+                 />
+                <label className="px-1" htmlFor="applied-no">No</label>
                 </div>
+                <h2 className="p-5 text-xl">Have You Ever Been Employed By Our Organization?*</h2>
+              <div className="px-5">
+                <input
+                type="radio"
+                name="ever-employed"
+                id="employed-yes"
+                value="yes"
+                checked={ employed === "yes"}
+                onChange={(e) =>{
+                  setEmployed(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="employed-yes">Yes</label>
+                
+              </div>
+              <div className="px-5">
+              <input
+                type="radio"
+                name="ever-employed"
+                id="employed-no"
+                value="no"
+                checked={employed === "no"}
+                onChange={(e) =>{
+                  setEmployed(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="employed-no">No</label>
+                </div>
+                <h2 className="p-5 text-xl">Are You Related To Anyone Currently Employed By Our Organization?*</h2>
+              <div className="px-5">
+                <input
+                type="radio"
+                name="related"
+                id="related-yes"
+                value="yes"
+                checked={ related === "yes" }
+                onChange={(e) =>{
+                  setRelated(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="related-yes">Yes</label>
+                
+              </div>
+              <div className="px-5">
+              <input
+                type="radio"
+                name="related"
+                id="related-no"
+                value="no"
+                checked={ related === "no"}
+                onChange={(e) =>{
+                  setRelated(e.target.value)
+                }}
+                 />
+                <label className="px-1" htmlFor="related-no">No</label>
+                </div>
+                <h2 className="p-5 text-xl">Upload Documents</h2>
+                <p className="py-2 px-5">If you choose to upload a resume, you may opt to skip employment, education, and skills sections.  Please continue to signature section.</p>
+                <div className="p-5">
+                
+                <input
+                type="checkbox"
+                name="optout"
+                id="optout"
+                checked={optout === true}
+                onChange={() =>{
+                  setOptout(!optout)
+                }}
+                />
+                <label htmlFor="optout" className="px-1">Opt out of sections?</label>
+                </div>
+                <div className="px-5 flex flex-col">
+                <label htmlFor="resume">Resume/CV</label>
+                  <input
+                  type="file"
+                  name="resume"
+                  id="resume"
+                  className="py-3"
+                  onChange={(e) =>{
+                    if(e.target.files && e.target.files.length > 0){
+                    setResume(e.target.files[0])
+                    }
+                  
+                  }}
+                   />
+                   <label htmlFor="cover-letter">Cover Letter</label>
+                   <input
+                    type="file"
+                    name="cover-letter"
+                    id="cover-letter"
+                    className="py-3"
+                    onChange={(e)=>{
+                      if(e.target.files){
+                        setCoverLetter(e.target.files[0])
+                      }
+                    }} />
+                    <label htmlFor="references">References</label>
+                    <input
+                    type="file"
+                    name="references"
+                    id="references"
+                    className="py-3"
+                    onChange={(e) =>{
+                      if(e.target.files){
+                        setReferences(e.target.files[0])
+                      }
+                    }} />
+                    {/*if a position is faculty display below, if not dont show this*/}
+                    {isFaculty && (
+                      <>
+                      <div className="py-5">
+                        <h2 className="py-3 text-xl">Upload Required Faculty Documents</h2>
+                        <p className="text-maroon">These files are required because you selected a faculty position</p>
+                        </div>
+                        <label htmlFor="philosophy">Statement of Teaching Philosophy*</label>
+                    <input
+                    type="file"
+                    name="philosophy"
+                    id="philosophy"
+                    className="py-3"
+                    onChange={(e) =>{
+                      if(e.target.files){
+                        setStatementOfTeach(e.target.files[0])
+                      }
+                    }} />
+                    <label htmlFor="diversity">Diversity Statement*</label>
+                    <input
+                    type="file"
+                    name="diversity"
+                    id="diversity"
+                    className="py-3"
+                    onChange={(e) =>{
+                      if(e.target.files){
+                     setDiversityStatement(e.target.files[0])
+                      }
+                    }} />
+                    <label htmlFor="grad">Graduate Transcript*</label>
+                    <input
+                    type="file"
+                    name="grad"
+                    id="grad"
+                    className="py-3"
+                    onChange={(e) =>{
+                      if(e.target.files){
+                     setGraduateTranscript(e.target.files[0])
+                      }
+                    }} />
+                    <label htmlFor="performance">Performance or Rehersal Recording</label>
+                    <input
+                    type="file"
+                    name="performance"
+                    id="performance"
+                    className="py-3"
+                    onChange={(e) =>{
+                      if(e.target.files){
+                     setPerformanceRec(e.target.files[0])
+                      }
+                    }} />
+                    </>
+                    
+                    )}
+                </div>
+                
             <input type="submit"></input>
           </form>
         </div>
