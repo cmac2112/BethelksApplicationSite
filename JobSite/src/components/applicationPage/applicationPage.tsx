@@ -34,7 +34,7 @@ interface Positions {
 }
 const applicationPage = () => {
   //use state variables to store all information to post
-  
+
   //can either have one big state variable, or seperate them out into their own, either works fine
   //separating them here for easier bug fixing
 
@@ -44,120 +44,129 @@ const applicationPage = () => {
   //below states are for page rendering
   const [openPositions, setOpenPositions] = useState<Positions[]>([]);
   //state management for fetching open positions
-  const [isFaculty, setisFaculty] = useState(true) 
+  const [isFaculty, setisFaculty] = useState(true);
   //if a position is faculty or not, display other upload file inputs
-
-  const [optout, setOptout] = useState(false) //opt out of experience section
+  const [optout, setOptout] = useState(false); //opt out of experience section
 
   //below are application information
-  const [hearAbout, setHearAbout] = useState('');
-  const [position, setPosition] = useState('');
+  const [hearAbout, setHearAbout] = useState("");
+  const [position, setPosition] = useState("");
   const [workTime, setWorkTime] = useState({
     fullTime: false,
     partTime: false,
     temporary: false,
     evenings: false,
     weekends: false,
-    nights: false
-  })
-  const [startTime, setStartTime] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [address, setAddress] = useState('')
-  const [city, setCity] = useState('')
-  const [state, setState] = useState('')
-  const [zip, setZip] = useState('')
-  const [permAdress, setPermAdress] = useState('')
-  const [permCity, setpermCity] = useState('')
-  const [permState, setpermState] = useState('')
-  const [permZip, setpermZip] = useState('')
-  const [phone, setPhone] = useState('')
-  const [email, setEmail] = useState('')
-  const [preferredContact, setPreferredContact] = useState('') // so many, one big one may be more confusing though
-  const [legalWork, setLegalWork] = useState('')
-  const [sponsorship, setSponsorship] = useState('')
-  const [applied, setApplied] = useState('')
-  const [employed, setEmployed] = useState('');
-  const [related, setRelated] = useState('');
-  const [resume, setResume] = useState<File | null>(null)
-  const [coverLetter, setCoverLetter] = useState<File | null>(null)
-  const [references, setReferences] = useState<File | null>(null)
-  const [statementOfTeach, setStatementOfTeach] = useState<File | null>(null)
-  const [diversityStatement, setDiversityStatement] = useState<File | null>(null)
-  const [graduateTranscript, setGraduateTranscript] = useState<File | null>(null)
-  const [performanceRec, setPerformanceRec] = useState<File | null>(null)
+    nights: false,
+  });
+  const [startTime, setStartTime] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [currentAddress, setCurrentAddress] = useState({
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+  });
+  const [permanentAddress, setPermanantAddress] = useState({
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+  });
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [preferredContact, setPreferredContact] = useState(""); // so many, one big one may be more confusing though
+  const [legalWork, setLegalWork] = useState("");
+  const [sponsorship, setSponsorship] = useState("");
+  const [applied, setApplied] = useState("");
+  const [employed, setEmployed] = useState("");
+  const [related, setRelated] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
+  const [coverLetter, setCoverLetter] = useState<File | null>(null);
+  const [references, setReferences] = useState<File | null>(null);
+  const [statementOfTeach, setStatementOfTeach] = useState<File | null>(null);
+  const [diversityStatement, setDiversityStatement] = useState<File | null>(
+    null
+  );
+  const [graduateTranscript, setGraduateTranscript] = useState<File | null>(
+    null
+  );
+  const [performanceRec, setPerformanceRec] = useState<File | null>(null);
   const [employmentHistory1, setEmploymentHistory1] = useState({
-    employer: '',
-    address: '',
-    positionTitle: '',
-    startDate: '',
-    endDate: '',
-    duties: '',
-    supervisor: '',
-    supervisorTitle: '',
-    contact: null,
-    reasonLeft: ''
-  })
+    employer: "",
+    address: "",
+    positionTitle: "",
+    startDate: "",
+    endDate: "",
+    duties: "",
+    supervisor: "",
+    supervisorTitle: "",
+    contact: "",
+    reasonLeft: "",
+  });
   const [employmentHistory2, setEmploymentHistory2] = useState({
-    employer: '',
-    address: '',
-    positionTitle: '',
-    startDate: '',
-    endDate: '',
-    duties: '',
-    supervisor: '',
-    supervisorTitle: '',
-    contact: null,
-    reasonLeft: ''
-  })
+    employer: "",
+    address: "",
+    positionTitle: "",
+    startDate: "",
+    endDate: "",
+    duties: "",
+    supervisor: "",
+    supervisorTitle: "",
+    contact: "",
+    reasonLeft: "",
+  });
   const [employmentHistory3, setEmploymentHistory3] = useState({
-    employer: '',
-    address: '',
-    positionTitle: '',
-    startDate: '',
-    endDate: '',
-    duties: '',
-    supervisor: '',
-    supervisorTitle: '',
-    contact: null,
-    reasonLeft: ''
-  })
+    employer: "",
+    address: "",
+    positionTitle: "",
+    startDate: "",
+    endDate: "",
+    duties: "",
+    supervisor: "",
+    supervisorTitle: "",
+    contact: "",
+    reasonLeft: "",
+  });
   const [employmentHistory4, setEmploymentHistory4] = useState({
-    employer: '',
-    address: '',
-    positionTitle: '',
-    startDate: '',
-    endDate: '',
-    duties: '',
-    supervisor: '',
-    supervisorTitle: '',
-    contact: null,
-    reasonLeft: ''
-  })
+    employer: "",
+    address: "",
+    positionTitle: "",
+    startDate: "",
+    endDate: "",
+    duties: "",
+    supervisor: "",
+    supervisorTitle: "",
+    contact: "",
+    reasonLeft: "",
+  });
   const [highSchool, setHighSchool] = useState({
-    name: '',
-    address: '',
-    diploma: '',
-  })
+    name: "",
+    address: "",
+    diploma: "",
+  });
   const [undergrad, setUndergrad] = useState({
-    name: '',
-    address: '',
-    courseStudy: '',
-    diploma: ''
-  })
+    name: "",
+    address: "",
+    courseStudy: "",
+    diploma: "",
+  });
   const [grad, setGrad] = useState({
-    name: '',
-    address: '',
-    courseStudy: '',
-    diploma: ''
-  })
+    name: "",
+    address: "",
+    courseStudy: "",
+    diploma: "",
+  });
   const [other, setOther] = useState({
-    name: '',
-    address: '',
-    courseStudy: '',
-    diploma: '',
-  })
-  const [skills, setSkills] = useState('')
+    name: "",
+    address: "",
+    courseStudy: "",
+    diploma: "",
+  });
+  const [skills, setSkills] = useState("");
+  const [agree, setAgree] = useState(false);
 
+  // got to be an easier way than all of these ^
 
   useEffect(() => {
     getPositionOpenings();
@@ -175,32 +184,26 @@ const applicationPage = () => {
       console.error("unable to fetch open positions");
     }
   };
-  
-  const handleWorkTimeChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
+
+  const handleWorkTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
 
     setWorkTime((prevState) => ({
       ...prevState,
-      [name]: checked
-    }))
-  }
+      [name]: checked,
+    }));
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(resume)
+    console.log(resume);
     const formData = new FormData();
     formData.append("hear_about", hearAbout);
     formData.append("position", position);
     formData.append("work_time", JSON.stringify(workTime)); // Assuming workTime is an object
     formData.append("start_time", startTime);
     formData.append("fullName", fullName);
-    formData.append("address", address);
-    formData.append("city", city);
-    formData.append("state", state);
-    formData.append("zip", zip);
-    formData.append("permAdress", permAdress);
-    formData.append("permCity", permCity);
-    formData.append("permState", permState);
-    formData.append("permZip", permZip);
+    formData.append("currentAddress", JSON.stringify(currentAddress));
+    formData.append("permanantAddress", JSON.stringify(permanentAddress));
     formData.append("phone", phone);
     formData.append("email", email);
     formData.append("preferredContact", preferredContact);
@@ -212,15 +215,18 @@ const applicationPage = () => {
     if (resume) {
       formData.append("resume", resume);
     }
-  
+    if (employmentHistory1) {
+      formData.append("employer1", JSON.stringify(employmentHistory1));
+    }
+
     const response = await fetch(`http://localhost:3000/api/apply`, {
       method: "POST",
       body: formData,
     });
     if (response.ok) {
       console.log("form submitted", formData);
-      for(let [key, value] of formData.entries()){
-        console.log(`${key}: ${value}`)
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
       }
     } else {
       console.error("error submitting form");
@@ -230,7 +236,6 @@ const applicationPage = () => {
   // name attribute groups items
   //then set required attribute
 
-
   return (
     <>
       <Layout>
@@ -238,8 +243,13 @@ const applicationPage = () => {
           <h2 className="text-center text-2xl text-white p-2">Application</h2>
         </div>
         <div id="bg" className="bg-gray-100 flex justify-center p-1 md:p-5">
-          <form className="px-5 bg-white md:w-3/4 w-full" onSubmit={handleSubmit}>
-            <h2 className="p-5 text-xl" id="position-header">How did you hear about Bethel?</h2>
+          <form
+            className="px-5 bg-white md:w-3/4 w-full"
+            onSubmit={handleSubmit}
+          >
+            <h2 className="p-5 text-xl" id="position-header">
+              How did you hear about Bethel?
+            </h2>
             <div className="px-5">
               <div>
                 <input
@@ -252,7 +262,9 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label className="px-1" htmlFor="Indeed">Indeed</label>
+                <label className="px-1" htmlFor="Indeed">
+                  Indeed
+                </label>
               </div>
               <div>
                 <input
@@ -265,7 +277,9 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label className="px-1" htmlFor="HACU">HACU</label>
+                <label className="px-1" htmlFor="HACU">
+                  HACU
+                </label>
               </div>
               <div>
                 <input
@@ -293,7 +307,9 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-               <label className="px-1" htmlFor="Higher-Ed-Jobs">Higher Ed Jobs</label>
+                <label className="px-1" htmlFor="Higher-Ed-Jobs">
+                  Higher Ed Jobs
+                </label>
               </div>
               <div>
                 <input
@@ -306,7 +322,9 @@ const applicationPage = () => {
                     setHearAbout(e.target.value);
                   }}
                 />
-                <label className="px-1" htmlFor="other">Other</label>
+                <label className="px-1" htmlFor="other">
+                  Other
+                </label>
               </div>
             </div>
             <h2 className="p-5 text-xl">Position applying for</h2>
@@ -315,499 +333,1256 @@ const applicationPage = () => {
                 name="job-applying-for"
                 id="job-applying-for"
                 className="bg-slate-200"
-                onChange={(e) =>{
+                onChange={(e) => {
                   const selectedTitle = e.target.value;
                   setPosition(selectedTitle);
-                
+
                   // Find the position that matches the selected title
                   const selectedPosition = openPositions.find(
                     (positions) => positions.title === selectedTitle
                   );
-                
+
                   // If found, set the employment type to state
                   if (selectedPosition) {
-                    setisFaculty(selectedPosition.employment === "faculty" ? true : false)
-                  }}}
+                    setisFaculty(
+                      selectedPosition.employment === "faculty" ? true : false
+                    );
+                  }
+                }}
               >
                 <option value="">Choose an option</option>
                 {openPositions.map((positions) => (
-                  <option key={positions.id} value={positions.title} className="bg-white">
-                    {positions.title}{positions.employment}
+                  <option
+                    key={positions.id}
+                    value={positions.title}
+                    className="bg-white"
+                  >
+                    {positions.title}
+                    {positions.employment}
                   </option>
                 ))}
               </select>
             </div>
             <h2 className="p-5 text-xl">Working Time</h2>
             <div className="px-5">
-            <div>
-              <input
-                type="checkbox"
-                id="FullTime"
-                name="fullTime"
-                value="Full-Time"
-                checked={workTime.fullTime}
-                onChange={handleWorkTimeChange}
-              />
-              <label className="px-1" htmlFor="fullTime">Full Time</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="PartTime"
-                name="partTime"
-                value="Part-Time"
-                checked={workTime.partTime}
-                onChange={handleWorkTimeChange}
-              />
-              <label className="px-1" htmlFor="partTime">Part Time</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="temporary"
-                name="temporary"
-                value="Temporary"
-                checked={workTime.temporary}
-                onChange={handleWorkTimeChange}
-              />
-              <label className="px-1" htmlFor="temporary">Temporary</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="evenings"
-                name="evenings"
-                value="Evenings"
-                checked={workTime.evenings}
-                onChange={handleWorkTimeChange}
-              />
-              <label className="px-1" htmlFor="evenings">Evenings</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="weekends"
-                name="weekends"
-                value="Weekends"
-                checked={workTime.weekends}
-                onChange={handleWorkTimeChange}
-              />
-              <label className="px-1" htmlFor="weekends">Weekends</label>
               <div>
                 <input
                   type="checkbox"
-                  id="nights"
-                  name="nights"
-                  value="Nights"
-                  checked={workTime.nights}
+                  id="fullTime"
+                  name="full-Time"
+                  value="Full-Time"
+                  checked={workTime.fullTime}
                   onChange={handleWorkTimeChange}
                 />
-                <label className="px-1" htmlFor="nights">Nights</label>
+                <label className="px-1" htmlFor="fullTime">
+                  Full Time
+                </label>
               </div>
-            </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="partTime"
+                  name="part-Time"
+                  value="Part-Time"
+                  checked={workTime.partTime}
+                  onChange={handleWorkTimeChange}
+                />
+                <label className="px-1" htmlFor="partTime">
+                  Part Time
+                </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="temporary"
+                  name="temporary"
+                  value="Temporary"
+                  checked={workTime.temporary}
+                  onChange={handleWorkTimeChange}
+                />
+                <label className="px-1" htmlFor="temporary">
+                  Temporary
+                </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="evenings"
+                  name="evenings"
+                  value="Evenings"
+                  checked={workTime.evenings}
+                  onChange={handleWorkTimeChange}
+                />
+                <label className="px-1" htmlFor="evenings">
+                  Evenings
+                </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="weekends"
+                  name="weekends"
+                  value="Weekends"
+                  checked={workTime.weekends}
+                  onChange={handleWorkTimeChange}
+                />
+                <label className="px-1" htmlFor="weekends">
+                  Weekends
+                </label>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="nights"
+                    name="nights"
+                    value="Nights"
+                    checked={workTime.nights}
+                    onChange={handleWorkTimeChange}
+                  />
+                  <label className="px-1" htmlFor="nights">
+                    Nights
+                  </label>
+                </div>
+              </div>
             </div>
             <h2 className="p-5 text-xl">When are you available to start?</h2>
             <div className="px-5">
-                <input
+              <input
                 type="date"
                 name="start-time"
                 className="border border-gray-200 rounded-xl p-2"
-                onChange={(e) => setStartTime(e.target.value)} />
-              </div>
-              <h2 className="p-5 text-xl">Personal Information</h2>
-              <div className="px-5">
-                <input 
+                onChange={(e) => setStartTime(e.target.value)}
+              />
+            </div>
+            <h2 className="p-5 text-xl">Personal Information</h2>
+            <div className="px-5">
+              <input
                 type="text"
                 id="first-name"
-                name="first-name" 
+                name="first-name"
                 placeholder="Enter full name..."
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setFullName(e.target.value)} />
-              </div>
-              <h2 className="p-5 text-xl">Current Address</h2>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            </div>
+            <h2 className="p-5 text-xl">Current Address</h2>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="address-street"
-                name="address-street" 
+                name="address-street"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setAddress(e.target.value)} />
-                <label htmlFor="address-street">Address</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setCurrentAddress({
+                    ...currentAddress,
+                    address: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="address-street">Address</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="city"
-                name="city" 
+                name="city"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setCity(e.target.value)} />
-                <label htmlFor="city">City</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setCurrentAddress({
+                    ...currentAddress,
+                    city: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="city">City</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="state"
-                name="state" 
+                name="state"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setState(e.target.value)} />
-                <label htmlFor="state">State</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setCurrentAddress({
+                    ...currentAddress,
+                    state: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="state">State</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="zip"
-                name="zip" 
+                name="zip"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setZip(e.target.value)} />
-                <label htmlFor="zip">Zip</label>
-              </div>
-              <h2 className="p-5 text-xl">Permenant Address If Different From Above</h2>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setCurrentAddress({
+                    ...currentAddress,
+                    zip: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="zip">Zip</label>
+            </div>
+            <h2 className="p-5 text-xl">
+              Permenant Address If Different From Above
+            </h2>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="perm-address-street"
-                name="perm-address-street" 
+                name="perm-address-street"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setPermAdress(e.target.value)} />
-                <label htmlFor="perm-address-street">Address</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setPermanantAddress({
+                    ...permanentAddress,
+                    address: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="perm-address-street">Address</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="perm-city"
-                name="perm-city" 
+                name="perm-city"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setpermCity(e.target.value)} />
-                <label htmlFor="perm-city">City</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setPermanantAddress({
+                    ...permanentAddress,
+                    city: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="perm-city">City</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="perm-state"
-                name="perm-state" 
+                name="perm-state"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setpermState(e.target.value)} />
-                <label htmlFor="perm-state">State</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input 
+                onChange={(e) =>
+                  setPermanantAddress({
+                    ...permanentAddress,
+                    state: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="perm-state">State</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="text"
                 id="perm-zip"
-                name="perm-zip" 
+                name="perm-zip"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setpermZip(e.target.value)} />
-                <label htmlFor="perm-zip">Zip</label>
-              </div>
-              <h2 className="p-5 text-xl">Contact Information</h2>
-              <div className="px-5 flex flex-col-reverse">
-                <input
-                type="number"
+                onChange={(e) =>
+                  setPermanantAddress({
+                    ...permanentAddress,
+                    zip: e.target.value,
+                  })
+                }
+              />
+              <label htmlFor="perm-zip">Zip</label>
+            </div>
+            <h2 className="p-5 text-xl">Contact Information</h2>
+            <div className="px-5 flex flex-col-reverse">
+              <input
+                type="tel"
                 id="phone"
                 name="phone"
-                
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setPhone(e.target.value)} />
-                <label htmlFor="phone">Cell/Home Phone</label>
-              </div>
-              <div className="px-5 flex flex-col-reverse">
-                <input
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <label htmlFor="phone">Cell/Home Phone</label>
+            </div>
+            <div className="px-5 flex flex-col-reverse">
+              <input
                 type="email"
                 id="email"
-                name="email"
-                
+                name="email-input"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setEmail(e.target.value)} />
-                <label htmlFor="email">Email</label>
-              </div>
-              <h2 className="p-5 text-xl">Preferred Contact Method</h2>
-              <div className="px-5">
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <label htmlFor="email">Email</label>
+            </div>
+            <h2 className="p-5 text-xl">Preferred Contact Method</h2>
+            <div className="px-5">
               <div>
                 <input
-                type="radio"
-                id="phone"
-                name="phone"
-                value="phone"
-                checked={preferredContact === "phone"}
-                onChange={(e) =>{
-                  setPreferredContact(e.target.value)
-                }}
-                 />
-                <label className="px-1" htmlFor="phone">Phone</label>
-              </div>
-              <div>
-                <input
-                type="radio"
-                id="email"
-                name="email"
-                value="email"
-                checked={preferredContact === "email"}
-                onChange={(e) =>{
-                  setPreferredContact(e.target.value)
-                }}
-                 />
-                <label className="px-1" htmlFor="email">Email</label>
+                  type="radio"
+                  id="phone-radio"
+                  name="phone-input"
+                  value="phone"
+                  checked={preferredContact === "phone"}
+                  onChange={(e) => {
+                    setPreferredContact(e.target.value);
+                  }}
+                />
+                <label className="px-1" htmlFor="phone-radio">
+                  Phone
+                </label>
               </div>
               <div>
                 <input
-                type="radio"
-                id="no-preference"
-                name="no-preference"
-                value="no-preference"
-                checked={preferredContact === "no-preference"}
-                onChange={(e) =>{
-                  setPreferredContact(e.target.value)
-                }}
-                 />
-                <label className="px-1" htmlFor="no-preference">No Preference</label>
+                  type="radio"
+                  id="email-radio"
+                  name="email"
+                  value="email"
+                  checked={preferredContact === "email"}
+                  onChange={(e) => {
+                    setPreferredContact(e.target.value);
+                  }}
+                />
+                <label className="px-1" htmlFor="email-radio">
+                  Email
+                </label>
               </div>
-              </div>
-              <h2 className="p-5 text-xl">Are You Leagally Allowed To Work In The United States?*</h2>
-              <div className="px-5">
+              <div>
                 <input
+                  type="radio"
+                  id="no-preference"
+                  name="no-preference"
+                  value="no-preference"
+                  checked={preferredContact === "no-preference"}
+                  onChange={(e) => {
+                    setPreferredContact(e.target.value);
+                  }}
+                />
+                <label className="px-1" htmlFor="no-preference">
+                  No Preference
+                </label>
+              </div>
+            </div>
+            <h2 className="p-5 text-xl">
+              Are You Leagally Allowed To Work In The United States?*
+            </h2>
+            <div className="px-5">
+              <input
                 type="radio"
                 name="legal-work"
                 id="legal-yes"
                 value="allowed-to-work"
                 checked={legalWork === "allowed-to-work"}
-                onChange={(e) =>{
-                  setLegalWork(e.target.value)
+                onChange={(e) => {
+                  setLegalWork(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="legal-yes">Yes</label>
-                
-              </div>
-              <div className="px-5">
+              />
+              <label className="px-1" htmlFor="legal-yes">
+                Yes
+              </label>
+            </div>
+            <div className="px-5">
               <input
                 type="radio"
                 name="legal-work"
                 id="legal-no"
                 value="not-allowed-to-work"
                 checked={legalWork === "not-allowed-to-work"}
-                onChange={(e) =>{
-                  setLegalWork(e.target.value)
+                onChange={(e) => {
+                  setLegalWork(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="legal-no">No</label>
-              </div>
-              <h2 className="p-5 text-xl">Will You Require Sponsorship In The Next 1-3 Years?*</h2>
-              <div className="px-5">
-                <input
+              />
+              <label className="px-1" htmlFor="legal-no">
+                No
+              </label>
+            </div>
+            <h2 className="p-5 text-xl">
+              Will You Require Sponsorship In The Next 1-3 Years?*
+            </h2>
+            <div className="px-5">
+              <input
                 type="radio"
                 name="sponsorship"
                 id="sponsor-yes"
                 value="yes"
                 checked={sponsorship === "yes"}
-                onChange={(e) =>{
-                  setSponsorship(e.target.value)
+                onChange={(e) => {
+                  setSponsorship(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="sponsor-yes">Yes</label>
-                
-              </div>
-              <div className="px-5">
+              />
+              <label className="px-1" htmlFor="sponsor-yes">
+                Yes
+              </label>
+            </div>
+            <div className="px-5">
               <input
                 type="radio"
                 name="sponsorship"
                 id="sponsor-no"
                 value="no"
                 checked={sponsorship === "no"}
-                onChange={(e) =>{
-                  setSponsorship(e.target.value)
+                onChange={(e) => {
+                  setSponsorship(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="sponsor-no">No</label>
-                </div>
-                <h2 className="p-5 text-xl">Have You Ever Applied For Employment With Our Organization?*</h2>
-              <div className="px-5">
-                <input
+              />
+              <label className="px-1" htmlFor="sponsor-no">
+                No
+              </label>
+            </div>
+            <h2 className="p-5 text-xl">
+              Have You Ever Applied For Employment With Our Organization?*
+            </h2>
+            <div className="px-5">
+              <input
                 type="radio"
                 name="ever-applied"
                 id="applied-yes"
                 value="yes"
                 checked={applied === "yes"}
-                onChange={(e) =>{
-                  setApplied(e.target.value)
+                onChange={(e) => {
+                  setApplied(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="applied-yes">Yes</label>
-                
-              </div>
-              <div className="px-5">
+              />
+              <label className="px-1" htmlFor="applied-yes">
+                Yes
+              </label>
+            </div>
+            <div className="px-5">
               <input
                 type="radio"
                 name="ever-applied"
                 id="applied-no"
                 value="no"
                 checked={applied === "no"}
-                onChange={(e) =>{
-                  setApplied(e.target.value)
+                onChange={(e) => {
+                  setApplied(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="applied-no">No</label>
-                </div>
-                <h2 className="p-5 text-xl">Have You Ever Been Employed By Our Organization?*</h2>
-              <div className="px-5">
-                <input
+              />
+              <label className="px-1" htmlFor="applied-no">
+                No
+              </label>
+            </div>
+            <h2 className="p-5 text-xl">
+              Have You Ever Been Employed By Our Organization?*
+            </h2>
+            <div className="px-5">
+              <input
                 type="radio"
                 name="ever-employed"
                 id="employed-yes"
                 value="yes"
-                checked={ employed === "yes"}
-                onChange={(e) =>{
-                  setEmployed(e.target.value)
+                checked={employed === "yes"}
+                onChange={(e) => {
+                  setEmployed(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="employed-yes">Yes</label>
-                
-              </div>
-              <div className="px-5">
+              />
+              <label className="px-1" htmlFor="employed-yes">
+                Yes
+              </label>
+            </div>
+            <div className="px-5">
               <input
                 type="radio"
                 name="ever-employed"
                 id="employed-no"
                 value="no"
                 checked={employed === "no"}
-                onChange={(e) =>{
-                  setEmployed(e.target.value)
+                onChange={(e) => {
+                  setEmployed(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="employed-no">No</label>
-                </div>
-                <h2 className="p-5 text-xl">Are You Related To Anyone Currently Employed By Our Organization?*</h2>
-              <div className="px-5">
-                <input
+              />
+              <label className="px-1" htmlFor="employed-no">
+                No
+              </label>
+            </div>
+            <h2 className="p-5 text-xl">
+              Are You Related To Anyone Currently Employed By Our Organization?*
+            </h2>
+            <div className="px-5">
+              <input
                 type="radio"
                 name="related"
                 id="related-yes"
                 value="yes"
-                checked={ related === "yes" }
-                onChange={(e) =>{
-                  setRelated(e.target.value)
+                checked={related === "yes"}
+                onChange={(e) => {
+                  setRelated(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="related-yes">Yes</label>
-                
-              </div>
-              <div className="px-5">
+              />
+              <label className="px-1" htmlFor="related-yes">
+                Yes
+              </label>
+            </div>
+            <div className="px-5">
               <input
                 type="radio"
                 name="related"
                 id="related-no"
                 value="no"
-                checked={ related === "no"}
-                onChange={(e) =>{
-                  setRelated(e.target.value)
+                checked={related === "no"}
+                onChange={(e) => {
+                  setRelated(e.target.value);
                 }}
-                 />
-                <label className="px-1" htmlFor="related-no">No</label>
-                </div>
-                <h2 className="p-5 text-xl">Upload Documents</h2>
-                <p className="py-2 px-5">If you choose to upload a resume, you may opt to skip employment, education, and skills sections.  Please continue to signature section.</p>
-                <div className="p-5">
-                
-                <input
+              />
+              <label className="px-1" htmlFor="related-no">
+                No
+              </label>
+            </div>
+            <h2 className="p-5 text-xl">Upload Documents</h2>
+            <p className="py-2 px-5">
+              If you choose to upload a resume, you may opt to skip employment,
+              education, and skills sections. Please continue to signature
+              section.
+            </p>
+            <div className="p-5">
+              <input
                 type="checkbox"
-                name="optout"
+                name="optout-input"
                 id="optout"
                 checked={optout === true}
-                onChange={() =>{
-                  setOptout(!optout)
+                onChange={() => {
+                  setOptout(!optout);
                 }}
-                />
-                <label htmlFor="optout" className="px-1">Opt out of sections?</label>
-                </div>
-                <div className="px-5 flex flex-col">
-                <label htmlFor="resume">Resume/CV</label>
+              />
+              <label htmlFor="optout" className="px-1">
+                Opt out of sections?
+              </label>
+            </div>
+            <div className="px-5 flex flex-col">
+              <label htmlFor="resume">Resume/CV</label>
+              <input
+                type="file"
+                name="resume-input"
+                id="resume"
+                className="py-3"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setResume(e.target.files[0]);
+                  }
+                }}
+              />
+              <label htmlFor="cover-letter">Cover Letter</label>
+              <input
+                type="file"
+                name="cover-letter-input"
+                id="cover-letter"
+                className="py-3"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    setCoverLetter(e.target.files[0]);
+                  }
+                }}
+              />
+              <label htmlFor="references">References</label>
+              <input
+                type="file"
+                name="references-input"
+                id="references"
+                className="py-3"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    setReferences(e.target.files[0]);
+                  }
+                }}
+              />
+              {/*if a position is faculty display below, if not dont show this*/}
+              {isFaculty && (
+                <>
+                  <div className="py-5">
+                    <h2 className="py-3 text-xl">
+                      Upload Required Faculty Documents
+                    </h2>
+                    <p className="text-maroon">
+                      These files are required because you selected a faculty
+                      position
+                    </p>
+                  </div>
+                  <label htmlFor="philosophy">
+                    Statement of Teaching Philosophy*
+                  </label>
                   <input
-                  type="file"
-                  name="resume"
-                  id="resume"
-                  className="py-3"
-                  onChange={(e) =>{
-                    if(e.target.files && e.target.files.length > 0){
-                    setResume(e.target.files[0])
-                    }
-                  
-                  }}
-                   />
-                   <label htmlFor="cover-letter">Cover Letter</label>
-                   <input
-                    type="file"
-                    name="cover-letter"
-                    id="cover-letter"
-                    className="py-3"
-                    onChange={(e)=>{
-                      if(e.target.files){
-                        setCoverLetter(e.target.files[0])
-                      }
-                    }} />
-                    <label htmlFor="references">References</label>
-                    <input
-                    type="file"
-                    name="references"
-                    id="references"
-                    className="py-3"
-                    onChange={(e) =>{
-                      if(e.target.files){
-                        setReferences(e.target.files[0])
-                      }
-                    }} />
-                    {/*if a position is faculty display below, if not dont show this*/}
-                    {isFaculty && (
-                      <>
-                      <div className="py-5">
-                        <h2 className="py-3 text-xl">Upload Required Faculty Documents</h2>
-                        <p className="text-maroon">These files are required because you selected a faculty position</p>
-                        </div>
-                        <label htmlFor="philosophy">Statement of Teaching Philosophy*</label>
-                    <input
                     type="file"
                     name="philosophy"
                     id="philosophy"
                     className="py-3"
-                    onChange={(e) =>{
-                      if(e.target.files){
-                        setStatementOfTeach(e.target.files[0])
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setStatementOfTeach(e.target.files[0]);
                       }
-                    }} />
-                    <label htmlFor="diversity">Diversity Statement*</label>
-                    <input
+                    }}
+                  />
+                  <label htmlFor="diversity">Diversity Statement*</label>
+                  <input
                     type="file"
                     name="diversity"
                     id="diversity"
                     className="py-3"
-                    onChange={(e) =>{
-                      if(e.target.files){
-                     setDiversityStatement(e.target.files[0])
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setDiversityStatement(e.target.files[0]);
                       }
-                    }} />
-                    <label htmlFor="grad">Graduate Transcript*</label>
-                    <input
+                    }}
+                  />
+                  <label htmlFor="grad">Graduate Transcript*</label>
+                  <input
                     type="file"
                     name="grad"
                     id="grad"
                     className="py-3"
-                    onChange={(e) =>{
-                      if(e.target.files){
-                     setGraduateTranscript(e.target.files[0])
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setGraduateTranscript(e.target.files[0]);
                       }
-                    }} />
-                    <label htmlFor="performance">Performance or Rehersal Recording</label>
-                    <input
+                    }}
+                  />
+                  <label htmlFor="performance">
+                    Performance or Rehersal Recording
+                  </label>
+                  <input
                     type="file"
                     name="performance"
                     id="performance"
                     className="py-3"
-                    onChange={(e) =>{
-                      if(e.target.files){
-                     setPerformanceRec(e.target.files[0])
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setPerformanceRec(e.target.files[0]);
                       }
-                    }} />
-                    </>
-                    
-                    )}
+                    }}
+                  />
+                </>
+              )}
+            </div>
+            {!optout && (
+              <div className="px-5 flex flex-col">
+                <h2 className="py-5 text-xl">
+                  Present or Most Recent Employer
+                </h2>
+                <label htmlFor="employer-input">Employer</label>
+                <input
+                  type="text"
+                  id="employer-input"
+                  name="employer"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      employer: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-address-input1">Address</label>
+                <input
+                  type="text"
+                  id="employer-address-input1"
+                  name="employer-address"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-pos-title1">Position</label>
+                <input
+                  type="text"
+                  id="employer-pos-title1"
+                  name="employer-pos1"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      positionTitle: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-start1">Start Date</label>
+                <input
+                  type="date"
+                  id="employer-start1"
+                  name="employer-startdate1"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      startDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-end1">End Date</label>
+                <input
+                  type="date"
+                  id="employer-end1"
+                  name="employer-end-date1"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      endDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-duties1">Duties</label>
+                <textarea
+                  id="employer-duties1"
+                  name="employer-duty1"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      duties: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-name1">Supervisor Name</label>
+                <input
+                  type="text"
+                  id="employer-super-name1"
+                  name="employer-supervisorname"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      supervisor: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-title1">Supervisor Title</label>
+                <input
+                  type="text"
+                  id="employer-super-title1"
+                  name="employer-supervisorTitle"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      supervisorTitle: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="text-lg py-3">May we Contact?</h2>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact1-yes"
+                    name="can-contact1"
+                    value="yes"
+                    checked={employmentHistory1.contact === "yes"}
+                    onChange={(e) =>
+                      setEmploymentHistory1({
+                        ...employmentHistory1,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact1-yes">
+                    Yes
+                  </label>
                 </div>
-                
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact1-no"
+                    name="can-contact1"
+                    value="no"
+                    checked={employmentHistory1.contact === "no"}
+                    onChange={(e) =>
+                      setEmploymentHistory1({
+                        ...employmentHistory1,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact1-no">
+                    No
+                  </label>
+                </div>
+                <label htmlFor="employer-leaving1">Reason For Leaving</label>
+                <input
+                  type="text"
+                  id="employer-leaving1"
+                  name="employer-reason1"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory1({
+                      ...employmentHistory1,
+                      reasonLeft: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">
+                  Employer 2
+                </h2>
+                <label htmlFor="employer-input2">Employer</label>
+                <input
+                  type="text"
+                  id="employer-input2"
+                  name="employer2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      employer: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-address-input2">Address</label>
+                <input
+                  type="text"
+                  id="employer-address-input2"
+                  name="employer-address2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-pos-title2">Position</label>
+                <input
+                  type="text"
+                  id="employer-pos-title2"
+                  name="employer-pos2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      positionTitle: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-start2">Start Date</label>
+                <input
+                  type="date"
+                  id="employer-start2"
+                  name="employer-startdate2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      startDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-end2">End Date</label>
+                <input
+                  type="date"
+                  id="employer-end2"
+                  name="employer-end-date2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      endDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-duties2">Duties</label>
+                <textarea
+                  id="employer-duties2"
+                  name="employer-duty2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      duties: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-name2">Supervisor Name</label>
+                <input
+                  type="text"
+                  id="employer-super-name2"
+                  name="employer-supervisorname2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      supervisor: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-title2">Supervisor Title</label>
+                <input
+                  type="text"
+                  id="employer-super-title2"
+                  name="employer-supervisorTitle2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      supervisorTitle: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="text-lg py-3">May we Contact?</h2>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact2-yes"
+                    name="can-contact2"
+                    value="yes"
+                    checked={employmentHistory2.contact === "yes"}
+                    onChange={(e) =>
+                      setEmploymentHistory2({
+                        ...employmentHistory2,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact2-yes">
+                    Yes
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact2-no"
+                    name="can-contact2"
+                    value="no"
+                    checked={employmentHistory2.contact === "no"}
+                    onChange={(e) =>
+                      setEmploymentHistory2({
+                        ...employmentHistory2,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact2-no">
+                    No
+                  </label>
+                </div>
+                <label htmlFor="employer-leaving2">Reason For Leaving</label>
+                <input
+                  type="text"
+                  id="employer-leaving2"
+                  name="employer-reason2"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory2({
+                      ...employmentHistory2,
+                      reasonLeft: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">
+                  Employer 3
+                </h2>
+                <label htmlFor="employer-input3">Employer</label>
+                <input
+                  type="text"
+                  id="employer-input3"
+                  name="employer3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      employer: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-address-input3">Address</label>
+                <input
+                  type="text"
+                  id="employer-address-input3"
+                  name="employer-address"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-pos-title3">Position</label>
+                <input
+                  type="text"
+                  id="employer-pos-title3"
+                  name="employer-pos3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      positionTitle: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-start3">Start Date</label>
+                <input
+                  type="date"
+                  id="employer-start3"
+                  name="employer-startdate3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      startDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-end3">End Date</label>
+                <input
+                  type="date"
+                  id="employer-end3"
+                  name="employer-end-date3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      endDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-duties3">Duties</label>
+                <textarea
+                  id="employer-duties3"
+                  name="employer-duty3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      duties: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-name3">Supervisor Name</label>
+                <input
+                  type="text"
+                  id="employer-super-name3"
+                  name="employer-supervisorname3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      supervisor: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-title3">Supervisor Title</label>
+                <input
+                  type="text"
+                  id="employer-super-title3"
+                  name="employer-supervisorTitle3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      supervisorTitle: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="text-lg py-3">May we Contact?</h2>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact3-yes"
+                    name="can-contact3"
+                    value="yes"
+                    checked={employmentHistory3.contact === "yes"}
+                    onChange={(e) =>
+                      setEmploymentHistory3({
+                        ...employmentHistory3,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact3-yes">
+                    Yes
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact3-no"
+                    name="can-contact3"
+                    value="no"
+                    checked={employmentHistory3.contact === "no"}
+                    onChange={(e) =>
+                      setEmploymentHistory3({
+                        ...employmentHistory3,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact3-no">
+                    No
+                  </label>
+                </div>
+                <label htmlFor="employer-leaving3">Reason For Leaving</label>
+                <input
+                  type="text"
+                  id="employer-leaving3"
+                  name="employer-reason3"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory3({
+                      ...employmentHistory3,
+                      reasonLeft: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">
+                  Employer 4
+                </h2>
+                <label htmlFor="employer-input4">Employer</label>
+                <input
+                  type="text"
+                  id="employer-input4"
+                  name="employer4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      employer: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-address-input4">Address</label>
+                <input
+                  type="text"
+                  id="employer-address-input4"
+                  name="employer-address4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-pos-title4">Position</label>
+                <input
+                  type="text"
+                  id="employer-pos-title4"
+                  name="employer-pos4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      positionTitle: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-start4">Start Date</label>
+                <input
+                  type="date"
+                  id="employer-start4"
+                  name="employer-startdate4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      startDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-end4">End Date</label>
+                <input
+                  type="date"
+                  id="employer-end4"
+                  name="employer-end-date4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      endDate: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-duties4">Duties</label>
+                <textarea
+                  id="employer-duties4"
+                  name="employer-duty4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      duties: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-name4">Supervisor Name</label>
+                <input
+                  type="text"
+                  id="employer-super-name4"
+                  name="employer-supervisorname4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      supervisor: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="employer-super-title4">Supervisor Title</label>
+                <input
+                  type="text"
+                  id="employer-super-title4"
+                  name="employer-supervisorTitle4"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      supervisorTitle: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="text-lg py-3">May we Contact?</h2>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact4-yes"
+                    name="can-contact1"
+                    value="yes"
+                    checked={employmentHistory4.contact === "yes"}
+                    onChange={(e) =>
+                      setEmploymentHistory4({
+                        ...employmentHistory4,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact4-yes">
+                    Yes
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="employer-contact4-no"
+                    name="can-contact4"
+                    value="no"
+                    checked={employmentHistory4.contact === "no"}
+                    onChange={(e) =>
+                      setEmploymentHistory4({
+                        ...employmentHistory4,
+                        contact: e.target.value,
+                      })
+                    }
+                  />
+                  <label className="px-1" htmlFor="employer-contact4-no">
+                    No
+                  </label>
+                </div>
+                <label htmlFor="employer-leaving4">Reason For Leaving</label>
+                <input
+                  type="text"
+                  id="employer-leaving4"
+                  name="employer-reason1"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setEmploymentHistory4({
+                      ...employmentHistory4,
+                      reasonLeft: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">
+                  High School
+                </h2>
+                <label htmlFor="highschool" />
+              </div>
+              
+              
+            )}
+            {/*
+
+    reasonLeft: "", */}
             <input type="submit"></input>
           </form>
         </div>
