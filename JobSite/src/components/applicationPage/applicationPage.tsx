@@ -193,6 +193,7 @@ const applicationPage = () => {
       [name]: checked,
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(resume);
@@ -946,6 +947,8 @@ const applicationPage = () => {
                 </>
               )}
             </div>
+            {/* kind of cluttered and long here, maybe set these below to their own components
+            to make this file not 2000 lines */}
             {!optout && (
               <div className="px-5 flex flex-col">
                 <h2 className="py-5 text-xl">
@@ -1019,7 +1022,6 @@ const applicationPage = () => {
                 <label htmlFor="employer-duties1">Duties</label>
                 <textarea
                   id="employer-duties1"
-                  name="employer-duty1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
                   onChange={(e) =>
                     setEmploymentHistory1({
@@ -1104,9 +1106,7 @@ const applicationPage = () => {
                     })
                   }
                 />
-                <h2 className="py-5 text-xl">
-                  Employer 2
-                </h2>
+                <h2 className="py-5 text-xl">Employer 2</h2>
                 <label htmlFor="employer-input2">Employer</label>
                 <input
                   type="text"
@@ -1260,9 +1260,7 @@ const applicationPage = () => {
                     })
                   }
                 />
-                <h2 className="py-5 text-xl">
-                  Employer 3
-                </h2>
+                <h2 className="py-5 text-xl">Employer 3</h2>
                 <label htmlFor="employer-input3">Employer</label>
                 <input
                   type="text"
@@ -1416,9 +1414,7 @@ const applicationPage = () => {
                     })
                   }
                 />
-                <h2 className="py-5 text-xl">
-                  Employer 4
-                </h2>
+                <h2 className="py-5 text-xl">Employer 4</h2>
                 <label htmlFor="employer-input4">Employer</label>
                 <input
                   type="text"
@@ -1572,18 +1568,268 @@ const applicationPage = () => {
                     })
                   }
                 />
+                <h2 className="py-5 text-xl">High School</h2>
+                <label htmlFor="highschool">Name</label>
+                <input
+                  type="text"
+                  id="highschool"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setHighSchool({
+                      ...highSchool,
+                      name: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="highschool-address">Address</label>
+                <input
+                  type="text"
+                  id="highschool-address"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setHighSchool({
+                      ...highSchool,
+                      name: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="highschool-diploma">Diploma/Degree Level</label>
+                <input
+                  type="text"
+                  id="highschool-diploma"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setHighSchool({
+                      ...highSchool,
+                      diploma: e.target.value,
+                    })
+                  }
+                />
                 <h2 className="py-5 text-xl">
-                  High School
+                  Undergraduate College or University
                 </h2>
-                <label htmlFor="highschool" />
+                <label htmlFor="undergrad-name">Name</label>
+                <input
+                  type="text"
+                  id="undergrad-name"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setUndergrad({
+                      ...undergrad,
+                      name: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="undergrad-address">Address</label>
+                <input
+                  type="text"
+                  id="undergrad-address"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setUndergrad({
+                      ...undergrad,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="undergrad-course">Course of Study</label>
+                <input
+                  type="text"
+                  id="undergrad-course"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setUndergrad({
+                      ...undergrad,
+                      courseStudy: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="undergrad-diploma">Diploma/Degree Level</label>
+                <input
+                  type="text"
+                  id="undergrad-diploma"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setUndergrad({
+                      ...undergrad,
+                      diploma: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">
+                  Graduate/Professional College or University
+                </h2>
+                <label htmlFor="grad-name">Name</label>
+                <input
+                  type="text"
+                  id="grad-name"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setGrad({
+                      ...grad,
+                      name: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="grad-address">Address</label>
+                <input
+                  type="text"
+                  id="grad-address"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setGrad({
+                      ...grad,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="grad-course">Course of Study</label>
+                <input
+                  type="text"
+                  id="grad-course"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setGrad({
+                      ...grad,
+                      courseStudy: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="grad-diploma">Diploma/Level of Degree</label>
+                <input
+                  type="text"
+                  id="grad-diploma"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setGrad({
+                      ...grad,
+                      diploma: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">Other (Specify)</h2>
+                <label htmlFor="other-name">Name</label>
+                <input
+                  type="text"
+                  id="other-name"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setOther({
+                      ...other,
+                      name: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="other-address">Address</label>
+                <input
+                  type="text"
+                  id="other-address"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setOther({
+                      ...other,
+                      address: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="other-courseStudy">Course of Study</label>
+                <input
+                  type="text"
+                  id="other-courseStudy"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setOther({
+                      ...other,
+                      courseStudy: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="other-diploma">Diploma/Level of Degree</label>
+                <input
+                  type="text"
+                  id="other-diploma"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) =>
+                    setOther({
+                      ...other,
+                      diploma: e.target.value,
+                    })
+                  }
+                />
+                <h2 className="py-5 text-xl">Skills</h2>
+                <label htmlFor="skills" className="text-xs">
+                  SPECIAL TRAINING/SKILLS/PROFESSIONAL MEMBERSHIPS/OTHER
+                  INFORMATION
+                </label>
+                <textarea
+                  id="skills"
+                  className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  onChange={(e) => setSkills(e.target.value)}
+                />
               </div>
-              
-              
             )}
-            {/*
-
-    reasonLeft: "", */}
-            <input type="submit"></input>
+            <p className="font-semibold text-sm p-5">
+              By checking the below box, I certify that the answers given herein
+              are true and complete to the best of my knowledge. I authorize
+              investigation of all statements contained in this application and
+              supporting documents which have been submitted for employment as
+              may be necessary in arriving at an employment decision.{" "}
+            </p>
+            <p className="font-semibold text-sm p-5">
+              I HEREBY UNDERSTAND AND ACKNOWLEDGE THAT, IF HIRED, MY EMPLOYMENT
+              RELATIONSHIP WITH THIS ORGANIZATION WOULD BE OF AN “AT WILL”
+              NATURE, WHICH MEANS THAT THE EMPLOYEE MAY RESIGN AT ANY TIME AND
+              THE EMPLOYER MAY DISCHARGE THE EMPLOYEE AT ANY TIME AND FOR ANY OR
+              NO REASON. IT IS FURTHER UNDERSTOOD THAT THIS “AT WILL” EMPLOYMENT
+              RELATIONSHIP MAY NOT BE CHANGED BY ANY WRITTEN DOCUMENT OR CONDUCT
+              UNLESS SUCH CHANGE IS SPECIFICALLY ACKNOWLEDGED IN WRTING BY AN
+              AUTHORIZED EXECUTIVE OF THIS ORGANIZATION.
+            </p>
+            <p className="p-5">
+              In the event of employment, I understand that false or misleading
+              information given in my application or interview(s) may result in
+              discharge.{" "}
+            </p>
+            <div className="p-5">
+              <input
+                type="checkbox"
+                id="agree"
+                value="agree"
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+                required
+              />
+              <label htmlFor="agree" className="px-5">
+                I Agree
+              </label>
+            </div>
+            <p className="p-5">
+              Bethel College does not discriminate in its employment practices
+              or in its educational programs or activities on basis of race,
+              religion, color, sex/gender, pregnancy, political affiliation,
+              religion, creed, ethnicity, national origin (including ancestry),
+              citizenship status, physical or mental disability (including
+              perceived disability), age, marital status, sexual orientation,
+              gender identity, gender expression, veteran or military status
+              (including disabled veteran, recently separated veteran, active
+              duty wartime or campaign badge veteran, and Armed Forces Service
+              Medal veteran), predisposing genetic characteristics, domestic
+              violence victim status, or any other protected category under
+              applicable local, state, or federal law. The College also
+              prohibits retaliation against any person opposing discrimination
+              or participating in any discrimination investigation or complaint
+              process internally or externally. Reports of misconduct, questions
+              regarding Title IX, and concerns about noncompliance should be
+              directed to the Director of Human Resources & Compliance (Title IX
+              Coordinator). For a complete copy of the policy or for more
+              information, please contact the Director of Human Resources &
+              Compliance (Title IX Coordinator) or the Assistant Secretary of
+              Education within the Office for Civil Rights (OCR). Bethel College
+            </p>
+            <a href="https://www.bethelks.edu/equalopp">Equal Opportunity Policy</a>
+            <div className="flex justify-center">
+            <input type="submit" className="border border-maroon rounded-xl bg-maroon text-white p-2"></input>
+            </div>
           </form>
         </div>
       </Layout>
