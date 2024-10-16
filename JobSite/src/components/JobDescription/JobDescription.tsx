@@ -33,7 +33,7 @@ if (!job){ //if job is null, then show 404
     <Layout>
       {job.map((jobDetail: any, index: number) => (
         <div key={index}>
-          <div className="container mx-auto bg-maroon" id="job-page">
+          <div className="container max-w-full bg-maroon" id="job-page">
             <h2 className="text-center text-2xl text-white p-2">{jobDetail.title}</h2>
           </div>
           <div id="bg" className="bg-slate-100 flex justify-center p-2 md:p-6">

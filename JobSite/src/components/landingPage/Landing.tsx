@@ -64,7 +64,7 @@ const LandingPage = () => {
   return (
     <>
       <Layout>
-        <div className="container mx-auto bg-maroon" id="job-page">
+        <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2" id="job-header">
             Current Position Openings
           </h2>

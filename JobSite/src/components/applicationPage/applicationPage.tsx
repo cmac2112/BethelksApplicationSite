@@ -44,7 +44,7 @@ const applicationPage = () => {
   //below states are for page rendering
   const [openPositions, setOpenPositions] = useState<Positions[]>([]);
   //state management for fetching open positions
-  const [isFaculty, setisFaculty] = useState(true);
+  const [isFaculty, setisFaculty] = useState(false);
   //if a position is faculty or not, display other upload file inputs
   const [optout, setOptout] = useState(false); //opt out of experience section
 
@@ -81,6 +81,8 @@ const applicationPage = () => {
   const [applied, setApplied] = useState("");
   const [employed, setEmployed] = useState("");
   const [related, setRelated] = useState("");
+
+//figure out file stuff
   const [resume, setResume] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState<File | null>(null);
   const [references, setReferences] = useState<File | null>(null);
@@ -92,6 +94,8 @@ const applicationPage = () => {
     null
   );
   const [performanceRec, setPerformanceRec] = useState<File | null>(null);
+
+
   const [employmentHistory1, setEmploymentHistory1] = useState({
     employer: "",
     address: "",
@@ -216,9 +220,31 @@ const applicationPage = () => {
     if (resume) {
       formData.append("resume", resume);
     }
-    if (employmentHistory1) {
-      formData.append("employer1", JSON.stringify(employmentHistory1));
+    if(coverLetter){
+    formData.append("coverLetter", coverLetter)
     }
+    if(references){
+      formData.append("references", references)
+    }
+    if(statementOfTeach){
+      formData.append("statementOfTeaching", statementOfTeach)
+    }
+    if(diversityStatement){
+      formData.append("diversityStatement",diversityStatement)
+    }
+    if(graduateTranscript){
+      formData.append("graduateTranscript", graduateTranscript)
+    }
+    if(performanceRec){
+      formData.append("performanceRec", performanceRec)
+    }
+      formData.append("employer1", JSON.stringify(employmentHistory1));
+      formData.append("employer2", JSON.stringify(employmentHistory2));
+      formData.append("employer3", JSON.stringify(employmentHistory3));
+      formData.append("employer4", JSON.stringify(employmentHistory4));
+      formData.append("skills", skills)
+      formData.append("agree", JSON.stringify(agree))
+    
 
     const response = await fetch(`http://localhost:3000/api/apply`, {
       method: "POST",
@@ -240,7 +266,7 @@ const applicationPage = () => {
   return (
     <>
       <Layout>
-        <div className="container mx-auto bg-maroon" id="job-page">
+        <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2">Application</h2>
         </div>
         <div id="bg" className="bg-gray-100 flex justify-center p-1 md:p-5">
@@ -370,8 +396,8 @@ const applicationPage = () => {
                 <input
                   type="checkbox"
                   id="fullTime"
-                  name="full-Time"
-                  value="Full-Time"
+                  name="fullTime"
+                  value="fullTime"
                   checked={workTime.fullTime}
                   onChange={handleWorkTimeChange}
                 />
@@ -383,8 +409,8 @@ const applicationPage = () => {
                 <input
                   type="checkbox"
                   id="partTime"
-                  name="part-Time"
-                  value="Part-Time"
+                  value="partTime"
+                  name="partTime"
                   checked={workTime.partTime}
                   onChange={handleWorkTimeChange}
                 />
