@@ -1,20 +1,24 @@
 //import React from 'react'
 import BcImage from "../../assets/Bethel College_signature_trimmed.png";
-import { useState, useEffect } from 'react'
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-import axios from 'axios';
+//import { useState } from 'react'
+//import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+//import axios from 'axios';
 import { Link } from "react-router-dom";
+import { useLogin } from "../../context/LoginContext";
+/*
 interface User {
   access_token: string;
   // Add other properties if needed
 }
-
+*/
 export const Header = () => {
-  const [ user, setUser ] = useState<User | null>(null); //figure out typing
-  const [ profile, setProfile ] = useState<any>(null);
+  //const [ user, setUser ] = useState<User | null>(null); //figure out typing
+  //const [ profile, setProfile ] = useState<any>(null);
+
+  const { isLoggedIn, toggleLogIn } = useLogin();
 
   //put this log in stuff in some sort of context provider to tell if a user is logged in on any page
-  
+  /*
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: (error) => console.log('Login Failed:', error)
@@ -44,6 +48,7 @@ const logOut = () => {
     googleLogout();
     setProfile(null);
 };
+*/
   return (
     <div className="container p-3 flex items-center justify-start drop-shadow-md" id="header-container">
       <div className="px-3" id="logo-container">
@@ -54,6 +59,9 @@ const logOut = () => {
         <Link to="/" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Home</Link>
         <Link to="/apply" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Apply</Link>
         <Link to="https://www.bethelks.edu" className="px-2 md:px-5 text-sm md:text-xl text-nowrap">Main Site</Link>
+        <button onClick={toggleLogIn}>
+          {isLoggedIn ? 'Log out' : 'Log In'}
+        </button>
       </div>
       <div className="ml-auto flex flex-col items-end">
         </div>

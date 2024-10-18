@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import App from './App.tsx'
 import './index.css'
+import { LoggedInProvider } from './context/LoginContext.tsx'
 
 // adminstrator view
 // CRUD job posts
@@ -14,7 +15,9 @@ import './index.css'
 createRoot(document.getElementById('root')!).render(
   <GoogleOAuthProvider clientId='654002577170-pgbrl8ep7k8hiohadh8q9fsgm2849287.apps.googleusercontent.com'>
   <StrictMode>
+    <LoggedInProvider>
     <App />
+    </LoggedInProvider>
   </StrictMode>,
   </GoogleOAuthProvider>
 )

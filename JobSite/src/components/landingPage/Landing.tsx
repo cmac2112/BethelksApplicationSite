@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../layout";
 
 import { Link } from "react-router-dom";
+import { useLogin } from "../../context/LoginContext";
 
 interface jobPost {
   id: number;
@@ -16,6 +17,8 @@ interface jobPost {
 const LandingPage = () => {
   const [faculty, setFaculty] = useState<jobPost[]>([]);
   const [staff, setStaff] = useState<jobPost[]>([]);
+
+  const { isLoggedIn } = useLogin();
 
   const getData = async () => {
     try {
@@ -35,6 +38,7 @@ const LandingPage = () => {
   };
   const mapFaculty = faculty.map((faculty: jobPost) => (
     <li key={faculty.id}>
+      <div className="flex justify-between">
       <Link
         to={`/faculty/${faculty.title.replace(/\s+/g, "-").toLowerCase()}`}
         state={{ job: [faculty] }}
@@ -42,11 +46,16 @@ const LandingPage = () => {
       >
         {typeof faculty.title === "string" ? faculty.title : faculty.title}
       </Link>
+      {isLoggedIn && (
+      <Link to="/" className="text-maroon">Edit</Link>
+      )}
+      </div>
     </li>
   ));
 
   const mapStaff = staff.map((staff: jobPost) => (
     <li key={staff.id}>
+      <div className="flex justify-between">
       <Link
         to={`/staff/${staff.title.replace(/\s+/g, "-").toLowerCase()}`}
         state={{ job: [staff] }}
@@ -54,6 +63,10 @@ const LandingPage = () => {
       >
         {staff.title}
       </Link>
+      {isLoggedIn && (
+      <Link to="/" className="text-maroon">Edit</Link>
+      )}
+      </div>
     </li>
   ));
 
@@ -93,6 +106,9 @@ const LandingPage = () => {
             <div id="list-container">
               <ol id="staff" className="py-5">{mapStaff}</ol>
               <p className="non-dis">Non Discrimination Statement</p>
+              {isLoggedIn && (
+                <Link to="/newJob" className="text-maroon">Create New Job</Link>
+              )}
             </div>
           </div>
         </div>
