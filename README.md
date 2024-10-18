@@ -13,7 +13,7 @@ npm run dev
 
 Server: navigate to /BethelksApplicationSite/ 
 -
-npm run server - runs the index.js \
+npm run server - runs the index.js (or node index.js)\
 npm run hard-start - drops and recreates the dummy database and then runs the server \
 npm run database-reset - drops and recreates the database with dummy data
 
