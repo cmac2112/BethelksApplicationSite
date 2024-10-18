@@ -107,7 +107,10 @@ const LandingPage = () => {
               <ol id="staff" className="py-5">{mapStaff}</ol>
               <p className="non-dis">Non Discrimination Statement</p>
               {isLoggedIn && (
+                <>
                 <Link to="/newJob" className="text-maroon">Create New Job</Link>
+                <Link to="/viewApplications" className="text-maroon">View Submitted Applications</Link>
+                </>
               )}
             </div>
           </div>
