@@ -5,6 +5,11 @@ import Layout from '../layout';
 const NewJob = () => {
   const { isLoggedIn, toggleLogIn } = useLogin();
 
+  const handleSubmit = async (e: React.FormEvent) =>{
+    e.preventDefault()
+    console.log("submitted")
+  }
+
   if (!isLoggedIn){
     return(
       <Layout>
@@ -36,7 +41,13 @@ const NewJob = () => {
           id="background-container"
         >
           <div className="p-5 bg-white w-3/4">
-          <p>test</p>
+          <form
+            className="px-5 bg-white md:w-3/4 w-full"
+            onSubmit={handleSubmit}
+          >
+            <p>test</p>
+            <input type="submit" />
+            </form>
         </div>
         </div>
         </div>

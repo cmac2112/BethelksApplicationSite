@@ -96,9 +96,9 @@ con.query("SELECT * FROM jobs", function(err, rows){
     console.log(rows);
 })
 //missing file areas for now after ever employed nail down what is needed
-con.query(`CREATE TABLE IF NOT EXISTS jobApplication (
+con.query(`CREATE TABLE IF NOT EXISTS jobApplications (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    hearAbout INT,
+    hearAbout VARCHAR(255),
     position VARCHAR(255),
     workTime VARCHAR(255),
     start VARCHAR(255),
@@ -107,10 +107,11 @@ con.query(`CREATE TABLE IF NOT EXISTS jobApplication (
     permAddress VARCHAR(255),
     contactInfo VARCHAR(255),
     preferredContact VARCHAR(255),
-    authorized INT,
-    sponsorship INT,
-    everApplied INT,
-    everEmployed INT,
+    authorized VARCHAR(255),
+    sponsorship VARCHAR(255),
+    everApplied VARCHAR(255),
+    everEmployed VARCHAR(255),
+    related VARCHAR(255),
     pastEmployment LONGTEXT,
     highschool VARCHAR(255),
     university VARCHAR(255),
@@ -118,19 +119,17 @@ con.query(`CREATE TABLE IF NOT EXISTS jobApplication (
     other VARCHAR(255),
     skills VARCHAR(255)
 )`)
-con.query(`INSERT INTO jobApplication (
-        hearAbout, position, workTime, start, name, curAddress, permAddress, contactInfo, preferredContact, authorized, sponsorship, everApplied, everEmployed, pastEmployment, highschool, university, gradUniversity, other, skills
-    ) VALUES (
-        1, 'Software Engineer', 'Full-time', '2023-01-01', 'John Doe', '123 Main St', '456 Elm St', 'john.doe@example.com', 'email', 1, 0, 0, 0, 'Worked at XYZ Corp for 5 years', 'ABC High School', 'DEF University', 'GHI Grad School', 'None', 'JavaScript, Node.js, MySQL'
-    ), (
-        2, 'Data Analyst', 'Part-time', '2023-02-01', 'Jane Smith', '789 Oak St', '101 Pine St', 'jane.smith@example.com', 'phone', 1, 1, 1, 0, 'Worked at ABC Inc for 3 years', 'XYZ High School', 'LMN University', 'OPQ Grad School', 'None', 'Python, SQL, Excel'
-    ), (
-        3, 'Project Manager', 'Contract', '2023-03-01', 'Alice Johnson', '234 Maple St', '567 Birch St', 'alice.johnson@example.com', 'email', 1, 0, 0, 1, 'Worked at DEF Ltd for 7 years', 'PQR High School', 'STU University', 'VWX Grad School', 'None', 'Project Management, Agile, Scrum'
-    )`, function(err, result) {
-        if (err) throw err;
-        console.log('Dummy data inserted into jobApplication table');
-    });
-con.query('SELECT * FROM jobApplication', function(err, rows){
+con.query(`INSERT INTO jobApplications (
+    hearAbout, position, workTime, start, name, curAddress, permAddress, contactInfo, preferredContact, authorized, sponsorship, everApplied, everEmployed, related, pastEmployment, highschool, university, gradUniversity, other, skills
+) VALUES
+('Online', 'Software Engineer', 'Full-time', '2023-01-01', 'John Doe', '123 Main St, Anytown, USA', '456 Elm St, Othertown, USA', 'john.doe@example.com', 'Email', 'Yes', 'No', 'No', 'Yes', 'Jane Doe', '{"employer1": {"name": "ABC Corp", "position": "Developer", "start": "2020-01-01", "end": "2022-01-01", "duties": "Developed software"}}', 'Anytown High School', 'State University', 'Tech University', 'None', 'JavaScript, React, Node.js'),
+('Referral', 'Data Analyst', 'Part-time', '2023-02-01', 'Alice Smith', '789 Oak St, Sometown, USA', '101 Pine St, Anothertown, USA', 'alice.smith@example.com', 'Phone', 'Yes', 'Yes', 'Yes', 'No', 'Bob Smith', '{"employer1": {"name": "XYZ Inc", "position": "Analyst", "start": "2019-01-01", "end": "2021-01-01", "duties": "Analyzed data"}}', 'Sometown High School', 'City University', 'None', 'None', 'Python, SQL, Excel'),
+('Job Fair', 'Project Manager', 'Temporary', '2023-03-01', 'Bob Johnson', '234 Maple St, Yourtown, USA', '567 Birch St, Thistown, USA', 'bob.johnson@example.com', 'Phone', 'No', 'No', 'No', 'Yes', 'Alice Johnson', '{"employer1": {"name": "LMN LLC", "position": "Manager", "start": "2018-01-01", "end": "2020-01-01", "duties": "Managed projects"}}', 'Yourtown High School', 'Regional University', 'None', 'None', 'Project Management, Agile, Scrum'),
+('Job Fair', 'Data Analyst', 'Temporary', '2023-03-01', 'Bob Johnson', '234 Maple St, Yourtown, USA', '567 Birch St, Thistown, USA', 'bob.johnson@example.com', 'Phone', 'No', 'No', 'No', 'Yes', 'Alice Johnson', '{"employer1": {"name": "LMN LLC", "position": "Manager", "start": "2018-01-01", "end": "2020-01-01", "duties": "Managed projects"}}', 'Yourtown High School', 'Regional University', 'None', 'None', 'Project Management, Agile, Scrum');`, function(err, result) {
+    if (err) throw err;
+    console.log("Data inserted successfully");
+});
+con.query('SELECT * FROM jobApplications', function(err, rows){
     if (err) throw err;
     console.log('Data received from Db:\n');
     console.log(rows);

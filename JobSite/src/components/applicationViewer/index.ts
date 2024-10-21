@@ -1,1 +1,1 @@
-export {default} from './ApplicationViewer'
+export {default} from './ApplicationListViewer'

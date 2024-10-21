@@ -73,8 +73,10 @@ const applicationPage = () => {
     state: "",
     zip: "",
   });
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState({
+    phone:"",
+    email:"",
+  })
   const [preferredContact, setPreferredContact] = useState(""); // so many, one big one may be more confusing though
   const [legalWork, setLegalWork] = useState("");
   const [sponsorship, setSponsorship] = useState("");
@@ -209,8 +211,7 @@ const applicationPage = () => {
     formData.append("fullName", fullName);
     formData.append("currentAddress", JSON.stringify(currentAddress));
     formData.append("permanantAddress", JSON.stringify(permanentAddress));
-    formData.append("phone", phone);
-    formData.append("email", email);
+    formData.append("contact", JSON.stringify(contact))
     formData.append("preferredContact", preferredContact);
     formData.append("legalWork", legalWork);
     formData.append("sponsorship", sponsorship);
@@ -622,7 +623,10 @@ const applicationPage = () => {
                 id="phone"
                 name="phone"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setContact({
+                  ...contact,
+                  phone: e.target.value
+                })}
               />
               <label htmlFor="phone">Cell/Home Phone</label>
             </div>
@@ -632,7 +636,10 @@ const applicationPage = () => {
                 id="email"
                 name="email-input"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setContact({
+                  ...contact,
+                  email: e.target.value
+                })}
               />
               <label htmlFor="email">Email</label>
             </div>

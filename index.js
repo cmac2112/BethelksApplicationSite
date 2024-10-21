@@ -96,6 +96,23 @@ app.post('/api/apply', (req, res)=>{
     const query = `INSERT INTO applications (hear_about, additional_info)`
     res.json({message: 'received data', data: req.body})
 }) 
+
+app.get('/api/applications/:id', (req, res)=>{
+    const { id } = req.params;
+    console.log(req.method + ' request for ' + req.url + ' with id ' + id)
+    con.query(`SELECT * from jobapplications WHERE position = ?`, [id], function(err, rows){
+        if(err){
+            console.error("error executing query", err);
+            res.status(500).send('error executing query')
+            return
+        }
+        if(rows.length === 0){
+            res.send("no applications, or not found")
+            return;
+        }
+        res.send(rows)
+    })
+})
 const port = process.env.SERVER_PORT || 3000;
     app.listen(port, () =>{
         console.log('Server started on port ' + port);

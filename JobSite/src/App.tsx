@@ -6,6 +6,7 @@ import JobDescription from './components/JobDescription/JobDescription';
 import NotFound from './components/notfound/NotFound';
 import ApplicationPage from './components/applicationPage';
 import NewJob from './components/newJob';
+import ApplicationViewer from './components/applicationViewer';
 /*
 interface Faculty{
 id: number;
@@ -27,7 +28,8 @@ function App() {
         <Route path="/faculty/:title" element={<JobDescription />} />
         <Route path="/staff/:title" element={<JobDescription />} />
         <Route path="/apply" element={<ApplicationPage />} />
-        <Route path="/newJob" element={<NewJob />} />
+        <Route path="/admin/newJob" element={<NewJob />} />
+        <Route path="/admin/applications/view/:id" element={<ApplicationViewer />} />
       </Routes>
     </Router>
   )
