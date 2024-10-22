@@ -204,20 +204,21 @@ const applicationPage = () => {
     e.preventDefault();
     console.log(resume);
     const formData = new FormData();
-    formData.append("hear_about", hearAbout);
+    formData.append("hearAbout", hearAbout);
     formData.append("position", position);
-    formData.append("work_time", JSON.stringify(workTime)); // Assuming workTime is an object
-    formData.append("start_time", startTime);
-    formData.append("fullName", fullName);
-    formData.append("currentAddress", JSON.stringify(currentAddress));
-    formData.append("permanantAddress", JSON.stringify(permanentAddress));
-    formData.append("contact", JSON.stringify(contact))
+    formData.append("workTime", JSON.stringify(workTime)); // Assuming workTime is an object
+    formData.append("start", startTime);
+    formData.append("name", fullName);
+    formData.append("curAddress", JSON.stringify(currentAddress));
+    formData.append("permAddress", JSON.stringify(permanentAddress));
+    formData.append("contactInfo", JSON.stringify(contact))
     formData.append("preferredContact", preferredContact);
-    formData.append("legalWork", legalWork);
+    formData.append("authorized", legalWork);
     formData.append("sponsorship", sponsorship);
-    formData.append("applied", applied);
-    formData.append("employed", employed);
+    formData.append("everApplied", applied);
+    formData.append("everEmployed", employed);
     formData.append("related", related);
+    /*
     if (resume) {
       formData.append("resume", resume);
     }
@@ -239,14 +240,20 @@ const applicationPage = () => {
     if(performanceRec){
       formData.append("performanceRec", performanceRec)
     }
+      */
       formData.append("employer1", JSON.stringify(employmentHistory1));
-      formData.append("employer2", JSON.stringify(employmentHistory2));
-      formData.append("employer3", JSON.stringify(employmentHistory3));
-      formData.append("employer4", JSON.stringify(employmentHistory4));
+      //formData.append("employer2", JSON.stringify(employmentHistory2));
+      //formData.append("employer3", JSON.stringify(employmentHistory3));
+      //formData.append("employer4", JSON.stringify(employmentHistory4));
+      formData.append("highschool", JSON.stringify(highSchool))
+      formData.append("university", JSON.stringify(undergrad))
+      formData.append("gradUniversity", JSON.stringify(grad))
+      formData.append("other", JSON.stringify(other))
       formData.append("skills", skills)
-      formData.append("agree", JSON.stringify(agree))
     
+    try{
 
+    
     const response = await fetch(`http://localhost:3000/api/apply`, {
       method: "POST",
       body: formData,
@@ -259,6 +266,9 @@ const applicationPage = () => {
     } else {
       console.error("error submitting form");
     }
+  }catch(error){
+    console.error("error submitting form", error)
+  }
   };
   //setup requirement
   // name attribute groups items

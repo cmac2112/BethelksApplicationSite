@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Layout from "../layout/Layout";
 import DOMPurify from 'dompurify';
 import NotFound from "../notfound";
+import styles from "./quill.module.css"
 
 const JobDescription: React.FC = () => {
   const location = useLocation();
@@ -51,8 +52,8 @@ if (!job){ //if job is null, then show 404
                   {jobDetail.classification}
                 </p>
                 <h2 className="text-xl border-b-2 border-gray-400 py-1">Info</h2>
-                <div className="info-container"
-                dangerouslySetInnerHTML={{ __html: (jobDetail.info) }}></div>
+                <div
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(jobDetail.info) }}></div>
               </div>
             </div>
           </div>

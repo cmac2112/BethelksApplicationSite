@@ -54,6 +54,21 @@ const ApplicationListViewer = () => {
     getApplications();
   }, []);
   console.log(applications);
+
+  //update the state so you dont have to refresh
+  const handleDelete = async (id: number) =>{
+    try{
+    const response = await fetch(`http://localhost:3000/api/applications/delete/${id}`,{
+      method: "DELETE"
+    })
+    const data = await response.json()
+    console.log(data)
+    setApplications([])
+    getApplications();
+  }catch(err){
+    console.error(err)
+  }
+  }
   if (!isLoggedIn) {
     return (
       <Layout>
@@ -89,6 +104,8 @@ const ApplicationListViewer = () => {
             <div className="p-5 bg-white w-3/4">
               {applications.map((application, index) => (
                 <div key={index}>
+                  <button onClick={() => handleDelete(application.id)} className="bg-maroon">Delete</button>
+                  <div>{application.id}</div>
                   <div>{application.name}</div>
                   <div>{application.workTime}</div>
                   <div>{application.start}</div>

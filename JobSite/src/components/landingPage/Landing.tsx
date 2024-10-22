@@ -44,7 +44,20 @@ const LandingPage: React.FC = () => {
       alert("Faculty jobs were unable to be fetched at this time, check your internet and refresh the page")
     }
   };
-
+  const handleDelete = async (id:number) =>{
+    try{
+      const response = await fetch(`http://localhost:3000/api/jobs/delete/${id}`,{
+        method: "DELETE"
+      })
+      const data = await response.json()
+      console.log(data)
+      setFaculty([])
+      setStaff([])
+      getData();
+    }catch(err){
+      console.error(err)
+    }
+  }
   const mapFaculty = faculty.map((faculty: jobPost) => (
     <li key={faculty.id}>
       <div className="flex justify-between py-1">
@@ -60,7 +73,8 @@ const LandingPage: React.FC = () => {
       <Link to={`/admin/applications/view/${faculty.title}`} className="text-maroon px-2">Applications</Link>
       <div className="bg-maroon h-6 w-6 rounded-full text-center text-white" >{/*to hold application number notification */}
         {applicationCountsFaculty[faculty.title] || 0 }</div>
-      <Link to={`/admin/edit/${faculty.title}`} className="text-maroon px-2">Edit</Link>
+      <Link to={`/admin/edit/${faculty.title}`} className="text-blue-800 px-2">Edit</Link>
+      <button onClick={()=>handleDelete(faculty.id)} className="text-red-600">Delete</button>
       </div>
       )}
       </div>
@@ -83,7 +97,8 @@ const LandingPage: React.FC = () => {
       <div className="bg-maroon h-6 w-6 rounded-full text-center text-white" >{/*to hold application number notification */}
         {applicationCountsStaff[staff.title] || 0}
       </div>
-      <Link to={`/admin/edit/${staff.title}`} className="text-maroon px-2">Edit</Link>
+      <Link to={`/admin/edit/${staff.title}`} className="text-blue-800 px-2">Edit</Link>
+      <button onClick={()=>handleDelete(staff.id)} className="text-red-600">Delete</button>
        {/* have a "view applications button here
         that maybe also has the number of applications to it*/}
         </div>
