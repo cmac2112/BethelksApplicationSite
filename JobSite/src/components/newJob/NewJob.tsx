@@ -1,17 +1,83 @@
-import React from 'react'
-import { useLogin } from '../../context/LoginContext'
-import Layout from '../layout';
-
+import React, { useRef, useState, useEffect } from "react";
+import { useLogin } from "../../context/LoginContext";
+import Layout from "../layout";
+import Quill from "quill";
+import 'quill/dist/quill.snow.css'
 const NewJob = () => {
+  const [title, setTitle] = useState("");
+  const [employment, setEmployment] = useState("");
+  const [description, setDescription] = useState("");
+  const [department, setDepartment] = useState("");
+  const [classification, setClassification] = useState("");
+  const [info, setInfo] = useState("");
+
+  const quillRef = useRef<Quill | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
+
   const { isLoggedIn, toggleLogIn } = useLogin();
+  useEffect(() => {
+    const toolbarOptions = [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+    
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+    
+      ['clean']                                         // remove formatting button
+    ];
+    if(editorRef.current && !quillRef.current){
+      quillRef.current = new Quill(editorRef.current,{
+        placeholder: "additional info...",
+        theme:"snow",
+        modules:{
+          toolbar: toolbarOptions
+        }
+      })
+      quillRef.current.on('text-change', () =>{
+        if(quillRef.current){
+          setInfo(quillRef.current.root.innerHTML)
+        }
+        
+      })
+    }
+  },[])
 
-  const handleSubmit = async (e: React.FormEvent) =>{
-    e.preventDefault()
-    console.log("submitted")
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!isLoggedIn){
-    return(
+    if(quillRef.current){
+      console.log(quillRef.current.root.innerHTML)
+    }
+    const response = await fetch("http://localhost:3000/api/newjob" ,{
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title: title,
+        employment: employment,
+        description: description,
+        department: department,
+        classification: classification,
+        info: info,
+      })
+    }
+  
+  )
+  const data = await response.json();
+  console.log(data);
+};
+
+  if (!isLoggedIn) {
+    return (
       <Layout>
         <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2" id="job-header">
@@ -23,37 +89,114 @@ const NewJob = () => {
           id="background-container"
         >
           <div className="p-5 bg-white w-3/4">
-    <p>Doesnt look like you are logged in</p>
-    <button className="text-xl text-maroon" onClick={toggleLogIn}>Log in Now</button>
-    </div>
-    </div>
-    </Layout>
-  )
-  }else{
-  return (
-    <Layout>
-      <div className="container max-w-full bg-maroon" id="job-page">
+            <p>Doesnt look like you are logged in</p>
+            <button className="text-xl text-maroon" onClick={toggleLogIn}>
+              Log in Now
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  } else {
+    return (
+      <Layout>
+        <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2" id="job-header">
             Create New Job Posting
           </h2>
           <div
-          className="bg-gray-100 flex justify-center p-2 md:p-16"
-          id="background-container"
-        >
-          <div className="p-5 bg-white w-3/4">
-          <form
-            className="px-5 bg-white md:w-3/4 w-full"
-            onSubmit={handleSubmit}
+            className="bg-gray-100 flex justify-center p-2 md:p-16"
+            id="background-container"
           >
-            <p>test</p>
-            <input type="submit" />
-            </form>
+            <div className="p-5 bg-white w-3/4">
+              <form
+                className="px-5 bg-white md:w-3/4 w-full"
+                onSubmit={handleSubmit}
+              >
+                <div className="flex flex-col py-2">
+                  <label htmlFor="title" className="text-xl">
+                    Job Title
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    className="border border-gray-200 rounded-xl p-2 w-1/2"
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col py-2">
+                  <label htmlFor="employment">
+                    Employment type -- support more in configure options page --
+                    note to self, api call these options and map them to here
+                  </label>
+                  <select
+                    id="employment"
+                    className="bg-slate-200 w-1/4"
+                    defaultValue={"Select"}
+                    onChange={(e) => {
+                      setEmployment(e.target.value);
+                    }}
+                  >
+                    <option className="bg-white" value="" disabled>
+                      Select
+                    </option>
+                    <option className="bg-white" value="faculty">
+                      Faculty
+                    </option>
+                    <option className="bg-white" value="staff">
+                      Staff
+                    </option>
+                  </select>
+                </div>
+                <div className="flex flex-col py-2">
+                  <label htmlFor="description">
+                    Very brief description of job duties (insert more detailed
+                    in the "info" section)
+                  </label>
+                  <textarea
+                    id="description"
+                    className="border border-gray-200 rounded-xl p-2 w-1/2"
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col py-2">
+                  <label htmlFor="department">Department</label>
+                  <input
+                    type="text"
+                    id="department"
+                    className="border border-gray-200 rounded-xl p-2 w-1/2"
+                    onChange={(e) => setDepartment(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col py-2">
+                  <label htmlFor="classification">
+                    Classification (full-time, part-time etc..)
+                  </label>
+                  <input
+                    type="text"
+                    id="classification"
+                    className="border border-gray-200 rounded-xl p-2 w-1/2"
+                    onChange={(e) => setClassification(e.target.value)}
+                  />
+                </div>
+                <div id="toolbar">
+                  <div
+                    id="editor"
+                    ref={editorRef}
+                    role="quilltextbox"
+                    content="text/html; charset=UTF-8"
+                  ></div>
+                </div>
+                  <div className="py-3">
+                <input type="submit" className="bg-maroon text-white p-2 rounded-xl" />
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
-    </Layout>
-  )
-}
-}
+      </Layout>
+    );
+  }
+};
 
-export default NewJob
+export default NewJob;

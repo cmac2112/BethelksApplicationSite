@@ -8,7 +8,7 @@ interface jobPost {
   title: string;
   employment: number;
   classification: string;
-  department: string;
+  department: string; //should be the departmeny and not faculty or staff
   description: string; //brief description below the title
   info: string; //html of rich text editor for the other relevant information
 }

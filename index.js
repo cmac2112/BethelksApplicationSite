@@ -2,6 +2,7 @@ require('dotenv').config()
 const mysql = require('mysql');
 const express = require('express');
 const multer = require('multer')
+const upload = multer({ storage: multer.memoryStorage() })
 const app = express();
 const cors = require('cors');
 app.use(cors());
@@ -89,6 +90,53 @@ app.get('/api/jobs', (req, res)=>{
         res.send(rows);
     })
 })
+app.post('/api/newjob', (req, res) =>{
+    console.log(req.method + ' request for ' + req.url)
+    const body = req.body
+    const sql = `INSERT INTO jobs (title, employment, description, department, classification, info) VALUES (?, ?, ?, ?, ?, ?)`
+    const values = [body.title, body.employment, body.description, body.department, body.classification, body.info]
+    con.query(sql, values, (err, result)=>{
+        if(err){
+            console.error(`error inserting values`,err);
+            return res.status(500).send("error inserting job")
+        }
+        res.send("job posted")
+    })})
+
+
+app.post('/api/multer', upload.single('file'), (req, res) => {
+    if(!req.file){
+        return res.status(400).send('no file uploaded')
+    }
+    const file = req.file
+    const sql = `INSERT INTO testFile (name, data, mime_type) VALUES (?, ?, ?)`;
+    const values = [file.originalname, file.buffer, file.mimetype]
+
+    con.query(sql, values, (err, result)=>{
+        if(err){
+            console.error(`error inserting file`, err)
+            return res.status(500).send("error inserting file")
+        }
+        res.send("file uploaded successfully")
+    })
+});
+
+//dont do this, storing files to mysql is dumb, just testing file upload with multer
+app.get('/api/file', (req, res) =>{
+    const sql = `SELECT * from testFile ORDER BY id DESC LIMIT 1`;
+    con.query(sql, (err, results) =>{
+        if(err){
+            console.error(`error fetching`, err);
+            return res.status(500).send('error fetching file')
+        }
+        const file = results[0]
+        res.setHeader('Content-Disposition', `attachment; filename=${file.name}`);
+        res.setHeader('Content-Type', file.mime_type);
+        res.send(file.data);
+        })
+    });
+    
+    
 
 app.post('/api/apply', (req, res)=>{
     console.log(req.method + ' reqest for ' + req.url)

@@ -14,14 +14,7 @@ interface pastEmployment {
   contact: string,
   reasonLeft: string,
 }
-/*{"employer":"",
-"address":"",
-"positionTitle":"",
-"startDate":"",
-"endDate":"",
-"duties":"",
-"supervisor":"",
-"supervisorTitle":"","contact":"","reasonLeft":""} */
+
 interface ApplicationType {
   id: number;
   hearAbout: string;

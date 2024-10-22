@@ -15,7 +15,7 @@ const JobDescription: React.FC = () => {
   dont need to grap anything from the url and make a get request, this is simple enough
 
   //title
-  //employment (faculty or staff) binary
+  //employment (faculty or staff)
   //description
   //department
   //classification - full time- part time etc
@@ -52,7 +52,7 @@ if (!job){ //if job is null, then show 404
                 </p>
                 <h2 className="text-xl border-b-2 border-gray-400 py-1">Info</h2>
                 <div className="info-container"
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(jobDetail.info) }}></div>
+                dangerouslySetInnerHTML={{ __html: (jobDetail.info) }}></div>
               </div>
             </div>
           </div>
