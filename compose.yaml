@@ -1,4 +1,4 @@
-services:
+services: #setup docker secrets sometime
   app:
     image: node:14
     working_dir: /usr/src/app

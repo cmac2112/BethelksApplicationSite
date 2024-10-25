@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Layout from "../layout/Layout";
 import DOMPurify from 'dompurify';
 import NotFound from "../notfound";
-import styles from "./quill.module.css"
 
 const JobDescription: React.FC = () => {
   const location = useLocation();
@@ -22,6 +21,20 @@ const JobDescription: React.FC = () => {
   //classification - full time- part time etc
   //info - rte of everything else, {dangourouslySet.innerHTML} and sanatize it
 */
+
+//headers do not seem to actualy be large in the info section like they are when someone is making the job
+
+useEffect(()=>{
+  const parent = document.getElementById('rte-area')
+if(parent){
+    parent?.querySelectorAll('h2').forEach(child =>{
+    child.classList.add("text-xl")
+  })
+  parent?.querySelectorAll('h1').forEach(child =>{
+    child.classList.add("text-3xl")
+  })
+}
+},[job.info])
 
 if (!job){ //if job is null, then show 404
   return(
@@ -52,7 +65,7 @@ if (!job){ //if job is null, then show 404
                   {jobDetail.classification}
                 </p>
                 <h2 className="text-xl border-b-2 border-gray-400 py-1">Info</h2>
-                <div
+                <div id="rte-area"
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(jobDetail.info) }}></div>
               </div>
             </div>

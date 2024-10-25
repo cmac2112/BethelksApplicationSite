@@ -3,6 +3,7 @@ import { useLogin } from "../../context/LoginContext";
 import Layout from "../layout";
 import Quill from "quill";
 import 'quill/dist/quill.snow.css'
+import { useParams } from "react-router-dom";
 const NewJob = () => {
   const [title, setTitle] = useState("");
   const [employment, setEmployment] = useState("");
@@ -10,6 +11,9 @@ const NewJob = () => {
   const [department, setDepartment] = useState("");
   const [classification, setClassification] = useState("");
   const [info, setInfo] = useState("");
+  const [editing, setEditing] = useState(false);
+
+  
 
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
@@ -137,7 +141,7 @@ const NewJob = () => {
                       setEmployment(e.target.value);
                     }}
                   >
-                    <option className="bg-white" value="" disabled>
+                    <option className="bg-white" value="">
                       Select
                     </option>
                     <option className="bg-white" value="faculty">
@@ -188,7 +192,7 @@ const NewJob = () => {
                   ></div>
                 </div>
                   <div className="py-3">
-                <input type="submit" className="bg-maroon text-white p-2 rounded-xl" />
+                <input type="submit" className="bg-maroon text-white p-2 rounded-xl hover:cursor-pointer hover:bg-red-600" />
                 </div>
               </form>
             </div>
