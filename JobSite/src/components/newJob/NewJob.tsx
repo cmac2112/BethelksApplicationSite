@@ -4,21 +4,54 @@ import Layout from "../layout";
 import Quill from "quill";
 import 'quill/dist/quill.snow.css'
 import { useParams } from "react-router-dom";
+
 const NewJob = () => {
-  const [title, setTitle] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [employment, setEmployment] = useState("");
   const [description, setDescription] = useState("");
   const [department, setDepartment] = useState("");
   const [classification, setClassification] = useState("");
   const [info, setInfo] = useState("");
-  const [editing, setEditing] = useState(false);
 
-  
+  //reusing this create job component to edit jobs as well
+  const { title } = useParams<{title: string}>();
+  console.log(title, 'url title')
+
+if(title){
+  console.log('edit mode')
+}else{
+  console.log('not edit mode')
+}
 
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   const { isLoggedIn, toggleLogIn } = useLogin();
+  const getData = async (title: string) =>{
+    try{
+    const response = await fetch(`http://localhost:3000/api/jobs/${title}`)
+    const data = await response.json()
+    console.log(data)
+    console.log('editing this data')
+    //set states to data grabbed
+    setJobTitle(data.title)
+    setEmployment(data.employment)
+    setDepartment(data.department)
+    setDescription(data.description)
+    setClassification(data.classification)
+    setInfo(data.info)
+    }catch(err){
+      console.error(err);
+    }
+  }
+  useEffect(() =>{
+    if(title){
+      //if in edit mode, then prepopulate all fields with data grabbed from database
+      getData(title)
+      console.log(title)
+    }
+  }, [title])
+  console.log(jobTitle, employment, department, description, classification, info)
   useEffect(() => {
     const toolbarOptions = [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -66,7 +99,7 @@ const NewJob = () => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        title: title,
+        title: jobTitle,
         employment: employment,
         description: description,
         department: department,
@@ -105,9 +138,11 @@ const NewJob = () => {
     return (
       <Layout>
         <div className="container max-w-full bg-maroon" id="job-page">
-          <h2 className="text-center text-2xl text-white p-2" id="job-header">
+          {!title ? <h2 className="text-center text-2xl text-white p-2" id="job-header">
             Create New Job Posting
-          </h2>
+          </h2> : <h2 className="text-center text-2xl text-white p-2" id="job-header">
+            Edit : {title}
+          </h2>}
           <div
             className="bg-gray-100 flex justify-center p-2 md:p-16"
             id="background-container"
@@ -121,12 +156,14 @@ const NewJob = () => {
                   <label htmlFor="title" className="text-xl">
                     Job Title
                   </label>
+                  
                   <input
+                    value={jobTitle}
                     type="text"
                     id="title"
                     className="border border-gray-200 rounded-xl p-2 w-1/2"
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
+                    onChange={(e) => setJobTitle(e.target.value)}
+                  /> 
                 </div>
                 <div className="flex flex-col py-2">
                   <label htmlFor="employment">
@@ -137,6 +174,7 @@ const NewJob = () => {
                     id="employment"
                     className="bg-slate-200 w-1/4"
                     defaultValue={"Select"}
+                    value={employment}
                     onChange={(e) => {
                       setEmployment(e.target.value);
                     }}
@@ -160,12 +198,14 @@ const NewJob = () => {
                   <textarea
                     id="description"
                     className="border border-gray-200 rounded-xl p-2 w-1/2"
+                    value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col py-2">
                   <label htmlFor="department">Department</label>
                   <input
+                  value={department}
                     type="text"
                     id="department"
                     className="border border-gray-200 rounded-xl p-2 w-1/2"
@@ -177,6 +217,7 @@ const NewJob = () => {
                     Classification (full-time, part-time etc..)
                   </label>
                   <input
+                  value={classification}
                     type="text"
                     id="classification"
                     className="border border-gray-200 rounded-xl p-2 w-1/2"
@@ -185,13 +226,14 @@ const NewJob = () => {
                 </div>
                 <div id="toolbar">
                   <div
+                  
                     id="editor"
                     ref={editorRef}
                     role="quilltextbox"
                     content="text/html; charset=UTF-8"
                   ></div>
                 </div>
-                  <div className="py-3">
+                  <div className="py-3" >
                 <input type="submit" className="bg-maroon text-white p-2 rounded-xl hover:cursor-pointer hover:bg-red-600" />
                 </div>
               </form>

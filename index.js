@@ -93,6 +93,18 @@ app.get("/api/jobs", (req, res) => {
     res.send(rows);
   });
 });
+app.get("/api/jobs/:title", (req, res) => {
+  console.log(req.method + " request for " + req.url);
+  const { title } = req.params;
+  con.query(`SELECT * FROM jobs WHERE title = ?`, [title], function (err, rows) {
+    if (err) {
+      console.error("error executing query", err);
+      res.status(500).send("error executing query");
+      return;
+    }
+    res.send(rows);
+  });
+});
 app.post("/api/newjob", (req, res) => {
   console.log(req.method + " request for " + req.url);
   const body = req.body;

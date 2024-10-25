@@ -23,7 +23,7 @@ const JobDescription: React.FC = () => {
 */
 
 //headers do not seem to actualy be large in the info section like they are when someone is making the job
-
+//insert the css manually
 useEffect(()=>{
   const parent = document.getElementById('rte-area')
 if(parent){
@@ -36,7 +36,7 @@ if(parent){
 }
 },[job.info])
 
-if (!job){ //if job is null, then show 404
+if (!job){
   return(
     <Layout>
       <NotFound />
