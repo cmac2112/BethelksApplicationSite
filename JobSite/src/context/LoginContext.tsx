@@ -1,5 +1,5 @@
 //hold context for a logged in user here
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 
 interface LoggedInContextType{
     isLoggedIn?: boolean;
@@ -20,8 +20,18 @@ interface LoggedInProivderProps{
 
 export const LoggedInProvider: React.FC<LoggedInProivderProps> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
+    useEffect(()=>{
+        const token = localStorage.getItem('authToken');
+        if(token){
+            setIsLoggedIn(true);
+        }
+    }, [])
     const toggleLogIn = () => {
+        if(isLoggedIn){
+            localStorage.removeItem('authToken')
+        }else{
+            localStorage.setItem('authToken', 'testToken')
+        }
         setIsLoggedIn(!isLoggedIn)
     }
 
@@ -32,4 +42,10 @@ export const LoggedInProvider: React.FC<LoggedInProivderProps> = ({ children }) 
     )
 }
 
-export const useLogin = () => useContext(LoginContext)
+export const useLogin = () => {
+    const context = useContext(LoginContext);
+    if (context === undefined) {
+      throw new Error('useLogin must be used within a LoggedInProvider');
+    }
+    return context;
+  };

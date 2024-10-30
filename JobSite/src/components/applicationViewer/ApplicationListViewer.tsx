@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../layout";
 import { useLogin } from "../../context/LoginContext";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 interface pastEmployment {
   employer: string,
   address: string,
@@ -104,9 +104,17 @@ const ApplicationListViewer = () => {
             <div className="p-5 bg-white w-3/4">
               {applications.map((application, index) => (
                 <div key={index}>
-                  <button onClick={() => handleDelete(application.id)} className="bg-maroon">Delete</button>
-                  <div>{application.id}</div>
-                  <div>{application.name}</div>
+                  
+                  <div className="flex justify-between border-b-2 border-gray-400">
+                  <h2
+              className="text-2xl px-5 py-1"
+              id="position-header-faculty"
+            >
+             {application.name} - {application.id} -
+            </h2>
+            <button onClick={() => handleDelete(application.id)} className="bg-maroon text-white text-sm rounded-xl p-1 justify-end">Delete</button>
+            </div>
+                  
                   <div>{application.workTime}</div>
                   <div>{application.start}</div>
                   <div>{application.curAddress}</div>

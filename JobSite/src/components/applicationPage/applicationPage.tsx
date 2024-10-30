@@ -97,6 +97,7 @@ const applicationPage = () => {
   );
   const [performanceRec, setPerformanceRec] = useState<File | null>(null);
 
+  console.log(coverLetter, references, statementOfTeach, diversityStatement, graduateTranscript, performanceRec)
 
   const [employmentHistory1, setEmploymentHistory1] = useState({
     employer: "",
