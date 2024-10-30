@@ -44,9 +44,10 @@ const ApplicationListViewer = () => {
   const { isLoggedIn, toggleLogIn } = useLogin();
   const [applications, setApplications] = useState<ApplicationType[]>([]);
   const { id } = useParams<{ id: string }>();
-
+  let host = import.meta.env.VITE_HOST
+  
   const getApplications = async () => {
-    let response = await fetch(`http://localhost:3000/api/applications/${id}`); //change url later, typically stored in .env
+    let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
     let data = await response.json();
     setApplications(data);
   };
@@ -58,7 +59,7 @@ const ApplicationListViewer = () => {
   //update the state so you dont have to refresh
   const handleDelete = async (id: number) =>{
     try{
-    const response = await fetch(`http://localhost:3000/api/applications/delete/${id}`,{
+    const response = await fetch(`http://${host}:3000/api/applications/delete/${id}`,{
       method: "DELETE"
     })
     const data = await response.json()

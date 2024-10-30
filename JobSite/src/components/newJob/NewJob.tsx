@@ -20,6 +20,9 @@ const NewJob = () => {
   console.log(title, 'url title')
   console.log(id, 'job id')
 
+  //vite env variables need to be imported and defined like so
+  const host = import.meta.env.VITE_HOST;
+
 
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
@@ -28,7 +31,7 @@ const NewJob = () => {
   
   const getData = async (id: string) =>{
     try{
-    const response = await fetch(`http://localhost:3000/api/jobs/${id}`)
+    const response = await fetch(`http://${host}:3000/api/jobs/${id}`)
     const data = await response.json()
     const jobData = data[0]
     console.log(jobData)
@@ -100,10 +103,10 @@ const NewJob = () => {
     let url: string;
     let method: string;
     if(id){
-     url = `http://localhost:3000/api/newjob/${id}`
+     url = `http://${host}:3000/api/newjob/${id}`
      method = "PUT"
     }else{
-     url = `http://localhost:3000/api/newjob/`
+     url = `http://${host}:3000/api/newjob/`
      method = "POST"
     }
     const response = await fetch(url ,{

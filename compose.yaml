@@ -35,8 +35,10 @@ services: #setup docker secrets sometime
       timeout: 3s
       retries: 30
 
-  frontend:
-    build:
-      context: ./Jobsite
-    ports:
-      - "8080:8080" # http://192.168.113.3:8080/
+  #frontend:
+   # build:
+    #  context: ./Jobsite
+    #ports:
+     # - "8080:8080" # http://192.168.113.3:8080/
+
+     #exec mysql -uroot -p ----- access mysql inside of docker

@@ -178,11 +178,12 @@ const applicationPage = () => {
   useEffect(() => {
     getPositionOpenings();
   }, []);
-
+  
   //get current posisitions for <select>
+  let host = import.meta.env.VITE_HOST
   const getPositionOpenings = async () => {
     try {
-      let response = await fetch("http://localhost:3000/api/jobs");
+      let response = await fetch(`http://${host}:3000/api/jobs`);
       let data = await response.json();
 
       console.log("open positions", data);
@@ -254,8 +255,8 @@ const applicationPage = () => {
     
     try{
 
-    
-    const response = await fetch(`http://localhost:3000/api/apply`, {
+    const host = import.meta.env.VITE_HOST
+    const response = await fetch(`http://${host}:3000/api/apply`, {
       method: "POST",
       body: formData,
     });

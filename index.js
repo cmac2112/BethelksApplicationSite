@@ -5,6 +5,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const app = express();
 const cors = require("cors");
+const path = require('path');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}))
@@ -188,7 +189,7 @@ app.post("/api/apply", upload.none(), (req, res) => {
     console.log(req.method + " request for " + req.url);
     console.log("received data:", req.body);
     const body = req.body;
-    const sql = `INSERT INTO jobapplications(hearAbout, position, workTime, start, name,
+    const sql = `INSERT INTO jobApplications(hearAbout, position, workTime, start, name,
     curAddress, permAddress, contactInfo, preferredContact, authorized, sponsorship, everApplied, everEmployed,
     related, pastEmployment, highschool, university, gradUniversity, other, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
     ?, ?, ?, ?, ?, ?, ?)`;
@@ -212,7 +213,7 @@ app.delete("/api/applications/delete/:id", (req, res) =>{
     const { id } = req.params;
     const intId = parseInt(id, 10)
     console.log(req.method + " request for " + req.url + " with id " + id);
-    con.query(`DELETE from jobapplications WHERE id = ?`,
+    con.query(`DELETE from jobApplications WHERE id = ?`,
         [intId],
         function(err, rows){
             if(err){
@@ -242,12 +243,12 @@ app.delete("/api/jobs/delete/:id", (req, res) =>{
         }
     )
 })
-app.get("/api/applications/:id", (req, res) => {
-  const { id } = req.params;
-  console.log(req.method + " request for " + req.url + " with id " + id);
+app.get("/api/applications/:title", (req, res) => {
+  const { title } = req.params;
+  console.log(req.method + " request for " + req.url + " with title " + title);
   con.query(
-    `SELECT * from jobapplications WHERE position = ?`,
-    [id],
+    `SELECT * from jobApplications WHERE position = ?`,
+    [title],
     function (err, rows) {
       if (err) {
         console.error("error executing query", err);
@@ -262,7 +263,20 @@ app.get("/api/applications/:id", (req, res) => {
     }
   );
 });
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '/JobSite/dist')));
+
+// Fallback to index.html for SPA routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/Jobsite/dist', 'index.html'));
+});
+
 const port = process.env.SERVER_PORT || 3000;
 app.listen(port, () => {
   console.log("Server started on port " + port);
 });
+
+//traefik
+//server and site should be one thing on same port but traefik figures it out and sends requests to server 
+//another docker traefik image reverse proxy  

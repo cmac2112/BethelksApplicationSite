@@ -8,7 +8,15 @@ replacement site for https://www-archive.bethelks.edu/about/who-we-are/career-op
 notes
 on docker compose down, need to repopulate database
 
-# To Start
+# build and host static files
+
+navigate to /jobsite/
+
+`npm run build` to build the react application along with calls to database
+
+index.js serves the built application from port 3000
+
+# To Start development
 Frontend: navigate to /JobSite/ 
 -
 npm run dev

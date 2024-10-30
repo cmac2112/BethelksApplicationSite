@@ -14,70 +14,96 @@ interface jobPost {
 }
 
 const LandingPage: React.FC = () => {
-  const [faculty, setFaculty] = useState<jobPost[]>([]); 
+  const [faculty, setFaculty] = useState<jobPost[]>([]);
   // if we want to support positions other than faculty or staff, this state structure will have to change
-  const [applicationCountsFaculty, setApplicationCountsFaculty] = useState<{ [key: string]: number }>({});
+  const [applicationCountsFaculty, setApplicationCountsFaculty] = useState<{
+    [key: string]: number;
+  }>({});
   //hashmaps for application number for each job posting
   /* would look like
   job1: 4 applications
   job2: 0 applications
   etc. */
-  const [applicationCountsStaff, setApplicationCountsStaff] = useState<{ [key: string]: number}>({})
+  const [applicationCountsStaff, setApplicationCountsStaff] = useState<{
+    [key: string]: number;
+  }>({});
   const [staff, setStaff] = useState<jobPost[]>([]);
-
   const { isLoggedIn } = useLogin();
+
+  //vite env variables need to be imported and defined like so
+  const host = import.meta.env.VITE_HOST;
 
   const getData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/staff"); //change these urls to whatever we need when hosting, i dont know enough about hosting environments to give an answer on these
+      const response = await fetch(`http://${host}:3000/api/staff`); //change these urls to whatever we need when hosting, i dont know enough about hosting environments to give an answer on these
       const data = await response.json();
       setStaff(data);
     } catch (error) {
       console.log(error);
-      alert("Staff jobs were unable to be fetched at this time, check your internet and refresh the page")
+     
     }
     try {
-      const response = await fetch("http://localhost:3000/api/faculty");
+      const response = await fetch(`http://${host}:3000/api/faculty`);
       const data = await response.json();
       setFaculty(data);
     } catch (error) {
       console.log(error);
-      alert("Faculty jobs were unable to be fetched at this time, check your internet and refresh the page")
+      
     }
   };
-  const handleDelete = async (id:number) =>{
-    try{
-      const response = await fetch(`http://localhost:3000/api/jobs/delete/${id}`,{
-        method: "DELETE"
-      })
-      const data = await response.json()
-      console.log(data)
-      setFaculty([])
-      setStaff([])
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(
+        `http://${host}:3000/api/jobs/delete/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      setFaculty([]);
+      setStaff([]);
       getData();
-    }catch(err){
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
   const mapFaculty = faculty.map((faculty: jobPost) => (
     <li key={faculty.id}>
       <div className="flex justify-between py-1">
-      <Link
-        to={`/faculty/${faculty.title.replace(/\s+/g, "-").toLowerCase()}`}
-        state={{ job: [faculty] }}
-        className="text-maroon underline hover:text-gray-500"
-      >
-        {typeof faculty.title === "string" ? faculty.title : faculty.title}
-      </Link>
-      {isLoggedIn && (
-        <div className="flex">
-      <Link to={`/admin/applications/view/${faculty.title}`} className="text-maroon px-2">Applications</Link>
-      <div className="bg-maroon h-6 w-6 rounded-full text-center text-white" >{/*to hold application number notification */}
-        {applicationCountsFaculty[faculty.title] || 0 }</div>
-      <Link to={`/admin/edit/${faculty.title}/${faculty.id}`} className="text-blue-800 px-2">Edit</Link>
-      <button onClick={()=>handleDelete(faculty.id)} className="text-red-600">Delete</button>
-      </div>
-      )}
+        <Link
+          to={`/faculty/${faculty.title.replace(/\s+/g, "-").toLowerCase()}`}
+          state={{ job: [faculty] }}
+          className="text-maroon underline hover:text-gray-500"
+        >
+          {typeof faculty.title === "string" ? faculty.title : faculty.title}
+        </Link>
+        {isLoggedIn && (
+          <div className="flex">
+            <Link
+              to={`/admin/applications/view/${faculty.title}`}
+              className="text-maroon px-2"
+            >
+              Applications
+            </Link>
+            <div className="bg-maroon h-6 w-6 rounded-full text-center text-white">
+              {/*to hold application number notification */}
+              {applicationCountsFaculty[faculty.title] || 0}
+            </div>
+            <Link
+              to={`/admin/edit/${faculty.title}/${faculty.id}`}
+              className="text-blue-800 px-2"
+            >
+              Edit
+            </Link>
+            <button
+              onClick={() => handleDelete(faculty.id)}
+              className="text-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </li>
   ));
@@ -85,29 +111,44 @@ const LandingPage: React.FC = () => {
   const mapStaff = staff.map((staff: jobPost) => (
     <li key={staff.id}>
       <div className="flex justify-between py-1">
-      <Link
-        to={`/staff/${staff.title.replace(/\s+/g, "-").toLowerCase()}`}
-        state={{ job: [staff] }}
-        className="text-maroon underline hover:text-gray-500"
-      >
-        {staff.title}
-      </Link>
-      {isLoggedIn && (
-        <div className="flex">
-      <Link to={`/admin/applications/view/${staff.title}`} className="text-maroon px-2">Applications</Link>
-      <div className="bg-maroon h-6 w-6 rounded-full text-center text-white" >{/*to hold application number notification */}
-        {applicationCountsStaff[staff.title] || 0}
-      </div>
-      <Link to={`/admin/edit/${staff.title}/${staff.id}`} className="text-blue-800 px-2">Edit</Link>
-      <button onClick={()=>handleDelete(staff.id)} className="text-red-600">Delete</button>
-       {/* have a "view applications button here
+        <Link
+          to={`/staff/${staff.title.replace(/\s+/g, "-").toLowerCase()}`}
+          state={{ job: [staff] }}
+          className="text-maroon underline hover:text-gray-500"
+        >
+          {staff.title}
+        </Link>
+        {isLoggedIn && (
+          <div className="flex">
+            <Link
+              to={`/admin/applications/view/${staff.title}`}
+              className="text-maroon px-2"
+            >
+              Applications
+            </Link>
+            <div className="bg-maroon h-6 w-6 rounded-full text-center text-white">
+              {/*to hold application number notification */}
+              {applicationCountsStaff[staff.title] || 0}
+            </div>
+            <Link
+              to={`/admin/edit/${staff.title}/${staff.id}`}
+              className="text-blue-800 px-2"
+            >
+              Edit
+            </Link>
+            <button
+              onClick={() => handleDelete(staff.id)}
+              className="text-red-600"
+            >
+              Delete
+            </button>
+            {/* have a "view applications button here
         that maybe also has the number of applications to it*/}
-        </div>
-      )}
+          </div>
+        )}
       </div>
     </li>
   ));
-
 
   //get initial data
   useEffect(() => {
@@ -115,42 +156,46 @@ const LandingPage: React.FC = () => {
   }, []);
 
   //second use effect to get the application count of each item
-  useEffect(() =>{
-    const fetchApplicationCountsFaculty = async (faculty: jobPost[]) =>{
-      const counts: { [key: string]: number} = {};
-      for(const job of faculty){
-        try{
-          const response = await fetch(`http://localhost:3000/api/applications/${job.title}`)
+  useEffect(() => {
+    const fetchApplicationCountsFaculty = async (faculty: jobPost[]) => {
+      const counts: { [key: string]: number } = {};
+      for (const job of faculty) {
+        try {
+          const response = await fetch(
+            `http://${host}:3000/api/applications/${job.title}`
+          );
           const data = await response.json();
           counts[job.title] = data.length;
-          console.log('faculty count',counts)
-        }catch(error){
-          console.log(error)
+          console.log("faculty count", counts);
+        } catch (error) {
+          console.log(error);
         }
       }
       setApplicationCountsFaculty(counts);
-    }
-    const fetchApplicationCountsStaff = async (staff: jobPost[]) =>{
-      const counts: { [key: string]: number} = {};
-      for(const job of staff){
-        try{
-          const response = await fetch(`http://localhost:3000/api/applications/${job.title}`)
+    };
+    const fetchApplicationCountsStaff = async (staff: jobPost[]) => {
+      const counts: { [key: string]: number } = {};
+      for (const job of staff) {
+        try {
+          const response = await fetch(
+            `http://${host}:3000/api/applications/${job.title}`
+          );
           const data = await response.json();
           counts[job.title] = data.length;
-          console.log('staff count:',counts)
-        }catch(error){
-          console.log(error)
+          console.log("staff count:", counts);
+        } catch (error) {
+          console.log(error);
         }
       }
       setApplicationCountsStaff(counts);
+    };
+    if (faculty.length > 0) {
+      fetchApplicationCountsFaculty(faculty);
     }
-    if(faculty.length > 0){
-      fetchApplicationCountsFaculty(faculty)
+    if (staff.length > 0) {
+      fetchApplicationCountsStaff(staff);
     }
-    if(staff.length > 0){
-      fetchApplicationCountsStaff(staff)
-    }
-  }, [faculty, staff])
+  }, [faculty, staff]);
 
   return (
     <>
@@ -172,7 +217,9 @@ const LandingPage: React.FC = () => {
               Faculty
             </h2>
             <div id="list-container">
-              <ol id="faculty" className="py-5">{mapFaculty}</ol>
+              <ol id="faculty" className="py-5">
+                {mapFaculty}
+              </ol>
             </div>
 
             <h2
@@ -182,12 +229,18 @@ const LandingPage: React.FC = () => {
               Staff
             </h2>
             <div id="list-container">
-              <ol id="staff" className="py-5">{mapStaff}</ol>
+              <ol id="staff" className="py-5">
+                {mapStaff}
+              </ol>
               <p className="non-dis">Non Discrimination Statement</p>
               {isLoggedIn && (
                 <div className="flex flex-col">
-                <Link to="/admin/newJob" className="text-maroon">Create New Job</Link>
-                <Link to="/admin/configure" className="text-maroon">Configure</Link>
+                  <Link to="/admin/newJob" className="text-maroon">
+                    Create New Job
+                  </Link>
+                  <Link to="/admin/configure" className="text-maroon">
+                    Configure
+                  </Link>
                 </div>
               )}
             </div>
