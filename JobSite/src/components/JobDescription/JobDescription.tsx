@@ -22,7 +22,8 @@ const JobDescription: React.FC = () => {
   //info - rte of everything else, {dangourouslySet.innerHTML} and sanatize it
 */
 
-//headers do not seem to actualy be large in the info section like they are when someone is making the job
+//headers do not seem to actualy be large in the 
+//info section like they are when someone is making the job
 //insert the css manually
 useEffect(()=>{
   const parent = document.getElementById('rte-area')
@@ -57,15 +58,15 @@ if (!job){
                 {jobDetail.employment === 'faculty' ? "Faculty" : "Staff"}
               </h2>
               <div className="list-container">
-                <p className="job-text">{jobDetail.description}</p>
+                <p className="py-3">{jobDetail.description}</p>
                 <h2 className="text-xl border-b-2 border-gray-400 py-1">Department</h2>
-                <p className="job-text">{jobDetail.department}</p>
+                <p className="py-3">{jobDetail.department}</p>
                 <h2 className="text-xl border-b-2 border-gray-400 py-1">Classification</h2>
-                <p className="job-text">
+                <p className="py-3">
                   {jobDetail.classification}
                 </p>
                 <h2 className="text-xl border-b-2 border-gray-400 py-1">Info</h2>
-                <div id="rte-area"
+                <div id="rte-area" className="py-3"
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(jobDetail.info) }}></div>
               </div>
             </div>

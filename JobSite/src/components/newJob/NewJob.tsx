@@ -13,44 +13,48 @@ const NewJob = () => {
   const [classification, setClassification] = useState("");
   const [info, setInfo] = useState("");
 
+
   //reusing this create job component to edit jobs as well
   const { title } = useParams<{title: string}>();
+  const { id } = useParams<{id: string}>();
   console.log(title, 'url title')
+  console.log(id, 'job id')
 
-if(title){
-  console.log('edit mode')
-}else{
-  console.log('not edit mode')
-}
 
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   const { isLoggedIn, toggleLogIn } = useLogin();
-  const getData = async (title: string) =>{
+  
+  const getData = async (id: string) =>{
     try{
-    const response = await fetch(`http://localhost:3000/api/jobs/${title}`)
+    const response = await fetch(`http://localhost:3000/api/jobs/${id}`)
     const data = await response.json()
-    console.log(data)
+    const jobData = data[0]
+    console.log(jobData)
     console.log('editing this data')
     //set states to data grabbed
-    setJobTitle(data.title)
-    setEmployment(data.employment)
-    setDepartment(data.department)
-    setDescription(data.description)
-    setClassification(data.classification)
-    setInfo(data.info)
+    setJobTitle(jobData.title)
+    setEmployment(jobData.employment)
+    setDepartment(jobData.department)
+    setDescription(jobData.description)
+    setClassification(jobData.classification)
+    setInfo(jobData.info)
+
+    if(quillRef.current){
+      quillRef.current.root.innerHTML = jobData.info
+    }
     }catch(err){
       console.error(err);
     }
   }
   useEffect(() =>{
-    if(title){
+    if(id){
       //if in edit mode, then prepopulate all fields with data grabbed from database
-      getData(title)
-      console.log(title)
+      getData(id)
+      console.log(id)
     }
-  }, [title])
+  }, [id])
   console.log(jobTitle, employment, department, description, classification, info)
   useEffect(() => {
     const toolbarOptions = [
@@ -93,8 +97,17 @@ if(title){
     if(quillRef.current){
       console.log(quillRef.current.root.innerHTML)
     }
-    const response = await fetch("http://localhost:3000/api/newjob" ,{
-      method: "POST",
+    let url: string;
+    let method: string;
+    if(id){
+     url = `http://localhost:3000/api/newjob/${id}`
+     method = "PUT"
+    }else{
+     url = `http://localhost:3000/api/newjob/`
+     method = "POST"
+    }
+    const response = await fetch(url ,{
+      method,
       headers:{
         "Content-Type": "application/json"
       },

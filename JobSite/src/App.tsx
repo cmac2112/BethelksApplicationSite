@@ -30,7 +30,7 @@ function App() {
         <Route path="/apply" element={<ApplicationPage />} />
         <Route path="/admin/newJob" element={<NewJob />} />
         <Route path="/admin/applications/view/:id" element={<ApplicationViewer />} />
-        <Route path="/admin/edit/:title" element={<NewJob />} />
+        <Route path="/admin/edit/:title/:id" element={<NewJob />} />
       </Routes>
     </Router>
   )

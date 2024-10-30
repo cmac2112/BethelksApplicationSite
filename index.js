@@ -93,10 +93,10 @@ app.get("/api/jobs", (req, res) => {
     res.send(rows);
   });
 });
-app.get("/api/jobs/:title", (req, res) => {
+app.get("/api/jobs/:id", (req, res) => {
   console.log(req.method + " request for " + req.url);
-  const { title } = req.params;
-  con.query(`SELECT * FROM jobs WHERE title = ?`, [title], function (err, rows) {
+  const { id } = req.params;
+  con.query(`SELECT * FROM jobs WHERE id = ?`, [id], function (err, rows) {
     if (err) {
       console.error("error executing query", err);
       res.status(500).send("error executing query");
@@ -105,6 +105,30 @@ app.get("/api/jobs/:title", (req, res) => {
     res.send(rows);
   });
 });
+
+app.put("/api/newjob/:id", (req, res)=>{
+  const jobtitle = req.params.id;
+  const body = req.body;
+  const sql = `UPDATE jobs SET title = ?, employment = ?, description = ?, department = ?, classification = ?, info = ? WHERE id = ?`;
+  const values = [
+    body.title,
+    body.employment,
+    body.description,
+    body.department,
+    body.classification,
+    body.info,
+    jobtitle
+  ];
+  con.query(sql, values, (err, result) => {
+    if (err) {
+      console.error(`Error updating job`, err);
+      res.status(500).send('Error updating job');
+      return;
+    }
+    res.send('Job updated successfully');
+  });
+});
+
 app.post("/api/newjob", (req, res) => {
   console.log(req.method + " request for " + req.url);
   const body = req.body;
