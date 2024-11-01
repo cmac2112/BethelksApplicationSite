@@ -3,16 +3,16 @@ import Layout from "../layout";
 import { useLogin } from "../../context/LoginContext";
 import { useParams } from "react-router-dom";
 interface pastEmployment {
-  employer: string,
-  address: string,
-  positionTitle: string,
-  startDate: string,
-  endDate: string,
-  duties:string,
-  supervisor:string,
-  supervisorTitle: string,
-  contact: string,
-  reasonLeft: string,
+  employer: string;
+  address: string;
+  positionTitle: string;
+  startDate: string;
+  endDate: string;
+  duties: string;
+  supervisor: string;
+  supervisorTitle: string;
+  contact: string;
+  reasonLeft: string;
 }
 
 interface ApplicationType {
@@ -31,7 +31,7 @@ interface ApplicationType {
   everApplied: string;
   everEmployed: string;
   related: string;
-  pastEmployment: pastEmployment,
+  pastEmployment: pastEmployment;
   highschool: string;
   university: string;
   gradUniversity: string;
@@ -44,8 +44,8 @@ const ApplicationListViewer = () => {
   const { isLoggedIn, toggleLogIn } = useLogin();
   const [applications, setApplications] = useState<ApplicationType[]>([]);
   const { id } = useParams<{ id: string }>();
-  let host = import.meta.env.VITE_HOST
-  
+  let host = import.meta.env.VITE_HOST;
+
   const getApplications = async () => {
     let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
     let data = await response.json();
@@ -54,22 +54,35 @@ const ApplicationListViewer = () => {
   useEffect(() => {
     getApplications();
   }, []);
-  console.log(applications);
+  const parsedApplications = applications.map((application) => {
+    let workTime;
+    let curAddress;
+    let permAddress;
+    let contact;
+    workTime = JSON.parse(application.workTime);
+    curAddress = JSON.parse(application.curAddress);
+    permAddress = JSON.parse(application.permAddress);
+    contact = JSON.parse(application.contactInfo);
+    return { ...application, workTime, curAddress, permAddress, contact };
+  });
 
   //update the state so you dont have to refresh
-  const handleDelete = async (id: number) =>{
-    try{
-    const response = await fetch(`http://${host}:3000/api/applications/delete/${id}`,{
-      method: "DELETE"
-    })
-    const data = await response.json()
-    console.log(data)
-    setApplications([])
-    getApplications();
-  }catch(err){
-    console.error(err)
-  }
-  }
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(
+        `http://${host}:3000/api/applications/delete/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      setApplications([]);
+      getApplications();
+    } catch (err) {
+      console.error(err);
+    }
+  };
   if (!isLoggedIn) {
     return (
       <Layout>
@@ -103,48 +116,152 @@ const ApplicationListViewer = () => {
             id="background-container"
           >
             <div className="p-5 bg-white w-3/4">
-              {applications.map((application, index) => (
+              {parsedApplications.map((application, index) => (
                 <div key={index}>
-                  
                   <div className="flex justify-between border-b-2 border-gray-400">
-                  <h2
-              className="text-2xl px-5 py-1"
-              id="position-header-faculty"
-            >
-             {application.name} - {application.id} -
-            </h2>
-            <button onClick={() => handleDelete(application.id)} className="bg-maroon text-white text-sm rounded-xl p-1 justify-end">Delete</button>
-            </div>
-                  
-                  <div>{application.workTime}</div>
-                  <div>{application.start}</div>
-                  <div>{application.curAddress}</div>
-                  <div>{application.contactInfo}</div>
-                  <div>{application.preferredContact}</div>
-                  <div>{application.authorized}</div>
-                  <div>{application.sponsorship}</div>
-                  <div>{application.everApplied}</div>
-                  <div>{application.everEmployed}</div>
-                  <div>{application.related}</div>
-                  <div>placeholder for resumes and stuff</div>
-                  <div>
-                    <div>Employer: {application.pastEmployment.employer}</div>
-                    <div>Address: {application.pastEmployment.address}</div>
-                    <div>Position Title: {application.pastEmployment.positionTitle}</div>
-                    <div>Start Date: {application.pastEmployment.startDate}</div>
-                    <div>End Date: {application.pastEmployment.endDate}</div>
-                    <div>Duties: {application.pastEmployment.duties}</div>
-                    <div>Supervisor: {application.pastEmployment.supervisor}</div>
-                    <div>Supervisor Title: {application.pastEmployment.supervisorTitle}</div>
-                    <div>Contact: {application.pastEmployment.contact}</div>
-                    <div>Reason Left: {application.pastEmployment.reasonLeft}</div>
+                    <h2
+                      className="text-2xl px-5 py-1"
+                      id="position-header-faculty"
+                    >
+                      {application.name}
+                    </h2>
+                    <button
+                      onClick={() => handleDelete(application.id)}
+                      className="bg-maroon text-white text-sm rounded-xl p-1 justify-end"
+                    >
+                      Delete
+                    </button>
                   </div>
-                  <div>{application.highschool}</div>
-                  <div>{application.university}</div>
-                  <div>{application.gradUniversity}</div>
-                  <div>{application.other}</div>
-                  <div>{application.skills}</div>
-                  <h2 className="text-3xl">end</h2>
+
+                  <div className="flex flex-wrap py-3" id="row1">
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Work Time:</p>
+                      <p>
+                        Full Time:{" "}
+                        {application.workTime.fullTime ? "Yes" : "No"}
+                        </p>
+                        <p>
+                          Part Time:{" "}
+                          {application.workTime.partTime ? "Yes" : "No"}
+                        </p>
+                        <p>
+                          Temporary:{" "}
+                          {application.workTime.temporary ? "Yes" : "No"}
+                        </p>
+                        <p>
+                          Evenings:{" "}
+                          {application.workTime.evenings ? "Yes" : "No"}
+                        </p>
+                        <p>
+                          Weekends:{" "}
+                          {application.workTime.weekends ? "Yes" : "No"}
+                        </p>
+                        <p>
+                          {" "}
+                          Nights: {application.workTime.nights ? "Yes" : "No"}
+                        </p>
+                      
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Preferred Start Date:</p>
+                      <p>{application.start}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Current Address:</p>
+                      <p>Street: {application.curAddress.address}</p>
+                      <p> City: {application.curAddress.city}</p>
+                      <p> State: {application.curAddress.state}</p>
+                      <p> Zip: {application.curAddress.zip}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap py-3" id="row2">
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Permanent Address:</p>
+                      <p>Street: {application.permAddress.address}</p>
+                      <p> City: {application.permAddress.city}</p>
+                      <p> State: {application.permAddress.state}</p>
+                      <p> Zip: {application.permAddress.zip}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Contact Info:</p>
+                      <p>
+                        Phone: {application.contact.phone}, Email:{" "}
+                        {application.contact.email}
+                      </p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Preferred Contact:</p>
+                      <p>{application.preferredContact}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap py-3" id="row3">
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Allowed to work in US:</p>
+                      <p>{application.authorized}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Sponsorship:</p>
+                      <p>{application.sponsorship}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Ever Applied:</p>
+                      <p>{application.everApplied}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap py-3" id="row4">
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Ever Employed:</p>
+                      <p>{application.everEmployed}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Relatives working here:</p>
+                      <p>{application.related}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Skills:</p>
+                      <p>{application.skills}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap py-3" id="row5">
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">High School:</p>
+                      <p>{application.highschool}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">University:</p>
+                      <p>{application.university}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Graduate University:</p>
+                      <p>{application.gradUniversity}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap py-3" id="row6">
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Other:</p>
+                      <p>{application.other}</p>
+                    </div>
+                    <div className="w-full md:w-1/3">
+                      <p className="font-semibold">Past Employment:</p>
+                      <p>
+                        Employer: {application.pastEmployment.employer},
+                        Address: {application.pastEmployment.address}, Position
+                        Title: {application.pastEmployment.positionTitle}, Start
+                        Date: {application.pastEmployment.startDate}, End Date:{" "}
+                        {application.pastEmployment.endDate}, Duties:{" "}
+                        {application.pastEmployment.duties}, Supervisor:{" "}
+                        {application.pastEmployment.supervisor}, Supervisor
+                        Title: {application.pastEmployment.supervisorTitle},
+                        Contact: {application.pastEmployment.contact}, Reason
+                        Left: {application.pastEmployment.reasonLeft}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -154,4 +271,5 @@ const ApplicationListViewer = () => {
     );
   }
 };
+
 export default ApplicationListViewer;

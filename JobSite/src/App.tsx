@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from './components/landingPage'
-import JobDescription from './components/JobDescription/JobDescription';
+import JobDescription from './components/jobDescription/JobDescription';
 import NotFound from './components/notfound/NotFound';
 import ApplicationPage from './components/applicationPage';
 import NewJob from './components/newJob';

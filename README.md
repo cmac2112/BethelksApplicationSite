@@ -4,15 +4,11 @@ todo: change everything to jobid instead of title
 
 replacement site for https://www-archive.bethelks.edu/about/who-we-are/career-opportunities/current-position-openings
 
-
-notes
-on docker compose down, need to repopulate database
-
 # build and host static files
 
 navigate to /jobsite/
 
-`npm run build` to build the react application along with calls to database
+`npm run build` to build the react application
 
 index.js serves the built application from port 3000
 
