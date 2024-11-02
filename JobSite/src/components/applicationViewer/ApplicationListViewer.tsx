@@ -49,6 +49,7 @@ const ApplicationListViewer = () => {
   const getApplications = async () => {
     let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
     let data = await response.json();
+    console.log(applications)
     setApplications(data);
   };
   useEffect(() => {
@@ -59,11 +60,21 @@ const ApplicationListViewer = () => {
     let curAddress;
     let permAddress;
     let contact;
+    let highschool;
+    let university;
+    let gradUniversity;
+    let other;
     workTime = JSON.parse(application.workTime);
     curAddress = JSON.parse(application.curAddress);
     permAddress = JSON.parse(application.permAddress);
     contact = JSON.parse(application.contactInfo);
-    return { ...application, workTime, curAddress, permAddress, contact };
+    highschool = JSON.parse(application.highschool);
+    university = JSON.parse(application.university);
+    gradUniversity = JSON.parse(application.gradUniversity)
+    other = JSON.parse(application.other)
+    return { ...application, workTime, curAddress, permAddress, contact,
+      highschool, university, gradUniversity, other
+     };
   });
 
   //update the state so you dont have to refresh
@@ -228,23 +239,32 @@ const ApplicationListViewer = () => {
 
                   <div className="flex flex-wrap py-3" id="row5">
                     <div className="w-full md:w-1/3">
-                      <p className="font-semibold">High School:</p>
-                      <p>{application.highschool}</p>
+                      <p className="font-semibold">High School</p>
+                      <p>Name: {application.highschool.name}</p>
+                      <p>Address: {application.highschool.address}</p>
+                      <p>Degree Level: {application.highschool.diploma}</p>
                     </div>
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">University:</p>
-                      <p>{application.university}</p>
+                      <p>Name: {application.university.name}</p>
+                      <p>Address:{application.university.address}</p>
+                      <p>Course of Study: {application.university.courseStudy}</p>
+                      
                     </div>
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">Graduate University:</p>
-                      <p>{application.gradUniversity}</p>
+                      <p>Name: {application.gradUniversity.name}</p>
+                      <p>Address:{application.gradUniversity.address}</p>
+                      <p>Course of Study: {application.gradUniversity.courseStudy}</p>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap py-3" id="row6">
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">Other:</p>
-                      <p>{application.other}</p>
+                      <p>Name: {application.other.name}</p>
+                      <p>Address:{application.other.address}</p>
+                      <p>Course of Study: {application.other.courseStudy}</p>
                     </div>
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">Past Employment:</p>
