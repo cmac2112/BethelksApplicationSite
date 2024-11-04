@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../layout";
 import { useLogin } from "../../context/LoginContext";
 import { useParams } from "react-router-dom";
+
 interface pastEmployment {
   employer: string;
   address: string;
@@ -14,7 +15,6 @@ interface pastEmployment {
   contact: string;
   reasonLeft: string;
 }
-
 interface ApplicationType {
   id: number;
   hearAbout: string;
@@ -31,7 +31,7 @@ interface ApplicationType {
   everApplied: string;
   everEmployed: string;
   related: string;
-  pastEmployment: pastEmployment;
+  pastEmployment: pastEmployment[];
   highschool: string;
   university: string;
   gradUniversity: string;
@@ -48,9 +48,14 @@ const ApplicationListViewer = () => {
 
   const getApplications = async () => {
     let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
-    let data = await response.json();
-    console.log(applications)
-    setApplications(data);
+    let data: ApplicationType[] = await response.json();
+
+    const parsedData = data.map((application: ApplicationType) => ({
+      ...application,
+      pastEmployment: JSON.parse(application.pastEmployment as unknown as string),
+    }));
+    console.log(parsedData);
+    setApplications(parsedData);
   };
   useEffect(() => {
     getApplications();
@@ -64,6 +69,8 @@ const ApplicationListViewer = () => {
     let university;
     let gradUniversity;
     let other;
+    let pastEmployment;
+    
     workTime = JSON.parse(application.workTime);
     curAddress = JSON.parse(application.curAddress);
     permAddress = JSON.parse(application.permAddress);
@@ -72,8 +79,10 @@ const ApplicationListViewer = () => {
     university = JSON.parse(application.university);
     gradUniversity = JSON.parse(application.gradUniversity)
     other = JSON.parse(application.other)
+    console.log(application.highschool)
+    console.log(pastEmployment)
     return { ...application, workTime, curAddress, permAddress, contact,
-      highschool, university, gradUniversity, other
+      highschool, university, gradUniversity, other, pastEmployment
      };
   });
 
@@ -268,18 +277,7 @@ const ApplicationListViewer = () => {
                     </div>
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">Past Employment:</p>
-                      <p>
-                        Employer: {application.pastEmployment.employer},
-                        Address: {application.pastEmployment.address}, Position
-                        Title: {application.pastEmployment.positionTitle}, Start
-                        Date: {application.pastEmployment.startDate}, End Date:{" "}
-                        {application.pastEmployment.endDate}, Duties:{" "}
-                        {application.pastEmployment.duties}, Supervisor:{" "}
-                        {application.pastEmployment.supervisor}, Supervisor
-                        Title: {application.pastEmployment.supervisorTitle},
-                        Contact: {application.pastEmployment.contact}, Reason
-                        Left: {application.pastEmployment.reasonLeft}
-                      </p>
+                      <p>{application.pastEmployment}</p>
                     </div>
                   </div>
                 </div>

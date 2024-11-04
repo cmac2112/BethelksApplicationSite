@@ -117,15 +117,15 @@ con.query(`CREATE TABLE IF NOT EXISTS jobApplications (
     university VARCHAR(255),
     gradUniversity VARCHAR(255),
     other VARCHAR(255),
-    skills VARCHAR(255)
+    skills LONGTEXT
 )`)
 con.query(`INSERT INTO jobApplications (
     hearAbout, position, workTime, start, name, curAddress, permAddress, contactInfo, preferredContact, authorized, sponsorship, everApplied, everEmployed, related, pastEmployment, highschool, university, gradUniversity, other, skills
 ) VALUES
-('Online', 'Software Engineer', 'Full-time', '2023-01-01', 'John Doe', '123 Main St, Anytown, USA', '456 Elm St, Othertown, USA', 'john.doe@example.com', 'Email', 'Yes', 'No', 'No', 'Yes', 'Jane Doe', '{"employer1": {"name": "ABC Corp", "position": "Developer", "start": "2020-01-01", "end": "2022-01-01", "duties": "Developed software"}}', 'Anytown High School', 'State University', 'Tech University', 'None', 'JavaScript, React, Node.js'),
-('Referral', 'Data Analyst', 'Part-time', '2023-02-01', 'Alice Smith', '789 Oak St, Sometown, USA', '101 Pine St, Anothertown, USA', 'alice.smith@example.com', 'Phone', 'Yes', 'Yes', 'Yes', 'No', 'Bob Smith', '{"employer1": {"name": "XYZ Inc", "position": "Analyst", "start": "2019-01-01", "end": "2021-01-01", "duties": "Analyzed data"}}', 'Sometown High School', 'City University', 'None', 'None', 'Python, SQL, Excel'),
-('Job Fair', 'Project Manager', 'Temporary', '2023-03-01', 'Bob Johnson', '234 Maple St, Yourtown, USA', '567 Birch St, Thistown, USA', 'bob.johnson@example.com', 'Phone', 'No', 'No', 'No', 'Yes', 'Alice Johnson', '{"employer1": {"name": "LMN LLC", "position": "Manager", "start": "2018-01-01", "end": "2020-01-01", "duties": "Managed projects"}}', 'Yourtown High School', 'Regional University', 'None', 'None', 'Project Management, Agile, Scrum'),
-('Job Fair', 'Data Analyst', 'Temporary', '2023-03-01', 'Bob Johnson', '234 Maple St, Yourtown, USA', '567 Birch St, Thistown, USA', 'bob.johnson@example.com', 'Phone', 'No', 'No', 'No', 'Yes', 'Alice Johnson', '{"employer1": {"name": "LMN LLC", "position": "Manager", "start": "2018-01-01", "end": "2020-01-01", "duties": "Managed projects"}}', 'Yourtown High School', 'Regional University', 'None', 'None', 'Project Management, Agile, Scrum');`, function(err, result) {
+('Online', 'Software Engineer', 'Full-time', '2023-01-01', 'John Doe', '123 Main St, Anytown, USA', '456 Elm St, Othertown, USA', 'john.doe@example.com', 'Email', 'Yes', 'No', 'No', 'Yes', 'Jane Doe', '[{"employer1": {"name": "ABC Corp", "position": "Developer", "start": "2020-01-01", "end": "2022-01-01", "duties": "Developed software"}}]', 'Anytown High School', 'State University', 'Tech University', 'None', 'JavaScript, React, Node.js'),
+('Referral', 'Data Analyst', 'Part-time', '2023-02-01', 'Alice Smith', '789 Oak St, Sometown, USA', '101 Pine St, Anothertown, USA', 'alice.smith@example.com', 'Phone', 'Yes', 'Yes', 'Yes', 'No', 'Bob Smith', '[{"employer1": {"name": "XYZ Inc", "position": "Analyst", "start": "2019-01-01", "end": "2021-01-01", "duties": "Analyzed data"}}]', 'Sometown High School', 'City University', 'None', 'None', 'Python, SQL, Excel'),
+('Job Fair', 'Project Manager', 'Temporary', '2023-03-01', 'Bob Johnson', '234 Maple St, Yourtown, USA', '567 Birch St, Thistown, USA', 'bob.johnson@example.com', 'Phone', 'No', 'No', 'No', 'Yes', 'Alice Johnson', '[{"employer1": {"name": "LMN LLC", "position": "Manager", "start": "2018-01-01", "end": "2020-01-01", "duties": "Managed projects"}}]', 'Yourtown High School', 'Regional University', 'None', 'None', 'Project Management, Agile, Scrum'),
+('Job Fair', 'Data Analyst', 'Temporary', '2023-03-01', 'Bob Johnson', '234 Maple St, Yourtown, USA', '567 Birch St, Thistown, USA', 'bob.johnson@example.com', 'Phone', 'No', 'No', 'No', 'Yes', 'Alice Johnson', '[{"employer1": {"name": "LMN LLC", "position": "Manager", "start": "2018-01-01", "end": "2020-01-01", "duties": "Managed projects"}}]', 'Yourtown High School', 'Regional University', 'None', 'None', 'Project Management, Agile, Scrum');`, function(err, result) {
     if (err) throw err;
     console.log("Data inserted successfully");
 });

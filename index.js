@@ -189,13 +189,15 @@ app.post("/api/apply", upload.none(), (req, res) => {
     console.log(req.method + " request for " + req.url);
     console.log("received data:", req.body);
     const body = req.body;
+    const pastEmployment = JSON.parse(req.body.pastEmployment)
+    console.log('past employment', pastEmployment)
     const sql = `INSERT INTO jobApplications(hearAbout, position, workTime, start, name,
     curAddress, permAddress, contactInfo, preferredContact, authorized, sponsorship, everApplied, everEmployed,
     related, pastEmployment, highschool, university, gradUniversity, other, skills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
     ?, ?, ?, ?, ?, ?, ?)`;
     const vals = [body.hearAbout, body.position, body.workTime, body.start, body.name,
       body.curAddress, body.permAddress, body.contactInfo, body.preferredContact, body.authorized,
-      body.sponsorship, body.everApplied, body.everEmployed, body.related, body.employer1, body.highschool,
+      body.sponsorship, body.everApplied, body.everEmployed, body.related, body.pastEmployment, body.highschool,
       body.university, body.gradUniversity, body.other, body.skills
     ];
     console.log(vals);

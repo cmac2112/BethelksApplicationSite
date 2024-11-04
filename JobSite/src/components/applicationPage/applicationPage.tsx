@@ -100,52 +100,52 @@ const applicationPage = () => {
   console.log(coverLetter, references, statementOfTeach, diversityStatement, graduateTranscript, performanceRec)
 
   const [employmentHistory1, setEmploymentHistory1] = useState({
-    employer: "",
-    address: "",
-    positionTitle: "",
-    startDate: "",
-    endDate: "",
-    duties: "",
-    supervisor: "",
-    supervisorTitle: "",
-    contact: "",
-    reasonLeft: "",
+    employer1: "",
+    address1: "",
+    positionTitle1: "",
+    startDate1: "",
+    endDate1: "",
+    duties1: "",
+    supervisor1: "",
+    supervisorTitle1: "",
+    contact1: "",
+    reasonLeft1: "",
   });
   const [employmentHistory2, setEmploymentHistory2] = useState({
-    employer: "",
-    address: "",
-    positionTitle: "",
-    startDate: "",
-    endDate: "",
-    duties: "",
-    supervisor: "",
-    supervisorTitle: "",
-    contact: "",
-    reasonLeft: "",
+    employer2: "",
+    address2: "",
+    positionTitle2: "",
+    startDate2: "",
+    endDate2: "",
+    duties2: "",
+    supervisor2: "",
+    supervisorTitle2: "",
+    contact2: "",
+    reasonLeft2: "",
   });
   const [employmentHistory3, setEmploymentHistory3] = useState({
-    employer: "",
-    address: "",
-    positionTitle: "",
-    startDate: "",
-    endDate: "",
-    duties: "",
-    supervisor: "",
-    supervisorTitle: "",
-    contact: "",
-    reasonLeft: "",
+    employer3: "",
+    address3: "",
+    positionTitle3: "",
+    startDate3: "",
+    endDate3: "",
+    duties3: "",
+    supervisor3: "",
+    supervisorTitle3: "",
+    contact3: "",
+    reasonLeft3: "",
   });
   const [employmentHistory4, setEmploymentHistory4] = useState({
-    employer: "",
-    address: "",
-    positionTitle: "",
-    startDate: "",
-    endDate: "",
-    duties: "",
-    supervisor: "",
-    supervisorTitle: "",
-    contact: "",
-    reasonLeft: "",
+    employer4: "",
+    address4: "",
+    positionTitle4: "",
+    startDate4: "",
+    endDate4: "",
+    duties4: "",
+    supervisor4: "",
+    supervisorTitle4: "",
+    contact4: "",
+    reasonLeft4: "",
   });
   const [highSchool, setHighSchool] = useState({
     name: "",
@@ -243,15 +243,20 @@ const applicationPage = () => {
       formData.append("performanceRec", performanceRec)
     }
       */
-      formData.append("employer1", JSON.stringify(employmentHistory1));
-      //formData.append("employer2", JSON.stringify(employmentHistory2));
-      //formData.append("employer3", JSON.stringify(employmentHistory3));
-      //formData.append("employer4", JSON.stringify(employmentHistory4));
+     const employmentHistory =[
+      employmentHistory1,
+      employmentHistory2,
+      employmentHistory3,
+      employmentHistory4
+     ]
+     console.log(employmentHistory)
+      formData.append("pastEmployment", JSON.stringify(employmentHistory));
       formData.append("highschool", JSON.stringify(highSchool))
       formData.append("university", JSON.stringify(undergrad))
       formData.append("gradUniversity", JSON.stringify(grad))
       formData.append("other", JSON.stringify(other))
       formData.append("skills", skills)
+      console.log('form data', formData.get("pastEmployment"))
     
     try{
 
@@ -1008,7 +1013,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      employer: e.target.value,
+                      employer1: e.target.value,
                     })
                   }
                 />
@@ -1021,7 +1026,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      address: e.target.value,
+                      address1: e.target.value,
                     })
                   }
                 />
@@ -1034,7 +1039,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      positionTitle: e.target.value,
+                      positionTitle1: e.target.value,
                     })
                   }
                 />
@@ -1047,7 +1052,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      startDate: e.target.value,
+                      startDate1: e.target.value,
                     })
                   }
                 />
@@ -1060,7 +1065,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      endDate: e.target.value,
+                      endDate1: e.target.value,
                     })
                   }
                 />
@@ -1071,7 +1076,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      duties: e.target.value,
+                      duties1: e.target.value,
                     })
                   }
                 />
@@ -1084,7 +1089,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      supervisor: e.target.value,
+                      supervisor1: e.target.value,
                     })
                   }
                 />
@@ -1097,7 +1102,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      supervisorTitle: e.target.value,
+                      supervisorTitle1: e.target.value,
                     })
                   }
                 />
@@ -1108,11 +1113,11 @@ const applicationPage = () => {
                     id="employer-contact1-yes"
                     name="can-contact1"
                     value="yes"
-                    checked={employmentHistory1.contact === "yes"}
+                    checked={employmentHistory1.contact1 === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory1({
                         ...employmentHistory1,
-                        contact: e.target.value,
+                        contact1: e.target.value,
                       })
                     }
                   />
@@ -1126,11 +1131,11 @@ const applicationPage = () => {
                     id="employer-contact1-no"
                     name="can-contact1"
                     value="no"
-                    checked={employmentHistory1.contact === "no"}
+                    checked={employmentHistory1.contact1 === "no"}
                     onChange={(e) =>
                       setEmploymentHistory1({
                         ...employmentHistory1,
-                        contact: e.target.value,
+                        contact1: e.target.value,
                       })
                     }
                   />
@@ -1147,7 +1152,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      reasonLeft: e.target.value,
+                      reasonLeft1: e.target.value,
                     })
                   }
                 />
@@ -1161,7 +1166,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      employer: e.target.value,
+                      employer2: e.target.value,
                     })
                   }
                 />
@@ -1174,7 +1179,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      address: e.target.value,
+                      address2: e.target.value,
                     })
                   }
                 />
@@ -1187,7 +1192,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      positionTitle: e.target.value,
+                      positionTitle2: e.target.value,
                     })
                   }
                 />
@@ -1200,7 +1205,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      startDate: e.target.value,
+                      startDate2: e.target.value,
                     })
                   }
                 />
@@ -1213,7 +1218,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      endDate: e.target.value,
+                      endDate2: e.target.value,
                     })
                   }
                 />
@@ -1225,7 +1230,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      duties: e.target.value,
+                      duties2: e.target.value,
                     })
                   }
                 />
@@ -1238,7 +1243,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      supervisor: e.target.value,
+                      supervisor2: e.target.value,
                     })
                   }
                 />
@@ -1251,7 +1256,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      supervisorTitle: e.target.value,
+                      supervisorTitle2: e.target.value,
                     })
                   }
                 />
@@ -1262,11 +1267,11 @@ const applicationPage = () => {
                     id="employer-contact2-yes"
                     name="can-contact2"
                     value="yes"
-                    checked={employmentHistory2.contact === "yes"}
+                    checked={employmentHistory2.contact2 === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory2({
                         ...employmentHistory2,
-                        contact: e.target.value,
+                        contact2: e.target.value,
                       })
                     }
                   />
@@ -1280,11 +1285,11 @@ const applicationPage = () => {
                     id="employer-contact2-no"
                     name="can-contact2"
                     value="no"
-                    checked={employmentHistory2.contact === "no"}
+                    checked={employmentHistory2.contact2 === "no"}
                     onChange={(e) =>
                       setEmploymentHistory2({
                         ...employmentHistory2,
-                        contact: e.target.value,
+                        contact2: e.target.value,
                       })
                     }
                   />
@@ -1301,7 +1306,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      reasonLeft: e.target.value,
+                      reasonLeft2: e.target.value,
                     })
                   }
                 />
@@ -1315,7 +1320,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      employer: e.target.value,
+                      employer3: e.target.value,
                     })
                   }
                 />
@@ -1328,7 +1333,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      address: e.target.value,
+                      address3: e.target.value,
                     })
                   }
                 />
@@ -1341,7 +1346,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      positionTitle: e.target.value,
+                      positionTitle3: e.target.value,
                     })
                   }
                 />
@@ -1354,7 +1359,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      startDate: e.target.value,
+                      startDate3: e.target.value,
                     })
                   }
                 />
@@ -1367,7 +1372,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      endDate: e.target.value,
+                      endDate3: e.target.value,
                     })
                   }
                 />
@@ -1379,7 +1384,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      duties: e.target.value,
+                      duties3: e.target.value,
                     })
                   }
                 />
@@ -1392,7 +1397,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      supervisor: e.target.value,
+                      supervisor3: e.target.value,
                     })
                   }
                 />
@@ -1405,7 +1410,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      supervisorTitle: e.target.value,
+                      supervisorTitle3: e.target.value,
                     })
                   }
                 />
@@ -1416,11 +1421,11 @@ const applicationPage = () => {
                     id="employer-contact3-yes"
                     name="can-contact3"
                     value="yes"
-                    checked={employmentHistory3.contact === "yes"}
+                    checked={employmentHistory3.contact3 === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory3({
                         ...employmentHistory3,
-                        contact: e.target.value,
+                        contact3: e.target.value,
                       })
                     }
                   />
@@ -1434,11 +1439,11 @@ const applicationPage = () => {
                     id="employer-contact3-no"
                     name="can-contact3"
                     value="no"
-                    checked={employmentHistory3.contact === "no"}
+                    checked={employmentHistory3.contact3 === "no"}
                     onChange={(e) =>
                       setEmploymentHistory3({
                         ...employmentHistory3,
-                        contact: e.target.value,
+                        contact3: e.target.value,
                       })
                     }
                   />
@@ -1455,7 +1460,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      reasonLeft: e.target.value,
+                      reasonLeft3: e.target.value,
                     })
                   }
                 />
@@ -1469,7 +1474,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      employer: e.target.value,
+                      employer4: e.target.value,
                     })
                   }
                 />
@@ -1482,7 +1487,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      address: e.target.value,
+                      address4: e.target.value,
                     })
                   }
                 />
@@ -1495,7 +1500,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      positionTitle: e.target.value,
+                      positionTitle4: e.target.value,
                     })
                   }
                 />
@@ -1508,7 +1513,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      startDate: e.target.value,
+                      startDate4: e.target.value,
                     })
                   }
                 />
@@ -1521,7 +1526,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      endDate: e.target.value,
+                      endDate4: e.target.value,
                     })
                   }
                 />
@@ -1533,7 +1538,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      duties: e.target.value,
+                      duties4: e.target.value,
                     })
                   }
                 />
@@ -1546,7 +1551,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      supervisor: e.target.value,
+                      supervisor4: e.target.value,
                     })
                   }
                 />
@@ -1559,7 +1564,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      supervisorTitle: e.target.value,
+                      supervisorTitle4: e.target.value,
                     })
                   }
                 />
@@ -1570,11 +1575,11 @@ const applicationPage = () => {
                     id="employer-contact4-yes"
                     name="can-contact1"
                     value="yes"
-                    checked={employmentHistory4.contact === "yes"}
+                    checked={employmentHistory4.contact4 === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory4({
                         ...employmentHistory4,
-                        contact: e.target.value,
+                        contact4: e.target.value,
                       })
                     }
                   />
@@ -1588,11 +1593,11 @@ const applicationPage = () => {
                     id="employer-contact4-no"
                     name="can-contact4"
                     value="no"
-                    checked={employmentHistory4.contact === "no"}
+                    checked={employmentHistory4.contact4 === "no"}
                     onChange={(e) =>
                       setEmploymentHistory4({
                         ...employmentHistory4,
-                        contact: e.target.value,
+                        contact4: e.target.value,
                       })
                     }
                   />
@@ -1609,7 +1614,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      reasonLeft: e.target.value,
+                      reasonLeft4: e.target.value,
                     })
                   }
                 />
@@ -1634,7 +1639,7 @@ const applicationPage = () => {
                   onChange={(e) =>
                     setHighSchool({
                       ...highSchool,
-                      name: e.target.value,
+                      address: e.target.value,
                     })
                   }
                 />
