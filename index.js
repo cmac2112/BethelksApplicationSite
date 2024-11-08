@@ -258,7 +258,7 @@ app.get("/api/applications/:title", (req, res) => {
         return;
       }
       if (rows.length === 0) {
-        res.send("no applications, or not found");
+        res.send({"message":"no applications, or not found"});
         return;
       }
       res.send(rows);

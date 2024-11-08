@@ -6,6 +6,7 @@ import NotFound from './components/notfound/NotFound';
 import ApplicationPage from './components/applicationPage';
 import NewJob from './components/newJob';
 import ApplicationViewer from './components/applicationViewer';
+import Success from './components/success';
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
         <Route path="/admin/newJob" element={<NewJob />} />
         <Route path="/admin/applications/view/:id" element={<ApplicationViewer />} />
         <Route path="/admin/edit/:title/:id" element={<NewJob />} />
-      </Routes>
+        <Route path="/success" element={<Success />} />
+        </Routes>
     </Router>
   )
 }

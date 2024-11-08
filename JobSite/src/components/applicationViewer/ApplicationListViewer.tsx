@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../layout";
 import { useLogin } from "../../context/LoginContext";
 import { useParams } from "react-router-dom";
+import Error from "../modals/Error";
 
 interface pastEmployment {
   employer: string;
@@ -43,19 +44,28 @@ interface ApplicationType {
 const ApplicationListViewer = () => {
   const { isLoggedIn, toggleLogIn } = useLogin();
   const [applications, setApplications] = useState<ApplicationType[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { id } = useParams<{ id: string }>();
   let host = import.meta.env.VITE_HOST;
 
   const getApplications = async () => {
-    let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
-    let data: ApplicationType[] = await response.json();
+    try {
+      let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
+      let data: ApplicationType[] = await response.json();
 
-    const parsedData = data.map((application: ApplicationType) => ({
-      ...application,
-      pastEmployment: JSON.parse(application.pastEmployment as unknown as string),
-    }));
-    console.log(parsedData);
-    setApplications(parsedData);
+      const parsedData = data.map((application: ApplicationType) => ({
+        ...application,
+        pastEmployment: JSON.parse(
+          application.pastEmployment as unknown as string //weird
+        ),
+      }));
+      console.log(parsedData);
+      setApplications(parsedData);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(`Unable to get applications for job id: ${id}`);
+      setTimeout(()=>setErrorMessage(null), 5000)
+    }
   };
   useEffect(() => {
     getApplications();
@@ -70,23 +80,32 @@ const ApplicationListViewer = () => {
     let gradUniversity;
     let other;
     let pastEmployment;
-    
+
     workTime = JSON.parse(application.workTime);
     curAddress = JSON.parse(application.curAddress);
     permAddress = JSON.parse(application.permAddress);
     contact = JSON.parse(application.contactInfo);
     highschool = JSON.parse(application.highschool);
     university = JSON.parse(application.university);
-    gradUniversity = JSON.parse(application.gradUniversity)
-    other = JSON.parse(application.other)
-    console.log(application.highschool)
-    console.log(pastEmployment)
-    return { ...application, workTime, curAddress, permAddress, contact,
-      highschool, university, gradUniversity, other, pastEmployment
-     };
+    gradUniversity = JSON.parse(application.gradUniversity);
+    other = JSON.parse(application.other);
+    console.log(application.highschool);
+    console.log(pastEmployment);
+    return {
+      ...application,
+      workTime,
+      curAddress,
+      permAddress,
+      contact,
+      highschool,
+      university,
+      gradUniversity,
+      other,
+      pastEmployment,
+    };
   });
 
-  //update the state so you dont have to refresh
+
   const handleDelete = async (id: number) => {
     try {
       const response = await fetch(
@@ -101,11 +120,18 @@ const ApplicationListViewer = () => {
       getApplications();
     } catch (err) {
       console.error(err);
+      setErrorMessage("Unable to delete application");
+      setTimeout(() => setErrorMessage(null), 5000);
     }
   };
   if (!isLoggedIn) {
     return (
       <Layout>
+        {errorMessage && (
+          <div className="sticky top-0 w-full p-4" id="error">
+            <Error errorString={errorMessage} />
+          </div>
+        )}
         <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2" id="job-header">
             Error: Not Logged In
@@ -159,28 +185,25 @@ const ApplicationListViewer = () => {
                       <p>
                         Full Time:{" "}
                         {application.workTime.fullTime ? "Yes" : "No"}
-                        </p>
-                        <p>
-                          Part Time:{" "}
-                          {application.workTime.partTime ? "Yes" : "No"}
-                        </p>
-                        <p>
-                          Temporary:{" "}
-                          {application.workTime.temporary ? "Yes" : "No"}
-                        </p>
-                        <p>
-                          Evenings:{" "}
-                          {application.workTime.evenings ? "Yes" : "No"}
-                        </p>
-                        <p>
-                          Weekends:{" "}
-                          {application.workTime.weekends ? "Yes" : "No"}
-                        </p>
-                        <p>
-                          {" "}
-                          Nights: {application.workTime.nights ? "Yes" : "No"}
-                        </p>
-                      
+                      </p>
+                      <p>
+                        Part Time:{" "}
+                        {application.workTime.partTime ? "Yes" : "No"}
+                      </p>
+                      <p>
+                        Temporary:{" "}
+                        {application.workTime.temporary ? "Yes" : "No"}
+                      </p>
+                      <p>
+                        Evenings: {application.workTime.evenings ? "Yes" : "No"}
+                      </p>
+                      <p>
+                        Weekends: {application.workTime.weekends ? "Yes" : "No"}
+                      </p>
+                      <p>
+                        {" "}
+                        Nights: {application.workTime.nights ? "Yes" : "No"}
+                      </p>
                     </div>
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">Preferred Start Date:</p>
@@ -257,14 +280,18 @@ const ApplicationListViewer = () => {
                       <p className="font-semibold">University:</p>
                       <p>Name: {application.university.name}</p>
                       <p>Address:{application.university.address}</p>
-                      <p>Course of Study: {application.university.courseStudy}</p>
-                      
+                      <p>
+                        Course of Study: {application.university.courseStudy}
+                      </p>
                     </div>
                     <div className="w-full md:w-1/3">
                       <p className="font-semibold">Graduate University:</p>
                       <p>Name: {application.gradUniversity.name}</p>
                       <p>Address:{application.gradUniversity.address}</p>
-                      <p>Course of Study: {application.gradUniversity.courseStudy}</p>
+                      <p>
+                        Course of Study:{" "}
+                        {application.gradUniversity.courseStudy}
+                      </p>
                     </div>
                   </div>
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../layout";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../context/LoginContext";
+import Error from "../modals/Error";
 
 interface jobPost {
   id: number;
@@ -28,6 +29,7 @@ const LandingPage: React.FC = () => {
     [key: string]: number;
   }>({});
   const [staff, setStaff] = useState<jobPost[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { isLoggedIn } = useLogin();
 
   //vite env variables need to be imported and defined like so
@@ -40,7 +42,8 @@ const LandingPage: React.FC = () => {
       setStaff(data);
     } catch (error) {
       console.log(error);
-     
+      setErrorMessage('Failed to fetch staff jobs')
+      setTimeout(() => setErrorMessage(null), 5000)
     }
     try {
       const response = await fetch(`http://${host}:3000/api/faculty`);
@@ -48,6 +51,8 @@ const LandingPage: React.FC = () => {
       setFaculty(data);
     } catch (error) {
       console.log(error);
+      setErrorMessage('Failed to fetch faculty jobs')
+      setTimeout(() => setErrorMessage(null), 5000)
       
     }
   };
@@ -66,6 +71,8 @@ const LandingPage: React.FC = () => {
       getData();
     } catch (err) {
       console.error(err);
+      setErrorMessage(`Failed to delete job with id: ${id}`)
+      setTimeout(() => setErrorMessage(null), 5000)
     }
   };
   const mapFaculty = faculty.map((faculty: jobPost) => (
@@ -169,6 +176,8 @@ const LandingPage: React.FC = () => {
           console.log("faculty count", counts);
         } catch (error) {
           console.log(error);
+          setErrorMessage(`Unable to get application count for some jobs`)
+          setTimeout(() => setErrorMessage(null), 5000)
         }
       }
       setApplicationCountsFaculty(counts);
@@ -185,6 +194,8 @@ const LandingPage: React.FC = () => {
           console.log("staff count:", counts);
         } catch (error) {
           console.log(error);
+          setErrorMessage(`Unable to get application count for some jobs`)
+          setTimeout(() => setErrorMessage(null), 5000)
         }
       }
       setApplicationCountsStaff(counts);
@@ -198,7 +209,12 @@ const LandingPage: React.FC = () => {
   }, [faculty, staff]);
 
   return (
-    <>
+    <div className="relative">
+      {errorMessage && (
+      <div className="absolute w-full top-48 left-1/2" id="error">
+          <Error errorString={errorMessage} />
+          </div>
+  )}
       <Layout>
         <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2" id="job-header">
@@ -247,7 +263,7 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </Layout>
-    </>
+    </div>
   );
 };
 

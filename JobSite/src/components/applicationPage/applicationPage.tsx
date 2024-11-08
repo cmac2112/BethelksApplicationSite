@@ -1,28 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../layout/Layout";
+import Error from "../modals/Error";
+import { useNavigate } from "react-router-dom";
 
-/*
-id INT AUTO_INCREMENT PRIMARY KEY,
-    hearAbout INT,
-    position VARCHAR(255),
-    workTime VARCHAR(255),
-    start VARCHAR(255),
-    name VARCHAR(255),
-    curAddress VARCHAR(255),
-    permAddress VARCHAR(255),
-    contactInfo VARCHAR(255),
-    preferredContact VARCHAR(255),
-    authorized INT,
-    sponsorship INT,
-    everApplied INT,
-    everEmployed INT,
-    pastEmployment LONGTEXT,
-    highschool VARCHAR(255),
-    university VARCHAR(255),
-    gradUniversity VARCHAR(255),
-    other VARCHAR(255),
-    skills VARCHAR(255)
-*/
 interface Positions {
   id: number;
   title: string;
@@ -32,15 +12,45 @@ interface Positions {
   classification: string;
   info: string;
 }
+interface WorkTime {
+  fullTime: boolean;
+  partTime: boolean;
+  temporary: boolean;
+  evenings: boolean;
+  weekends: boolean;
+  nights: boolean;
+}
+interface Address {
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+interface ContactInfo {
+  phone: string;
+  email: string;
+}
+interface EmploymentHistory {
+  employer: string;
+  address: string;
+  positionTitle: string;
+  startDate: string;
+  endDate: string;
+  duties: string;
+  supervisor: string;
+  supervisorTitle: string;
+  contact: string;
+  reasonLeft: string;
+}
+interface School{
+  address: string;
+  name: string;
+  courseStudy?: string;
+  diploma: string
+}
 const applicationPage = () => {
-  //use state variables to store all information to post
-
-  //can either have one big state variable, or seperate them out into their own, either works fine
-  //separating them here for easier bug fixing
-
-  //this is a little bit of an amalgamation though, may change this
-  //to one use state somehow.
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
   //below states are for page rendering
   const [openPositions, setOpenPositions] = useState<Positions[]>([]);
   //state management for fetching open positions
@@ -49,42 +59,30 @@ const applicationPage = () => {
   const [optout, setOptout] = useState(false); //opt out of experience section
 
   //below are application information
-  const [hearAbout, setHearAbout] = useState("");
-  const [position, setPosition] = useState("");
-  const [workTime, setWorkTime] = useState({
-    fullTime: false,
-    partTime: false,
-    temporary: false,
-    evenings: false,
-    weekends: false,
-    nights: false,
-  });
-  const [startTime, setStartTime] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [currentAddress, setCurrentAddress] = useState({
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
-  const [permanentAddress, setPermanantAddress] = useState({
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
-  const [contact, setContact] = useState({
-    phone:"",
-    email:"",
-  })
-  const [preferredContact, setPreferredContact] = useState(""); // so many, one big one may be more confusing though
-  const [legalWork, setLegalWork] = useState("");
-  const [sponsorship, setSponsorship] = useState("");
-  const [applied, setApplied] = useState("");
-  const [employed, setEmployed] = useState("");
-  const [related, setRelated] = useState("");
+  const [hearAbout, setHearAbout] = useState<string>(
+    localStorage.getItem("hearAbout") || ""
+  );
+  const [position, setPosition] = useState<string>("");
+  const [workTime, setWorkTime] = useState<WorkTime>(
+    JSON.parse(
+      localStorage.getItem("workTime") ||
+        '{"fullTime":false,"partTime":false,"temporary":false,"evenings":false,"weekends":false,"nights":false}'
+    )
+  );
+  const [startTime, setStartTime] = useState<string>(localStorage.getItem('start') || '')
+  const [fullName, setFullName] = useState<string>(localStorage.getItem("name") || '');
+  const [currentAddress, setCurrentAddress] = useState<Address>(JSON.parse(localStorage.getItem("curAddress") || '{"address":"","city":"","state":"","zip":""}'));
+  const [permanentAddress, setPermanantAddress] = useState<Address>(JSON.parse(localStorage.getItem("permAddress") || '{"address":"","city":"","state":"","zip":""}'));
+  const [contact, setContact] = useState<ContactInfo>(JSON.parse(localStorage.getItem("contactInfo") || `{"phone": "", "email": ""}`));
+  const [preferredContact, setPreferredContact] = useState<string>(localStorage.getItem("preferredContact") || ''); 
+  const [legalWork, setLegalWork] = useState<string>(localStorage.getItem("authorized") || '');
+  const [sponsorship, setSponsorship] = useState<string>(localStorage.getItem("sponsorship") || '');
+  const [applied, setApplied] = useState<string>(localStorage.getItem("everApplied") || '');
+  const [employed, setEmployed] = useState<string>(localStorage.getItem("everEmployed") || '');
+  const [related, setRelated] = useState<string>(localStorage.getItem("related") || '');
 
-//figure out file stuff
+  //################################################################################
+  //figure out file stuff
   const [resume, setResume] = useState<File | null>(null);
   const [coverLetter, setCoverLetter] = useState<File | null>(null);
   const [references, setReferences] = useState<File | null>(null);
@@ -96,91 +94,45 @@ const applicationPage = () => {
     null
   );
   const [performanceRec, setPerformanceRec] = useState<File | null>(null);
+//###################################################################################
 
-  console.log(coverLetter, references, statementOfTeach, diversityStatement, graduateTranscript, performanceRec)
+  console.log(
+    coverLetter,
+    references,
+    statementOfTeach,
+    diversityStatement,
+    graduateTranscript,
+    performanceRec
+  );
 
-  const [employmentHistory1, setEmploymentHistory1] = useState({
-    employer1: "",
-    address1: "",
-    positionTitle1: "",
-    startDate1: "",
-    endDate1: "",
-    duties1: "",
-    supervisor1: "",
-    supervisorTitle1: "",
-    contact1: "",
-    reasonLeft1: "",
-  });
-  const [employmentHistory2, setEmploymentHistory2] = useState({
-    employer2: "",
-    address2: "",
-    positionTitle2: "",
-    startDate2: "",
-    endDate2: "",
-    duties2: "",
-    supervisor2: "",
-    supervisorTitle2: "",
-    contact2: "",
-    reasonLeft2: "",
-  });
-  const [employmentHistory3, setEmploymentHistory3] = useState({
-    employer3: "",
-    address3: "",
-    positionTitle3: "",
-    startDate3: "",
-    endDate3: "",
-    duties3: "",
-    supervisor3: "",
-    supervisorTitle3: "",
-    contact3: "",
-    reasonLeft3: "",
-  });
-  const [employmentHistory4, setEmploymentHistory4] = useState({
-    employer4: "",
-    address4: "",
-    positionTitle4: "",
-    startDate4: "",
-    endDate4: "",
-    duties4: "",
-    supervisor4: "",
-    supervisorTitle4: "",
-    contact4: "",
-    reasonLeft4: "",
-  });
-  const [highSchool, setHighSchool] = useState({
-    name: "",
-    address: "",
-    diploma: "",
-  });
-  const [undergrad, setUndergrad] = useState({
-    name: "",
-    address: "",
-    courseStudy: "",
-    diploma: "",
-  });
-  const [grad, setGrad] = useState({
-    name: "",
-    address: "",
-    courseStudy: "",
-    diploma: "",
-  });
-  const [other, setOther] = useState({
-    name: "",
-    address: "",
-    courseStudy: "",
-    diploma: "",
-  });
-  const [skills, setSkills] = useState("");
-  const [agree, setAgree] = useState(false);
+  const [employmentHistory1, setEmploymentHistory1] = useState<EmploymentHistory>(
+    JSON.parse(localStorage.getItem("employmentHistory1") || '{"employer":"","address":"","positionTitle":"","startDate":"","endDate":"","duties":"","supervisor":"","supervisorTitle":"","contact":"","reasonLeft":""}')
+  );
+  const [employmentHistory2, setEmploymentHistory2] = useState<EmploymentHistory>(
+    JSON.parse(localStorage.getItem("employmentHistory2") || '{"employer":"","address":"","positionTitle":"","startDate":"","endDate":"","duties":"","supervisor":"","supervisorTitle":"","contact":"","reasonLeft":""}')
+  );
+  const [employmentHistory3, setEmploymentHistory3] = useState<EmploymentHistory>(
+    JSON.parse(localStorage.getItem("employmentHistory3") || '{"employer":"","address":"","positionTitle":"","startDate":"","endDate":"","duties":"","supervisor":"","supervisorTitle":"","contact":"","reasonLeft":""}')
+  );
+  const [employmentHistory4, setEmploymentHistory4] = useState<EmploymentHistory>(
+    JSON.parse(localStorage.getItem("employmentHistory4") || '{"employer":"","address":"","positionTitle":"","startDate":"","endDate":"","duties":"","supervisor":"","supervisorTitle":"","contact":"","reasonLeft":""}')
+  );
+  const [highSchool, setHighSchool] = useState<School>(JSON.parse(localStorage.getItem("highschool") || '{"name": "", "address":"","diploma":""}'));
+  const [undergrad, setUndergrad] = useState<School>(JSON.parse(localStorage.getItem("university") || '{"name": "", "address": "", "courseStudy": "", "diploma": ""}'));
+  const [grad, setGrad] = useState<School>(JSON.parse(localStorage.getItem("gradUniversity") || '{"name": "", "address": "", "courseStudy": "", "diploma": ""}'));
+  const [other, setOther] = useState<School>(JSON.parse(localStorage.getItem("other") || '{"name": "", "address": "", "courseStudy": "", "diploma": ""}'));
+
+  const [skills, setSkills] = useState<string>(localStorage.getItem("skills") || '');
+  const [agree, setAgree] = useState<boolean>(false);
 
   // got to be an easier way than all of these ^
 
   useEffect(() => {
     getPositionOpenings();
   }, []);
-  
+
   //get current posisitions for <select>
-  let host = import.meta.env.VITE_HOST
+  let host = import.meta.env.VITE_HOST;
   const getPositionOpenings = async () => {
     try {
       let response = await fetch(`http://${host}:3000/api/jobs`);
@@ -190,6 +142,7 @@ const applicationPage = () => {
       setOpenPositions(data);
     } catch (error) {
       console.error("unable to fetch open positions");
+      setErrorMessage("Unable to fetch open positions, please try again");
     }
   };
 
@@ -202,6 +155,43 @@ const applicationPage = () => {
     }));
   };
 
+  useEffect(() => {
+    localStorage.setItem("hearAbout", hearAbout);
+    localStorage.setItem("position", position);
+    localStorage.setItem("workTime", JSON.stringify(workTime));
+    localStorage.setItem("start", startTime);
+    localStorage.setItem("name", fullName);
+    localStorage.setItem("curAddress", JSON.stringify(currentAddress));
+    localStorage.setItem("permAddress", JSON.stringify(permanentAddress));
+    localStorage.setItem("contactInfo", JSON.stringify(contact));
+    localStorage.setItem("preferredContact", preferredContact);
+    localStorage.setItem("authorized", legalWork);
+    localStorage.setItem("sponsorship", sponsorship);
+    localStorage.setItem("everApplied", applied);
+    localStorage.setItem("everEmployed", employed);
+    localStorage.setItem("related", related);
+    localStorage.setItem(
+      "employmentHistory1",
+      JSON.stringify(employmentHistory1)
+    );
+    localStorage.setItem(
+      "employmentHistory2",
+      JSON.stringify(employmentHistory2)
+    );
+    localStorage.setItem(
+      "employmentHistory3",
+      JSON.stringify(employmentHistory3)
+    );
+    localStorage.setItem(
+      "employmentHistory4",
+      JSON.stringify(employmentHistory4)
+    );
+    localStorage.setItem("highschool", JSON.stringify(highSchool));
+    localStorage.setItem("university", JSON.stringify(undergrad));
+    localStorage.setItem("gradUniversity", JSON.stringify(grad));
+    localStorage.setItem("other", JSON.stringify(other));
+    localStorage.setItem("skills", skills);
+  });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(resume);
@@ -213,7 +203,7 @@ const applicationPage = () => {
     formData.append("name", fullName);
     formData.append("curAddress", JSON.stringify(currentAddress));
     formData.append("permAddress", JSON.stringify(permanentAddress));
-    formData.append("contactInfo", JSON.stringify(contact))
+    formData.append("contactInfo", JSON.stringify(contact));
     formData.append("preferredContact", preferredContact);
     formData.append("authorized", legalWork);
     formData.append("sponsorship", sponsorship);
@@ -243,47 +233,51 @@ const applicationPage = () => {
       formData.append("performanceRec", performanceRec)
     }
       */
-     const employmentHistory =[
+    const employmentHistory = [
       employmentHistory1,
       employmentHistory2,
       employmentHistory3,
-      employmentHistory4
-     ]
-     console.log(employmentHistory)
-      formData.append("pastEmployment", JSON.stringify(employmentHistory));
-      formData.append("highschool", JSON.stringify(highSchool))
-      formData.append("university", JSON.stringify(undergrad))
-      formData.append("gradUniversity", JSON.stringify(grad))
-      formData.append("other", JSON.stringify(other))
-      formData.append("skills", skills)
-      console.log('form data', formData.get("pastEmployment"))
-    
-    try{
+      employmentHistory4,
+    ];
+    console.log(employmentHistory);
+    formData.append("pastEmployment", JSON.stringify(employmentHistory));
+    formData.append("highschool", JSON.stringify(highSchool));
+    formData.append("university", JSON.stringify(undergrad));
+    formData.append("gradUniversity", JSON.stringify(grad));
+    formData.append("other", JSON.stringify(other));
+    formData.append("skills", skills);
+    console.log("form data", formData.get("pastEmployment"));
 
-    const host = import.meta.env.VITE_HOST
-    const response = await fetch(`http://${host}:3000/api/apply`, {
-      method: "POST",
-      body: formData,
-    });
-    if (response.ok) {
-      console.log("form submitted", formData);
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
+    try {
+      const host = import.meta.env.VITE_HOST;
+      const response = await fetch(`http://${host}:3000/api/apply`, {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        console.log("form submitted", formData);
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
+        localStorage.clear();
+        navigate("/success");
+      } else {
+        console.error("error submitting form");
+        setErrorMessage("Bad response from server, Form not submitted");
       }
-    } else {
-      console.error("error submitting form");
+    } catch (error) {
+      console.error("error submitting form", error);
+      setErrorMessage("Form was unable to be sent");
     }
-  }catch(error){
-    console.error("error submitting form", error)
-  }
   };
-  //setup requirement
-  // name attribute groups items
-  //then set required attribute
-
   return (
     <>
       <Layout>
+        {errorMessage && (
+          <div className="sticky top-0 w-full p-4" id="error">
+            <Error errorString={errorMessage} />
+          </div>
+        )}
         <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2">Application</h2>
         </div>
@@ -495,6 +489,7 @@ const applicationPage = () => {
                 type="date"
                 name="start-time"
                 className="border border-gray-200 rounded-xl p-2"
+                value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               />
             </div>
@@ -506,6 +501,7 @@ const applicationPage = () => {
                 name="first-name"
                 placeholder="Enter full name..."
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
+                value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
@@ -516,6 +512,7 @@ const applicationPage = () => {
                 id="address-street"
                 name="address-street"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
+                value={currentAddress.address}
                 onChange={(e) =>
                   setCurrentAddress({
                     ...currentAddress,
@@ -530,6 +527,7 @@ const applicationPage = () => {
                 type="text"
                 id="city"
                 name="city"
+                value={currentAddress.city}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
                   setCurrentAddress({
@@ -545,6 +543,7 @@ const applicationPage = () => {
                 type="text"
                 id="state"
                 name="state"
+                value={currentAddress.state}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
                   setCurrentAddress({
@@ -560,6 +559,7 @@ const applicationPage = () => {
                 type="text"
                 id="zip"
                 name="zip"
+                value={currentAddress.zip}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
                   setCurrentAddress({
@@ -579,6 +579,7 @@ const applicationPage = () => {
                 id="perm-address-street"
                 name="perm-address-street"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
+                value={permanentAddress.address}
                 onChange={(e) =>
                   setPermanantAddress({
                     ...permanentAddress,
@@ -593,6 +594,7 @@ const applicationPage = () => {
                 type="text"
                 id="perm-city"
                 name="perm-city"
+                value={permanentAddress.city}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
                   setPermanantAddress({
@@ -608,6 +610,7 @@ const applicationPage = () => {
                 type="text"
                 id="perm-state"
                 name="perm-state"
+                value={permanentAddress.state}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
                   setPermanantAddress({
@@ -623,6 +626,7 @@ const applicationPage = () => {
                 type="text"
                 id="perm-zip"
                 name="perm-zip"
+                value={permanentAddress.zip}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
                   setPermanantAddress({
@@ -639,11 +643,14 @@ const applicationPage = () => {
                 type="tel"
                 id="phone"
                 name="phone"
+                value={contact.phone}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setContact({
-                  ...contact,
-                  phone: e.target.value
-                })}
+                onChange={(e) =>
+                  setContact({
+                    ...contact,
+                    phone: e.target.value,
+                  })
+                }
               />
               <label htmlFor="phone">Cell/Home Phone</label>
             </div>
@@ -653,10 +660,13 @@ const applicationPage = () => {
                 id="email"
                 name="email-input"
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
-                onChange={(e) => setContact({
-                  ...contact,
-                  email: e.target.value
-                })}
+                value={contact.email}
+                onChange={(e) =>
+                  setContact({
+                    ...contact,
+                    email: e.target.value,
+                  })
+                }
               />
               <label htmlFor="email">Email</label>
             </div>
@@ -1010,10 +1020,11 @@ const applicationPage = () => {
                   id="employer-input"
                   name="employer"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.employer}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      employer1: e.target.value,
+                      employer: e.target.value,
                     })
                   }
                 />
@@ -1023,10 +1034,11 @@ const applicationPage = () => {
                   id="employer-address-input1"
                   name="employer-address"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.address}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      address1: e.target.value,
+                      address: e.target.value,
                     })
                   }
                 />
@@ -1036,10 +1048,11 @@ const applicationPage = () => {
                   id="employer-pos-title1"
                   name="employer-pos1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.positionTitle}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      positionTitle1: e.target.value,
+                      positionTitle: e.target.value,
                     })
                   }
                 />
@@ -1049,10 +1062,11 @@ const applicationPage = () => {
                   id="employer-start1"
                   name="employer-startdate1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.startDate}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      startDate1: e.target.value,
+                      startDate: e.target.value,
                     })
                   }
                 />
@@ -1062,10 +1076,11 @@ const applicationPage = () => {
                   id="employer-end1"
                   name="employer-end-date1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.endDate}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      endDate1: e.target.value,
+                      endDate: e.target.value,
                     })
                   }
                 />
@@ -1073,10 +1088,11 @@ const applicationPage = () => {
                 <textarea
                   id="employer-duties1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.duties}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      duties1: e.target.value,
+                      duties: e.target.value,
                     })
                   }
                 />
@@ -1086,10 +1102,11 @@ const applicationPage = () => {
                   id="employer-super-name1"
                   name="employer-supervisorname"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.supervisor}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      supervisor1: e.target.value,
+                      supervisor: e.target.value,
                     })
                   }
                 />
@@ -1099,10 +1116,11 @@ const applicationPage = () => {
                   id="employer-super-title1"
                   name="employer-supervisorTitle"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.supervisorTitle}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      supervisorTitle1: e.target.value,
+                      supervisorTitle: e.target.value,
                     })
                   }
                 />
@@ -1113,11 +1131,11 @@ const applicationPage = () => {
                     id="employer-contact1-yes"
                     name="can-contact1"
                     value="yes"
-                    checked={employmentHistory1.contact1 === "yes"}
+                    checked={employmentHistory1.contact === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory1({
                         ...employmentHistory1,
-                        contact1: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1131,11 +1149,11 @@ const applicationPage = () => {
                     id="employer-contact1-no"
                     name="can-contact1"
                     value="no"
-                    checked={employmentHistory1.contact1 === "no"}
+                    checked={employmentHistory1.contact === "no"}
                     onChange={(e) =>
                       setEmploymentHistory1({
                         ...employmentHistory1,
-                        contact1: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1149,10 +1167,11 @@ const applicationPage = () => {
                   id="employer-leaving1"
                   name="employer-reason1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory1.reasonLeft}
                   onChange={(e) =>
                     setEmploymentHistory1({
                       ...employmentHistory1,
-                      reasonLeft1: e.target.value,
+                      reasonLeft: e.target.value,
                     })
                   }
                 />
@@ -1163,10 +1182,11 @@ const applicationPage = () => {
                   id="employer-input2"
                   name="employer2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.employer}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      employer2: e.target.value,
+                      employer: e.target.value,
                     })
                   }
                 />
@@ -1176,10 +1196,11 @@ const applicationPage = () => {
                   id="employer-address-input2"
                   name="employer-address2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.address}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      address2: e.target.value,
+                      address: e.target.value,
                     })
                   }
                 />
@@ -1189,10 +1210,11 @@ const applicationPage = () => {
                   id="employer-pos-title2"
                   name="employer-pos2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.positionTitle}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      positionTitle2: e.target.value,
+                      positionTitle: e.target.value,
                     })
                   }
                 />
@@ -1202,10 +1224,11 @@ const applicationPage = () => {
                   id="employer-start2"
                   name="employer-startdate2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.startDate}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      startDate2: e.target.value,
+                      startDate: e.target.value,
                     })
                   }
                 />
@@ -1215,10 +1238,11 @@ const applicationPage = () => {
                   id="employer-end2"
                   name="employer-end-date2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.endDate}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      endDate2: e.target.value,
+                      endDate: e.target.value,
                     })
                   }
                 />
@@ -1227,10 +1251,11 @@ const applicationPage = () => {
                   id="employer-duties2"
                   name="employer-duty2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.duties}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      duties2: e.target.value,
+                      duties: e.target.value,
                     })
                   }
                 />
@@ -1240,10 +1265,11 @@ const applicationPage = () => {
                   id="employer-super-name2"
                   name="employer-supervisorname2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.supervisor}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      supervisor2: e.target.value,
+                      supervisor: e.target.value,
                     })
                   }
                 />
@@ -1253,10 +1279,11 @@ const applicationPage = () => {
                   id="employer-super-title2"
                   name="employer-supervisorTitle2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.supervisorTitle}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      supervisorTitle2: e.target.value,
+                      supervisorTitle: e.target.value,
                     })
                   }
                 />
@@ -1267,11 +1294,11 @@ const applicationPage = () => {
                     id="employer-contact2-yes"
                     name="can-contact2"
                     value="yes"
-                    checked={employmentHistory2.contact2 === "yes"}
+                    checked={employmentHistory2.contact === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory2({
                         ...employmentHistory2,
-                        contact2: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1285,11 +1312,11 @@ const applicationPage = () => {
                     id="employer-contact2-no"
                     name="can-contact2"
                     value="no"
-                    checked={employmentHistory2.contact2 === "no"}
+                    checked={employmentHistory2.contact === "no"}
                     onChange={(e) =>
                       setEmploymentHistory2({
                         ...employmentHistory2,
-                        contact2: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1303,10 +1330,11 @@ const applicationPage = () => {
                   id="employer-leaving2"
                   name="employer-reason2"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory2.reasonLeft}
                   onChange={(e) =>
                     setEmploymentHistory2({
                       ...employmentHistory2,
-                      reasonLeft2: e.target.value,
+                      reasonLeft: e.target.value,
                     })
                   }
                 />
@@ -1317,10 +1345,11 @@ const applicationPage = () => {
                   id="employer-input3"
                   name="employer3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.employer}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      employer3: e.target.value,
+                      employer: e.target.value,
                     })
                   }
                 />
@@ -1330,10 +1359,11 @@ const applicationPage = () => {
                   id="employer-address-input3"
                   name="employer-address"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.address}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      address3: e.target.value,
+                      address: e.target.value,
                     })
                   }
                 />
@@ -1343,10 +1373,11 @@ const applicationPage = () => {
                   id="employer-pos-title3"
                   name="employer-pos3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.positionTitle}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      positionTitle3: e.target.value,
+                      positionTitle: e.target.value,
                     })
                   }
                 />
@@ -1356,10 +1387,11 @@ const applicationPage = () => {
                   id="employer-start3"
                   name="employer-startdate3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.startDate}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      startDate3: e.target.value,
+                      startDate: e.target.value,
                     })
                   }
                 />
@@ -1369,10 +1401,11 @@ const applicationPage = () => {
                   id="employer-end3"
                   name="employer-end-date3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.endDate}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      endDate3: e.target.value,
+                      endDate: e.target.value,
                     })
                   }
                 />
@@ -1381,10 +1414,11 @@ const applicationPage = () => {
                   id="employer-duties3"
                   name="employer-duty3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.duties}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      duties3: e.target.value,
+                      duties: e.target.value,
                     })
                   }
                 />
@@ -1394,10 +1428,11 @@ const applicationPage = () => {
                   id="employer-super-name3"
                   name="employer-supervisorname3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.supervisor}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      supervisor3: e.target.value,
+                      supervisor: e.target.value,
                     })
                   }
                 />
@@ -1407,10 +1442,11 @@ const applicationPage = () => {
                   id="employer-super-title3"
                   name="employer-supervisorTitle3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.supervisorTitle}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      supervisorTitle3: e.target.value,
+                      supervisorTitle: e.target.value,
                     })
                   }
                 />
@@ -1421,11 +1457,11 @@ const applicationPage = () => {
                     id="employer-contact3-yes"
                     name="can-contact3"
                     value="yes"
-                    checked={employmentHistory3.contact3 === "yes"}
+                    checked={employmentHistory3.contact === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory3({
                         ...employmentHistory3,
-                        contact3: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1439,11 +1475,11 @@ const applicationPage = () => {
                     id="employer-contact3-no"
                     name="can-contact3"
                     value="no"
-                    checked={employmentHistory3.contact3 === "no"}
+                    checked={employmentHistory3.contact === "no"}
                     onChange={(e) =>
                       setEmploymentHistory3({
                         ...employmentHistory3,
-                        contact3: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1457,10 +1493,11 @@ const applicationPage = () => {
                   id="employer-leaving3"
                   name="employer-reason3"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory3.reasonLeft}
                   onChange={(e) =>
                     setEmploymentHistory3({
                       ...employmentHistory3,
-                      reasonLeft3: e.target.value,
+                      reasonLeft: e.target.value,
                     })
                   }
                 />
@@ -1471,10 +1508,11 @@ const applicationPage = () => {
                   id="employer-input4"
                   name="employer4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.employer}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      employer4: e.target.value,
+                      employer: e.target.value,
                     })
                   }
                 />
@@ -1484,10 +1522,11 @@ const applicationPage = () => {
                   id="employer-address-input4"
                   name="employer-address4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.address}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      address4: e.target.value,
+                      address: e.target.value,
                     })
                   }
                 />
@@ -1497,10 +1536,11 @@ const applicationPage = () => {
                   id="employer-pos-title4"
                   name="employer-pos4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.positionTitle}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      positionTitle4: e.target.value,
+                      positionTitle: e.target.value,
                     })
                   }
                 />
@@ -1510,10 +1550,11 @@ const applicationPage = () => {
                   id="employer-start4"
                   name="employer-startdate4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.startDate}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      startDate4: e.target.value,
+                      startDate: e.target.value,
                     })
                   }
                 />
@@ -1523,10 +1564,11 @@ const applicationPage = () => {
                   id="employer-end4"
                   name="employer-end-date4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.endDate}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      endDate4: e.target.value,
+                      endDate: e.target.value,
                     })
                   }
                 />
@@ -1535,10 +1577,11 @@ const applicationPage = () => {
                   id="employer-duties4"
                   name="employer-duty4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.duties}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      duties4: e.target.value,
+                      duties: e.target.value,
                     })
                   }
                 />
@@ -1548,10 +1591,11 @@ const applicationPage = () => {
                   id="employer-super-name4"
                   name="employer-supervisorname4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.supervisor}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      supervisor4: e.target.value,
+                      supervisor: e.target.value,
                     })
                   }
                 />
@@ -1561,10 +1605,11 @@ const applicationPage = () => {
                   id="employer-super-title4"
                   name="employer-supervisorTitle4"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.supervisorTitle}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      supervisorTitle4: e.target.value,
+                      supervisorTitle: e.target.value,
                     })
                   }
                 />
@@ -1575,11 +1620,11 @@ const applicationPage = () => {
                     id="employer-contact4-yes"
                     name="can-contact1"
                     value="yes"
-                    checked={employmentHistory4.contact4 === "yes"}
+                    checked={employmentHistory4.contact === "yes"}
                     onChange={(e) =>
                       setEmploymentHistory4({
                         ...employmentHistory4,
-                        contact4: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1593,11 +1638,11 @@ const applicationPage = () => {
                     id="employer-contact4-no"
                     name="can-contact4"
                     value="no"
-                    checked={employmentHistory4.contact4 === "no"}
+                    checked={employmentHistory4.contact === "no"}
                     onChange={(e) =>
                       setEmploymentHistory4({
                         ...employmentHistory4,
-                        contact4: e.target.value,
+                        contact: e.target.value,
                       })
                     }
                   />
@@ -1611,10 +1656,11 @@ const applicationPage = () => {
                   id="employer-leaving4"
                   name="employer-reason1"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={employmentHistory4.reasonLeft}
                   onChange={(e) =>
                     setEmploymentHistory4({
                       ...employmentHistory4,
-                      reasonLeft4: e.target.value,
+                      reasonLeft: e.target.value,
                     })
                   }
                 />
@@ -1624,6 +1670,7 @@ const applicationPage = () => {
                   type="text"
                   id="highschool"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={highSchool.name}
                   onChange={(e) =>
                     setHighSchool({
                       ...highSchool,
@@ -1636,6 +1683,7 @@ const applicationPage = () => {
                   type="text"
                   id="highschool-address"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={highSchool.address}
                   onChange={(e) =>
                     setHighSchool({
                       ...highSchool,
@@ -1648,6 +1696,7 @@ const applicationPage = () => {
                   type="text"
                   id="highschool-diploma"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={highSchool.diploma}
                   onChange={(e) =>
                     setHighSchool({
                       ...highSchool,
@@ -1663,6 +1712,7 @@ const applicationPage = () => {
                   type="text"
                   id="undergrad-name"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={undergrad.name}
                   onChange={(e) =>
                     setUndergrad({
                       ...undergrad,
@@ -1675,6 +1725,7 @@ const applicationPage = () => {
                   type="text"
                   id="undergrad-address"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={undergrad.address}
                   onChange={(e) =>
                     setUndergrad({
                       ...undergrad,
@@ -1687,6 +1738,7 @@ const applicationPage = () => {
                   type="text"
                   id="undergrad-course"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={undergrad.courseStudy}
                   onChange={(e) =>
                     setUndergrad({
                       ...undergrad,
@@ -1699,6 +1751,7 @@ const applicationPage = () => {
                   type="text"
                   id="undergrad-diploma"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={undergrad.diploma}
                   onChange={(e) =>
                     setUndergrad({
                       ...undergrad,
@@ -1714,6 +1767,7 @@ const applicationPage = () => {
                   type="text"
                   id="grad-name"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={grad.name}
                   onChange={(e) =>
                     setGrad({
                       ...grad,
@@ -1726,6 +1780,7 @@ const applicationPage = () => {
                   type="text"
                   id="grad-address"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={grad.address}
                   onChange={(e) =>
                     setGrad({
                       ...grad,
@@ -1738,6 +1793,7 @@ const applicationPage = () => {
                   type="text"
                   id="grad-course"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={grad.courseStudy}
                   onChange={(e) =>
                     setGrad({
                       ...grad,
@@ -1750,6 +1806,7 @@ const applicationPage = () => {
                   type="text"
                   id="grad-diploma"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={grad.diploma}
                   onChange={(e) =>
                     setGrad({
                       ...grad,
@@ -1763,6 +1820,7 @@ const applicationPage = () => {
                   type="text"
                   id="other-name"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={other.name}
                   onChange={(e) =>
                     setOther({
                       ...other,
@@ -1775,6 +1833,7 @@ const applicationPage = () => {
                   type="text"
                   id="other-address"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={other.address}
                   onChange={(e) =>
                     setOther({
                       ...other,
@@ -1787,6 +1846,7 @@ const applicationPage = () => {
                   type="text"
                   id="other-courseStudy"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={other.courseStudy}
                   onChange={(e) =>
                     setOther({
                       ...other,
@@ -1799,6 +1859,7 @@ const applicationPage = () => {
                   type="text"
                   id="other-diploma"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={other.diploma}
                   onChange={(e) =>
                     setOther({
                       ...other,
@@ -1814,6 +1875,7 @@ const applicationPage = () => {
                 <textarea
                   id="skills"
                   className="border border-gray-200 rounded-xl p-2 w-1/2"
+                  value={skills}
                   onChange={(e) => setSkills(e.target.value)}
                 />
               </div>
@@ -1876,9 +1938,14 @@ const applicationPage = () => {
               Compliance (Title IX Coordinator) or the Assistant Secretary of
               Education within the Office for Civil Rights (OCR). Bethel College
             </p>
-            <a href="https://www.bethelks.edu/equalopp">Equal Opportunity Policy</a>
+            <a href="https://www.bethelks.edu/equalopp">
+              Equal Opportunity Policy
+            </a>
             <div className="flex justify-center">
-            <input type="submit" className="border border-maroon rounded-xl bg-maroon text-white p-2"></input>
+              <input
+                type="submit"
+                className="border border-maroon rounded-xl bg-maroon text-white p-2"
+              ></input>
             </div>
           </form>
         </div>
