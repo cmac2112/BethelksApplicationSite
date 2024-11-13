@@ -7,7 +7,7 @@ import Error from "../modals/Error";
 interface pastEmployment {
   employer: string;
   address: string;
-  positionTitle: string;
+  position: string;
   startDate: string;
   endDate: string;
   duties: string;
@@ -64,7 +64,7 @@ const ApplicationListViewer = () => {
     } catch (error) {
       console.error(error);
       setErrorMessage(`Unable to get applications for job id: ${id}`);
-      setTimeout(()=>setErrorMessage(null), 5000)
+      setTimeout(() => setErrorMessage(null), 5000);
     }
   };
   useEffect(() => {
@@ -89,6 +89,7 @@ const ApplicationListViewer = () => {
     university = JSON.parse(application.university);
     gradUniversity = JSON.parse(application.gradUniversity);
     other = JSON.parse(application.other);
+    pastEmployment = application.pastEmployment;
     console.log(application.highschool);
     console.log(pastEmployment);
     return {
@@ -104,7 +105,6 @@ const ApplicationListViewer = () => {
       pastEmployment,
     };
   });
-
 
   const handleDelete = async (id: number) => {
     try {
@@ -158,12 +158,12 @@ const ApplicationListViewer = () => {
             View Applications
           </h2>
           <div
-            className="bg-gray-100 flex justify-center p-2 md:p-16"
+            className="bg-gray-100 flex justify-center md:p-16"
             id="background-container"
           >
-            <div className="p-5 bg-white w-3/4">
+            <div className="p-2 md:p-5 bg-white md:w-7/8">
               {parsedApplications.map((application, index) => (
-                <div key={index}>
+                <div key={index} className="py-5">
                   <div className="flex justify-between border-b-2 border-gray-400">
                     <h2
                       className="text-2xl px-5 py-1"
@@ -171,12 +171,14 @@ const ApplicationListViewer = () => {
                     >
                       {application.name}
                     </h2>
+                    <div className="p-1">
                     <button
                       onClick={() => handleDelete(application.id)}
-                      className="bg-maroon text-white text-sm rounded-xl p-1 justify-end"
+                      className="bg-maroon text-white text-sm rounded-xl p-2 justify-end"
                     >
                       Delete
                     </button>
+                    </div>
                   </div>
 
                   <div className="flex flex-wrap py-3" id="row1">
@@ -302,10 +304,54 @@ const ApplicationListViewer = () => {
                       <p>Address:{application.other.address}</p>
                       <p>Course of Study: {application.other.courseStudy}</p>
                     </div>
-                    <div className="w-full md:w-1/3">
-                      <p className="font-semibold">Past Employment:</p>
-                      <p>{application.pastEmployment}</p>
-                    </div>
+                  </div>
+                  <p className="font-semibold border-b-2">Past employment</p>
+                  <div className="items-center">
+                    {application.pastEmployment.map((employment, index) => (
+                      <div key={index} className="py-3 flex justify-between border-b-2">
+                        <div id="info-container-1" className="w-1/4">
+                        <div className="py-2">
+                        <div className="font-semibold">Company: </div>
+                        <p>{employment.employer}</p>
+                        </div>
+                        <div className="py-2">
+                        <div className="font-semibold">Role: </div>
+                        <p> {employment.address}</p>
+                        </div>
+                        <div className="py-2">
+                        <div className="font-semibold">Start Date: </div>
+                        <p> {employment.startDate}</p>
+                        </div>
+                        <div className="py-2">
+                        <div className="font-semibold">End Date: </div>
+                        <p> {employment.endDate}</p>
+                        </div>
+                        </div>
+                        <div id="info-container-2" className="w-1/4">
+                        <div className="py-2">
+                        <div className="font-semibold">Supervisor: </div>
+                        <p> {employment.supervisor}</p>
+                        </div>
+                        <div className="py-2">
+                        <div className="font-semibold">Supervisor Title: </div>
+                        <p> {employment.supervisorTitle}</p>
+                        </div>
+                        <div className="py-2">
+                        <div className="font-semibold">Can We Contact: </div>
+                        <p> {employment.contact}</p>
+                        </div>
+                        <div className="py-2">
+                        <div className="font-semibold">Reason Left: </div>
+                        <p> {employment.reasonLeft}</p>
+                        </div>
+                      </div>
+
+                      <div className="w-2/4 py-2">
+                        <div className="font-semibold">Duties: </div>
+                        <p> {employment.duties}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
