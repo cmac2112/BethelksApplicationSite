@@ -3,47 +3,39 @@ import { useLocation } from "react-router-dom";
 import Layout from "../layout/Layout";
 import DOMPurify from 'dompurify';
 import NotFound from "../notfound";
+import 'quill/dist/quill.snow.css'
+
 
 const JobDescription: React.FC = () => {
   const location = useLocation();
   const job = location.state?.job; //access the state passed through on render
   console.log(JSON.stringify(job));
 
-  /*
-  const { title } = useParams<{ title: string }>();
-  console.log("from params",title) -- handling this by passing the state to this new component using location.state
-  dont need to grap anything from the url and make a get request, this is simple enough
+  useEffect(() => {                                     //tailwindcss conflicts with the styles given by quill
+    const parent = document.getElementById('rte-area');
+    if (parent) {
+      parent.querySelectorAll('h3').forEach(child =>{
+        child.classList.add('text-xl');
+      })
+      parent.querySelectorAll('h2').forEach(child => {
+        child.classList.add("text-2xl");
+      });
+      parent.querySelectorAll('h1').forEach(child => {
+        child.classList.add("text-3xl");
+        child.classList.add("border-b-2")
+      });
+    }
+  }, [job]);
 
-  //title
-  //employment (faculty or staff)
-  //description
-  //department
-  //classification - full time- part time etc
-  //info - rte of everything else, {dangourouslySet.innerHTML} and sanatize it
-*/
+  if (!job) {
+    return (
+      <Layout>
+        <NotFound />
+      </Layout>
+    );
+  }
 
-//headers do not seem to actualy be large in the 
-//info section like they are when someone is making the job
-//insert the css manually
-useEffect(()=>{
-  const parent = document.getElementById('rte-area')
-if(parent){
-    parent?.querySelectorAll('h2').forEach(child =>{
-    child.classList.add("text-xl")
-  })
-  parent?.querySelectorAll('h1').forEach(child =>{
-    child.classList.add("text-3xl")
-  })
-}
-},[job.info])
 
-if (!job){
-  return(
-    <Layout>
-      <NotFound />
-    </Layout>
-  )
-}
   return (
     <Layout>
       {job.map((jobDetail: any, index: number) => (

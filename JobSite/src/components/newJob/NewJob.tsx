@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useLogin } from "../../context/LoginContext";
 import Layout from "../layout";
 import Quill from "quill";
-import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.snow.css';
 import { useParams } from "react-router-dom";
 
 const NewJob = () => {
@@ -12,6 +12,14 @@ const NewJob = () => {
   const [department, setDepartment] = useState("");
   const [classification, setClassification] = useState("");
   const [info, setInfo] = useState("");
+  
+
+  useEffect(()=>{
+    const headers = document.getElementById('editor')?.querySelectorAll('h1');
+    headers?.forEach(header =>{
+      header.classList.add('border-b-2')
+    })
+  },[info])
 
 
   //reusing this create job component to edit jobs as well
@@ -65,15 +73,8 @@ const NewJob = () => {
     
       [{ 'header': 1 }, { 'header': 2 }],               // custom button values
       [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-    
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
+      [{ 'header': [1, 2, 3, false] }],
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
     
       ['clean']                                         // remove formatting button
     ];
@@ -240,7 +241,7 @@ const NewJob = () => {
                     onChange={(e) => setClassification(e.target.value)}
                   />
                 </div>
-                <div id="toolbar">
+                <div id="toolbar" >
                   <div
                   
                     id="editor"
