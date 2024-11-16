@@ -205,6 +205,9 @@ const NewJob = () => {
                     <option className="bg-white" value="staff">
                       Staff
                     </option>
+                    <option className="bg-white" value="other">
+                      Other
+                    </option>
                   </select>
                 </div>
                 <div className="flex flex-col py-2">

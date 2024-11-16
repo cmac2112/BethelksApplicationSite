@@ -11,7 +11,7 @@ const JobDescription: React.FC = () => {
   const job = location.state?.job; //access the state passed through on render
   console.log(JSON.stringify(job));
 
-  useEffect(() => {                                     //tailwindcss conflicts with the styles given by quill
+  useEffect(() => { //tailwindcss conflicts with the styles given by quill this is a workaround for now
     const parent = document.getElementById('rte-area');
     if (parent) {
       parent.querySelectorAll('h3').forEach(child =>{
@@ -24,6 +24,17 @@ const JobDescription: React.FC = () => {
         child.classList.add("text-3xl");
         child.classList.add("border-b-2")
       });
+      parent.querySelectorAll('li').forEach(child =>{
+        child.classList.add('list-inside');
+        child.classList.add('indent-8')
+        const dataList = child.getAttribute('data-list');
+        if(dataList === 'ordered'){
+          child.classList.add('list-decimal')
+        }else{
+          child.classList.add('list-disc')
+        }
+        
+      })
     }
   }, [job]);
 
@@ -47,7 +58,7 @@ const JobDescription: React.FC = () => {
             <div className="px-5 bg-white w-3/4">
               <h2 className="text-3xl border-b-2 border-gray-400 py-1">
                 {jobDetail.title} -{" "}
-                {jobDetail.employment === 'faculty' ? "Faculty" : "Staff"}
+                {jobDetail.employment === 'faculty' ? "Faculty" : jobDetail.employment === 'staff' ? "Staff" : "Other"}
               </h2>
               <div className="list-container">
                 <p className="py-3">{jobDetail.description}</p>
@@ -68,5 +79,6 @@ const JobDescription: React.FC = () => {
     </Layout>
   );
 };
+
 
 export default JobDescription;

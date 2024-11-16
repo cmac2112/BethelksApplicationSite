@@ -83,6 +83,19 @@ app.get("/api/faculty", (req, res, next) => {
     }
   );
 });
+app.get("/api/other", (req,res)=>{
+  con.query(
+    `SELECT * FROM jobs WHERE employment NOT IN ('faculty', 'staff')`,
+    function(err, rows){
+      if(err){
+        console.error('error executing query');
+        res.status(500).send('error executing query');
+        return;
+      }
+      res.send(rows);
+    }
+  )
+})
 app.get("/api/jobs", (req, res) => {
   console.log(req.method + " request for " + req.url);
   con.query(`SELECT * FROM jobs`, function (err, rows) {
@@ -107,6 +120,28 @@ app.get("/api/jobs/:id", (req, res) => {
   });
 });
 
+app.get("/api/applications/:title", (req, res) => {
+  const { title } = req.params;
+  console.log(req.method + " request for " + req.url + " with title " + title);
+  con.query(
+    `SELECT * from jobApplications WHERE position = ?`,
+    [title],
+    function (err, rows) {
+      if (err) {
+        console.error("error executing query", err);
+        res.status(500).send("error executing query");
+        return;
+      }
+      if (rows.length === 0) {
+        res.send({"message":"no applications, or not found"});
+        return;
+      }
+      res.send(rows);
+    }
+  );
+});
+//################################gets^##################################################
+
 app.put("/api/newjob/:id", (req, res)=>{
   const jobtitle = req.params.id;
   const body = req.body;
@@ -129,6 +164,7 @@ app.put("/api/newjob/:id", (req, res)=>{
     res.send('Job updated successfully');
   });
 });
+//########################puts^#############################################
 
 app.post("/api/newjob", (req, res) => {
   console.log(req.method + " request for " + req.url);
@@ -150,39 +186,6 @@ app.post("/api/newjob", (req, res) => {
     res.send("job posted");
   });
 });
-
-app.post("/api/multer", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send("no file uploaded");
-  }
-  const file = req.file;
-  const sql = `INSERT INTO testFile (name, data, mime_type) VALUES (?, ?, ?)`;
-  const values = [file.originalname, file.buffer, file.mimetype];
-
-  con.query(sql, values, (err, result) => {
-    if (err) {
-      console.error(`error inserting file`, err);
-      return res.status(500).send("error inserting file");
-    }
-    res.send("file uploaded successfully");
-  });
-});
-
-//dont do this, storing files to mysql is dumb, just testing file upload with multer
-app.get("/api/file", (req, res) => {
-  const sql = `SELECT * from testFile ORDER BY id DESC LIMIT 1`;
-  con.query(sql, (err, results) => {
-    if (err) {
-      console.error(`error fetching`, err);
-      return res.status(500).send("error fetching file");
-    }
-    const file = results[0];
-    res.setHeader("Content-Disposition", `attachment; filename=${file.name}`);
-    res.setHeader("Content-Type", file.mime_type);
-    res.send(file.data);
-  });
-});
-
 
 //support files later
 app.post("/api/apply", upload.none(), (req, res) => {
@@ -211,6 +214,7 @@ app.post("/api/apply", upload.none(), (req, res) => {
     });
   });
 
+//#############################posts^#####################################
 app.delete("/api/applications/delete/:id", (req, res) =>{
     const { id } = req.params;
     const intId = parseInt(id, 10)
@@ -245,28 +249,46 @@ app.delete("/api/jobs/delete/:id", (req, res) =>{
         }
     )
 })
-app.get("/api/applications/:title", (req, res) => {
-  const { title } = req.params;
-  console.log(req.method + " request for " + req.url + " with title " + title);
-  con.query(
-    `SELECT * from jobApplications WHERE position = ?`,
-    [title],
-    function (err, rows) {
-      if (err) {
-        console.error("error executing query", err);
-        res.status(500).send("error executing query");
-        return;
-      }
-      if (rows.length === 0) {
-        res.send({"message":"no applications, or not found"});
-        return;
-      }
-      res.send(rows);
+//########################deletes#######################################
+
+
+//#################################################################################################################\
+//testing area
+app.post("/api/multer", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("no file uploaded");
+  }
+  const file = req.file;
+  const sql = `INSERT INTO testFile (name, data, mime_type) VALUES (?, ?, ?)`;
+  const values = [file.originalname, file.buffer, file.mimetype];
+
+  con.query(sql, values, (err, result) => {
+    if (err) {
+      console.error(`error inserting file`, err);
+      return res.status(500).send("error inserting file");
     }
-  );
+    res.send("file uploaded successfully");
+  });
 });
 
+//dont do this, storing files to mysql is dumb, just testing file upload with multer
+app.get("/api/file", (req, res) => {
+  const sql = `SELECT * from testFile ORDER BY id DESC LIMIT 1`;
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error(`error fetching`, err);
+      return res.status(500).send("error fetching file");
+    }
+    const file = results[0];
+    res.setHeader("Content-Disposition", `attachment; filename=${file.name}`);
+    res.setHeader("Content-Type", file.mime_type);
+    res.send(file.data);
+  });
+});
+//##########################################################################################
+
 // Serve static files from the React app
+//build the app with `npm run build`, then serve files from this directory
 app.use(express.static(path.join(__dirname, '/JobSite/dist')));
 
 // Fallback to index.html for SPA routing
@@ -278,7 +300,3 @@ const port = process.env.SERVER_PORT || 3000;
 app.listen(port, () => {
   console.log("Server started on port " + port);
 });
-
-//traefik
-//server and site should be one thing on same port but traefik figures it out and sends requests to server 
-//another docker traefik image reverse proxy  

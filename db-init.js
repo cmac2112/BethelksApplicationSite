@@ -119,6 +119,32 @@ con.query(
     console.log("Row inserted");
   }
 );
+con.query(
+  `INSERT INTO jobs (title, employment, description, department, classification, info) VALUES ('TEST JOB FOR FORMATTING', 'faculty', 'random description here', 'biology', 'full-time',
+   '<h1 class="border-b-2">Heading 1</h1><p>Lorem ipsum dolor sit amet,
+    consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+     labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut
+       aliquip ex ea commodo consequat. Duis aute irure
+        dolor in reprehenderit in voluptate velit esse
+         cillum dolore eu fugiat nulla pariatur.
+          Excepteur sint occaecat cupidatat non proident,
+           sunt in culpa qui officia deserunt mollit anim id est laborum.
+           </p><h1 class="border-b-2">Heading 2</h1><p>Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+              ullamco laboris nisi ut aliquip ex ea commodo consequat.
+               Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur.
+                 Excepteur sint occaecat cupidatat non proident,
+                  sunt in culpa qui officia deserunt mollit anim id est laborum.</p><h2>Heading 2</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><h3>Heading 3</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>list 1</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>list 2</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>list 3</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>list 4</li></ol>')`,
+  function (err, result) {
+    if (err) throw err;
+    console.log("row inserted");
+  }
+);
 con.query("SELECT * FROM jobs", function (err, rows) {
   if (err) throw err;
   console.log("Data received from Db:\n");
@@ -149,7 +175,7 @@ con.query(`CREATE TABLE IF NOT EXISTS jobApplications (
     skills LONGTEXT
 )`);
 con.query(
-    `INSERT INTO jobApplications (
+  `INSERT INTO jobApplications (
       hearAbout, position, workTime, start, name, curAddress, permAddress, contactInfo, preferredContact, authorized, sponsorship, everApplied, everEmployed, related, pastEmployment, highschool, university, gradUniversity, other, skills
   ) VALUES
   ('Online', 'Data Analyst', '{"fullTime":true,"partTime":false,"temporary":false,"evenings":false,"weekends":false,"nights":false}', '2023-01-01', 'John Doe', '{"address":"123 Main St","city":"Anytown","state":"USA","zip":"12345"}', '{"address":"456 Elm St","city":"Othertown","state":"USA","zip":"67890"}', '{"phone":"+1234567890","email":"john.doe@example.com"}', 'Email', 'Yes', 'No', 'No', 'Yes', 'Jane Doe', '[{"employer1":{"name":"ABC Corp","position":"Developer","start":"2020-01-01","end":"2022-01-01","duties":"Developed software"}}]', '{"name":"Anytown High School","address":"123 High St","diploma":"High School Diploma"}', '{"name":"State University","address":"456 College Ave","courseStudy":"Computer Science","diploma":"BSc"}', '{"name":"Tech University","address":"789 Tech Rd","courseStudy":"Software Engineering","diploma":"MSc"}', '{"name":"None","address":"","courseStudy":"","diploma":""}', 'JavaScript, React, Node.js'),
@@ -158,11 +184,11 @@ con.query(
   ('Online', 'Project Manager', '{"fullTime":true,"partTime":false,"temporary":false,"evenings":false,"weekends":false,"nights":false}', '2023-04-01', 'Jane Doe', '{"address":"321 Main St","city":"Anytown","state":"USA","zip":"12345"}', '{"address":"654 Elm St","city":"Othertown","state":"USA","zip":"67890"}', '{"phone":"+1234567890","email":"jane.doe@example.com"}', 'Email', 'Yes', 'No', 'No', 'Yes', 'John Doe', '[{"employer1":{"name":"DEF Corp","position":"Developer","start":"2021-01-01","end":"2023-01-01","duties":"Developed software"}}]', '{"name":"Anytown High School","address":"123 High St","diploma":"High School Diploma"}', '{"name":"State University","address":"456 College Ave","courseStudy":"Computer Science","diploma":"BSc"}', '{"name":"Tech University","address":"789 Tech Rd","courseStudy":"Software Engineering","diploma":"MSc"}', '{"name":"None","address":"","courseStudy":"","diploma":""}', 'JavaScript, React, Node.js'),
   ('Referral', 'Data Analyst', '{"fullTime":false,"partTime":true,"temporary":false,"evenings":false,"weekends":false,"nights":false}', '2023-05-01', 'Bob Smith', '{"address":"987 Oak St","city":"Sometown","state":"USA","zip":"23456"}', '{"address":"210 Pine St","city":"Anothertown","state":"USA","zip":"34567"}', '{"phone":"+2345678901","email":"bob.smith@example.com"}', 'Phone', 'Yes', 'Yes', 'Yes', 'No', 'Alice Smith', '[{"employer1":{"name":"UVW Inc","position":"Analyst","start":"2020-01-01","end":"2022-01-01","duties":"Analyzed data"}}]', '{"name":"Sometown High School","address":"234 High St","diploma":"High School Diploma"}', '{"name":"City University","address":"567 College Ave","courseStudy":"Data Science","diploma":"BSc"}', '{"name":"None","address":"","courseStudy":"","diploma":""}', '{"name":"None","address":"","courseStudy":"","diploma":""}', 'Python, SQL, Excel'),
   ('Job Fair', 'Project Manager', '{"fullTime":false,"partTime":false,"temporary":true,"evenings":false,"weekends":false,"nights":false}', '2023-06-01', 'Alice Johnson', '{"address":"432 Maple St","city":"Yourtown","state":"USA","zip":"45678"}', '{"address":"765 Birch St","city":"Thistown","state":"USA","zip":"56789"}', '{"phone":"+3456789012","email":"alice.johnson@example.com"}', 'Phone', 'No', 'No', 'No', 'Yes', 'Bob Johnson', '[{"employer1":{"name":"OPQ LLC","position":"Manager","start":"2019-01-01","end":"2021-01-01","duties":"Managed projects"}}]', '{"name":"Yourtown High School","address":"345 High St","diploma":"High School Diploma"}', '{"name":"Regional University","address":"678 College Ave","courseStudy":"Project Management","diploma":"BSc"}', '{"name":"None","address":"","courseStudy":"","diploma":""}', '{"name":"None","address":"","courseStudy":"","diploma":""}', 'Project Management, Agile, Scrum');`,
-    function (err, result) {
-      if (err) throw err;
-      console.log("Data inserted successfully");
-    }
-  );
+  function (err, result) {
+    if (err) throw err;
+    console.log("Data inserted successfully");
+  }
+);
 con.query("SELECT * FROM jobApplications", function (err, rows) {
   if (err) throw err;
   console.log("Data received from Db:\n");

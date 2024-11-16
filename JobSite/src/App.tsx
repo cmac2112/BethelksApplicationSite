@@ -17,6 +17,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/faculty/:title" element={<JobDescription />} />
         <Route path="/staff/:title" element={<JobDescription />} />
+        <Route path="/other/:title" element={<JobDescription />} />
         <Route path="/apply" element={<ApplicationPage />} />
         <Route path="/admin/newJob" element={<NewJob />} />
         <Route path="/admin/applications/view/:id" element={<ApplicationViewer />} />

@@ -28,8 +28,12 @@ const LandingPage: React.FC = () => {
   const [applicationCountsStaff, setApplicationCountsStaff] = useState<{
     [key: string]: number;
   }>({});
+  const [applicationCountsOther, setApplicationCountsOther] = useState<{
+    [key: string]: number;}>({});
+  
   const [staff, setStaff] = useState<jobPost[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [other, setOther] = useState<jobPost[]>([]);
   const { isLoggedIn } = useLogin();
 
   //vite env variables need to be imported and defined like so
@@ -53,7 +57,15 @@ const LandingPage: React.FC = () => {
       console.log(error);
       setErrorMessage('Failed to fetch faculty jobs')
       setTimeout(() => setErrorMessage(null), 5000)
-      
+    }
+    try{
+      const response = await fetch(`http://${host}:3000/api/other`);
+      const data = await response.json()
+      setOther(data);
+    }catch(error){
+      console.log(error)
+      setErrorMessage('Failed to fetch other jobs');
+      setTimeout(() => setErrorMessage(null), 5000)
     }
   };
   const handleDelete = async (id: number) => {
@@ -156,6 +168,48 @@ const LandingPage: React.FC = () => {
       </div>
     </li>
   ));
+  const mapOther = other.map((other: jobPost) => (
+    <li key={other.id}>
+      <div className="flex justify-between py-1">
+        <Link
+          to={`/other/${other.title.replace(/\s+/g, "-").toLowerCase()}`}
+          state={{ job: [other] }}
+          className="text-maroon underline hover:text-gray-500"
+        >
+          {other.title}
+        </Link>
+        {isLoggedIn && (
+          <div className="flex">
+            <Link
+              to={`/admin/applications/view/${other.title}`}
+              className="text-maroon px-2"
+            >
+              Applications
+            </Link>
+            <div className="bg-maroon h-6 w-6 rounded-full text-center text-white">
+              {/*to hold application number notification */}
+              {applicationCountsOther[other.title] || 0}
+            </div>
+            <Link
+              to={`/admin/edit/${other.title}/${other.id}`}
+              className="text-blue-800 px-2"
+            >
+              Edit
+            </Link>
+            <button
+              onClick={() => handleDelete(other.id)}
+              className="text-red-600"
+            >
+              Delete
+            </button>
+            {/* have a "view applications button here
+        that maybe also has the number of applications to it*/}
+          </div>
+        )}
+      </div>
+    </li>
+  ));
+
 
   //get initial data
   useEffect(() => {
@@ -200,11 +254,32 @@ const LandingPage: React.FC = () => {
       }
       setApplicationCountsStaff(counts);
     };
+    const fetchApplicationCountsOther = async (other: jobPost[]) => {
+      const counts: { [key: string]: number } = {};
+      for (const job of other) {
+        try {
+          const response = await fetch(
+            `http://${host}:3000/api/applications/${job.title}`
+          );
+          const data = await response.json();
+          counts[job.title] = data.length;
+          console.log("staff count:", counts);
+        } catch (error) {
+          console.log(error);
+          setErrorMessage(`Unable to get application count for some jobs`)
+          setTimeout(() => setErrorMessage(null), 5000)
+        }
+      }
+      setApplicationCountsStaff(counts);
+    };
     if (faculty.length > 0) {
       fetchApplicationCountsFaculty(faculty);
     }
     if (staff.length > 0) {
       fetchApplicationCountsStaff(staff);
+    }
+    if(other.length > 0){
+      fetchApplicationCountsOther(other)
     }
   }, [faculty, staff]);
 
@@ -247,6 +322,17 @@ const LandingPage: React.FC = () => {
             <div id="list-container">
               <ol id="staff" className="py-5">
                 {mapStaff}
+              </ol>
+              </div>
+              <h2
+              className="text-3xl border-b-2 border-gray-400 px-5 py-1"
+              id="position-header-staff"
+            >
+              Other
+            </h2>
+            <div id="list-container">
+              <ol id="other" className="py-5">
+                {mapOther}
               </ol>
               <p className="non-dis">Non Discrimination Statement</p>
               {isLoggedIn && (
