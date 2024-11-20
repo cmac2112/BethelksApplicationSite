@@ -1,25 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Layout from "../layout/Layout";
 import Error from "../modals/Error";
 import { useNavigate } from "react-router-dom";
+import Pg1 from "./pages/Pg1";
+import { ApplicationContext, ApplicationProvider } from "./applicationContext";
 
-interface Positions {
-  id: number;
-  title: string;
-  employment: string;
-  description: string;
-  department: string;
-  classification: string;
-  info: string;
-}
-interface WorkTime {
-  fullTime: boolean;
-  partTime: boolean;
-  temporary: boolean;
-  evenings: boolean;
-  weekends: boolean;
-  nights: boolean;
-}
 interface Address {
   address: string;
   city: string;
@@ -49,30 +34,35 @@ interface School{
   diploma: string
 }
 const applicationPage = () => {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const {
+    errorMessage,
+      setErrorMessage,
+      openPositions,
+      isFaculty,
+      setIsFaculty,
+      hearAbout,
+      setHearAbout,
+      position,
+      setPosition,
+      workTime,
+      setWorkTime,
+      handleWorkTimeChange,
+      startTime,
+      setStartTime,
+      fullName,
+      setFullName,
+      currentAddress,
+      setCurrentAddress,
+      permanentAddress,
+      setPermanentAddress
+       } = useContext(ApplicationContext)
+
   const navigate = useNavigate();
-  //below states are for page rendering
-  const [openPositions, setOpenPositions] = useState<Positions[]>([]);
-  //state management for fetching open positions
-  const [isFaculty, setisFaculty] = useState(false);
   //if a position is faculty or not, display other upload file inputs
   const [optout, setOptout] = useState(false); //opt out of experience section
 
   //below are application information
-  const [hearAbout, setHearAbout] = useState<string>(
-    localStorage.getItem("hearAbout") || ""
-  );
-  const [position, setPosition] = useState<string>("");
-  const [workTime, setWorkTime] = useState<WorkTime>(
-    JSON.parse(
-      localStorage.getItem("workTime") ||
-        '{"fullTime":false,"partTime":false,"temporary":false,"evenings":false,"weekends":false,"nights":false}'
-    )
-  );
-  const [startTime, setStartTime] = useState<string>(localStorage.getItem('start') || '')
-  const [fullName, setFullName] = useState<string>(localStorage.getItem("name") || '');
-  const [currentAddress, setCurrentAddress] = useState<Address>(JSON.parse(localStorage.getItem("curAddress") || '{"address":"","city":"","state":"","zip":""}'));
-  const [permanentAddress, setPermanantAddress] = useState<Address>(JSON.parse(localStorage.getItem("permAddress") || '{"address":"","city":"","state":"","zip":""}'));
+
   const [contact, setContact] = useState<ContactInfo>(JSON.parse(localStorage.getItem("contactInfo") || `{"phone": "", "email": ""}`));
   const [preferredContact, setPreferredContact] = useState<string>(localStorage.getItem("preferredContact") || ''); 
   const [legalWork, setLegalWork] = useState<string>(localStorage.getItem("authorized") || '');
@@ -127,33 +117,9 @@ const applicationPage = () => {
 
   // got to be an easier way than all of these ^
 
-  useEffect(() => {
-    getPositionOpenings();
-  }, []);
-
   //get current posisitions for <select>
-  let host = import.meta.env.VITE_HOST;
-  const getPositionOpenings = async () => {
-    try {
-      let response = await fetch(`http://${host}:3000/api/jobs`);
-      let data = await response.json();
 
-      console.log("open positions", data);
-      setOpenPositions(data);
-    } catch (error) {
-      console.error("unable to fetch open positions");
-      setErrorMessage("Unable to fetch open positions, please try again");
-    }
-  };
-
-  const handleWorkTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-
-    setWorkTime((prevState) => ({
-      ...prevState,
-      [name]: checked,
-    }));
-  };
+  
 
   useEffect(() => {
     localStorage.setItem("hearAbout", hearAbout);
@@ -270,8 +236,8 @@ const applicationPage = () => {
       setErrorMessage("Form was unable to be sent");
     }
   };
+  
   return (
-    <>
       <Layout>
         {errorMessage && (
           <div className="sticky top-0 w-full p-4" id="error">
@@ -372,6 +338,7 @@ const applicationPage = () => {
                 name="job-applying-for"
                 id="job-applying-for"
                 className="bg-slate-200"
+                value={position}
                 onChange={(e) => {
                   const selectedTitle = e.target.value;
                   setPosition(selectedTitle);
@@ -383,7 +350,7 @@ const applicationPage = () => {
 
                   // If found, set the employment type to state
                   if (selectedPosition) {
-                    setisFaculty(
+                    setIsFaculty(
                       selectedPosition.employment === "faculty" ? true : false
                     );
                   }
@@ -581,7 +548,7 @@ const applicationPage = () => {
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 value={permanentAddress.address}
                 onChange={(e) =>
-                  setPermanantAddress({
+                  setPermanentAddress({
                     ...permanentAddress,
                     address: e.target.value,
                   })
@@ -597,7 +564,7 @@ const applicationPage = () => {
                 value={permanentAddress.city}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
-                  setPermanantAddress({
+                  setPermanentAddress({
                     ...permanentAddress,
                     city: e.target.value,
                   })
@@ -613,7 +580,7 @@ const applicationPage = () => {
                 value={permanentAddress.state}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
-                  setPermanantAddress({
+                  setPermanentAddress({
                     ...permanentAddress,
                     state: e.target.value,
                   })
@@ -629,7 +596,7 @@ const applicationPage = () => {
                 value={permanentAddress.zip}
                 className="border border-gray-200 rounded-xl p-2 w-1/2"
                 onChange={(e) =>
-                  setPermanantAddress({
+                  setPermanentAddress({
                     ...permanentAddress,
                     zip: e.target.value,
                   })
@@ -1950,7 +1917,6 @@ const applicationPage = () => {
           </form>
         </div>
       </Layout>
-    </>
   );
 };
 
