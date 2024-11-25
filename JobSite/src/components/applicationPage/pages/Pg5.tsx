@@ -1,10 +1,33 @@
-import React from 'react'
+import { useState } from 'react'
+//import { ApplicationContext } from '../applicationContext';
 
-const Pg4 = () => {
-    const optout = false;
+interface EmploymentHistory {
+  employer: string;
+  address: string;
+  positionTitle: string;
+  startDate: string;
+  endDate: string;
+  duties: string;
+  supervisor: string;
+  supervisorTitle: string;
+  contact: string;
+  reasonLeft: string;
+}
+const Pg5 = () => {
+    //const { employmentHistories } = useContext(ApplicationContext);
+    const [employmentHistory1, setEmploymentHistory1] = useState<EmploymentHistory>({
+      employer: '',
+      address: '',
+      positionTitle: '',
+      startDate: '',
+      endDate: '',
+      duties: '',
+      supervisor: '',
+      supervisorTitle: '',
+      contact: '',
+      reasonLeft: ''
+    })
   return (
-    <>
-     {!optout && (
               <div className="px-5 flex flex-col">
                 <h2 className="py-5 text-xl">
                   Present or Most Recent Employer
@@ -170,9 +193,7 @@ const Pg4 = () => {
                     })
                   }
                 />
-   
-    )}
-    </>
+                </div>
 
   )
 }

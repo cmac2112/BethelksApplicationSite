@@ -1,15 +1,12 @@
-import React, { useContext } from 'react'
-import Layout from '../../layout';
+import { useContext } from 'react'
 import { ApplicationContext } from '../applicationContext';
-import Error from '../../modals/Error';
-
 const Pg1  = () => {
-  const {errorMessage, setErrorMessage,
+  const {
     hearAbout, setHearAbout,
     position, setPosition,
-    isFaculty, setIsFaculty,
+    setIsFaculty,
     openPositions,
-    workTime, setWorkTime,
+    workTime,
     handleWorkTimeChange,
     startTime, setStartTime
    } = useContext(ApplicationContext);
