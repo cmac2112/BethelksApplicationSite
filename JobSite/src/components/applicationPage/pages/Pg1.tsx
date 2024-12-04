@@ -12,6 +12,7 @@ const Pg1 = () => {
     handleWorkTimeChange,
     startTime,
     setStartTime,
+    setPositionId,
   } = useContext(ApplicationContext);
 
   return (
@@ -106,6 +107,7 @@ const Pg1 = () => {
           onChange={(e) => {
             const selectedTitle = e.target.value;
             setPosition(selectedTitle);
+            
 
             // Find the position that matches the selected title
             const selectedPosition = openPositions.find(
@@ -114,6 +116,7 @@ const Pg1 = () => {
 
             // If found, set the employment type to state
             if (selectedPosition) {
+              setPositionId(selectedPosition.id)
               setIsFaculty(
                 selectedPosition.employment === "faculty" ? true : false
               );

@@ -1,6 +1,8 @@
 import Bcimage from "../../assets/Bethel College_signature_trimmed.png"
 import { Link } from "react-router-dom"
+import { useAuth } from "../../context/LoginContext"
 const Footer = () => {
+  const { isLoggedIn, login, logout} = useAuth();
   return (
     <div id="footer-container" className='container mx-auto bg-white flex justify-center'>
       <div className="grid grid-cols-2 gap-12 px-16 py-8">
@@ -15,7 +17,7 @@ const Footer = () => {
         <Link to="/" className="text-sm text-nowrap py-1 ">Home</Link>
         <Link to="/apply" className="text-sm text-nowrap py-1">Apply</Link>
         <Link to="https://www.bethelks.edu" className="text-sm text-nowrap py-1">Main Site</Link>
-        <button className="text-sm text-nowrap py-1 text-start">Administrative Login</button>
+        <button onClick={isLoggedIn ? logout : login} className="text-sm text-nowrap py-1 text-start">Administrative Login</button>
       </div>
     </div>
     </div>

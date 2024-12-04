@@ -7,7 +7,6 @@ export const Header = () => {
   //const [ profile, setProfile ] = useState<any>(null);
 
   const { isLoggedIn, login, logout, userInfo } = useAuth();
-  console.log('header user info',userInfo)
   return (
     <div className="container p-3 flex items-center justify-start drop-shadow-md" id="header-container">
       <div className="px-3" id="logo-container">
@@ -24,13 +23,10 @@ export const Header = () => {
       <div className="ml-auto flex items-end px-2">
 
       <button className="p-2" onClick={isLoggedIn ? logout : login}>
-          {isLoggedIn ? 'Log out' : 'Log In'}
+          {isLoggedIn ? 'Log out' : ''}
         </button>
       {userInfo && (
-        <>
         <p className="p-2">Hello, {userInfo.name}</p>
-        <img src={userInfo.picture} className="h-10 w-10 rounded-full" />
-        </>
       )}
       
         </div>

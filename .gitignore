@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 *.env
 *.json 
+upload/
 #client secrets for googleOauth comes in a json file

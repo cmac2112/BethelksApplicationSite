@@ -74,10 +74,14 @@ const LandingPage: React.FC = () => {
         `http://${host}:3000/api/jobs/delete/${id}`,
         {
           method: "DELETE",
-        }
+          headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}` 
+          },
+        },
       );
       const data = await response.json();
-      console.log(data);
+      console.log(data)
       setFaculty([]);
       setStaff([]);
       getData();
@@ -227,7 +231,6 @@ const LandingPage: React.FC = () => {
           );
           const data = await response.json();
           counts[job.title] = data.length;
-          console.log("faculty count", counts);
         } catch (error) {
           console.log(error);
           setErrorMessage(`Unable to get application count for some jobs`)
@@ -245,7 +248,6 @@ const LandingPage: React.FC = () => {
           );
           const data = await response.json();
           counts[job.title] = data.length;
-          console.log("staff count:", counts);
         } catch (error) {
           console.log(error);
           setErrorMessage(`Unable to get application count for some jobs`)
@@ -263,7 +265,6 @@ const LandingPage: React.FC = () => {
           );
           const data = await response.json();
           counts[job.title] = data.length;
-          console.log("staff count:", counts);
         } catch (error) {
           console.log(error);
           setErrorMessage(`Unable to get application count for some jobs`)

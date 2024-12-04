@@ -113,7 +113,8 @@ const NewJob = () => {
     const response = await fetch(url ,{
       method,
       headers:{
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("authToken")}` 
       },
       body: JSON.stringify({
         title: jobTitle,

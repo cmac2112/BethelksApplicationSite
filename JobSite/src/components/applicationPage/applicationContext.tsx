@@ -103,7 +103,7 @@ interface ApplicationContextType {
   references: File | null;
   setReferences: (references: File | null) => void;
   statementOfTeach: File | null;
-  setStatementOfTeach:(statementOfTeach: File | null) => void;
+  setStatementOfTeach: (statementOfTeach: File | null) => void;
   diversityStatement: File | null;
   setDiversityStatement: (diversityStatement: File | null) => void;
   graduateTranscript: File | null;
@@ -111,7 +111,8 @@ interface ApplicationContextType {
   performanceRec: File | null;
   setPerformanceRec: (performanceRec: File | null) => void;
   handleSubmit: (e: React.FormEvent) => void;
-
+  positionId: number;
+  setPositionId: (positionId: number) => void;
 }
 
 export const ApplicationContext = createContext<ApplicationContextType>({
@@ -198,6 +199,8 @@ export const ApplicationContext = createContext<ApplicationContextType>({
   performanceRec: null,
   setPerformanceRec: () => {},
   handleSubmit: () => {},
+  setPositionId: () => {},
+  positionId: 0
 });
 
 interface ApplicationProivderProps {
@@ -207,11 +210,12 @@ interface ApplicationProivderProps {
 export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
   children,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openPositions, setOpenPositions] = useState<Positions[]>([]);
   const [isFaculty, setIsFaculty] = useState<boolean>(false);
   const [position, setPosition] = useState<string>("");
+  const [positionId, setPositionId] = useState<number>(0)
   const [hearAbout, setHearAbout] = useState<string>(
     localStorage.getItem("hearAbout") || ""
   );
@@ -304,21 +308,22 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
   useEffect(() => {
     getPositionOpenings();
   }, []);
-  const [employmentHistories, setEmploymentHistories] = useState<EmploymentHistory[]>([
+  const [employmentHistories, setEmploymentHistories] = useState<
+    EmploymentHistory[]
+  >([
     {
-      employer: '',
-      address: '',
-      positionTitle: '',
-      startDate: '',
-      endDate: '',
-      duties: '',
-      supervisor: '',
-      supervisorTitle: '',
-      contact: '',
-      reasonLeft: ''
-    }
+      employer: "",
+      address: "",
+      positionTitle: "",
+      startDate: "",
+      endDate: "",
+      duties: "",
+      supervisor: "",
+      supervisorTitle: "",
+      contact: "",
+      reasonLeft: "",
+    },
   ]);
-
 
   const getPositionOpenings = async () => {
     try {
@@ -341,11 +346,10 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
     }));
   };
 
-
-
   useEffect(() => {
     localStorage.setItem("hearAbout", hearAbout);
     localStorage.setItem("position", position);
+    localStorage.setItem("positionId", positionId.toString())
     localStorage.setItem("workTime", JSON.stringify(workTime));
     localStorage.setItem("start", startTime);
     localStorage.setItem("name", fullName);
@@ -370,6 +374,7 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
     const formData = new FormData();
     formData.append("hearAbout", hearAbout);
     formData.append("position", position);
+    formData.append("positionId", positionId.toString())
     formData.append("workTime", JSON.stringify(workTime)); // Assuming workTime is an object
     formData.append("start", startTime);
     formData.append("name", fullName);
@@ -382,7 +387,6 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
     formData.append("everApplied", applied);
     formData.append("everEmployed", employed);
     formData.append("related", related);
-    /*
     if (resume) {
       formData.append("resume", resume);
     }
@@ -393,7 +397,7 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
       formData.append("references", references)
     }
     if(statementOfTeach){
-      formData.append("statementOfTeaching", statementOfTeach)
+      formData.append("statementOfTeach", statementOfTeach)
     }
     if(diversityStatement){
       formData.append("diversityStatement",diversityStatement)
@@ -404,8 +408,6 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
     if(performanceRec){
       formData.append("performanceRec", performanceRec)
     }
-      */
-    console.log(employmentHistories);
     formData.append("pastEmployment", JSON.stringify(employmentHistories));
     formData.append("highschool", JSON.stringify(highSchool));
     formData.append("university", JSON.stringify(undergrad));
@@ -413,6 +415,7 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
     formData.append("other", JSON.stringify(other));
     formData.append("skills", skills);
     console.log("form data", formData.get("pastEmployment"));
+    console.log(resume)
 
     try {
       const host = import.meta.env.VITE_HOST;
@@ -425,8 +428,8 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
         for (let [key, value] of formData.entries()) {
           console.log(`${key}: ${value}`);
         }
-        localStorage.clear();
-        navigate("/success");
+        //localStorage.clear();
+        //navigate("/success");
       } else {
         console.error("error submitting form");
         setErrorMessage("Bad response from server, Form not submitted");
@@ -435,7 +438,6 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
       console.error("error submitting form", error);
       setErrorMessage("Form was unable to be sent");
     }
-    console.log('submit ran')
   };
 
   return (
@@ -501,7 +503,9 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
         setGraduateTranscript,
         performanceRec,
         setPerformanceRec,
-        handleSubmit
+        handleSubmit,
+        setPositionId,
+        positionId
       }}
     >
       {children}

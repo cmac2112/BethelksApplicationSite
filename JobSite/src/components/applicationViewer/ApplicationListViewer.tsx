@@ -38,6 +38,13 @@ interface ApplicationType {
   gradUniversity: string;
   other: string;
   skills: string;
+  resume: string;
+  coverLetter: string; //all file paths are stored as strings and will be 
+  references: string; //parsed into a download link for a user to download and look at them
+  statementOfTeach: string;
+  diversityStatement: string;
+  graduateTranscript: string;
+  performanceRecording: string;
 }
 
 //maybe scrap this page and put show applications next to edit button on landing page
@@ -51,8 +58,13 @@ const ApplicationListViewer = () => {
   const getApplications = async () => {
     try {
       let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
-      let data: ApplicationType[] = await response.json();
-
+      let data = await response.json();
+      if (data.message === 'no applications, or not found') {
+        setErrorMessage('No applications found for this job.');
+        setTimeout(() => setErrorMessage(null), 5000);
+        return;
+      }
+      try{
       const parsedData = data.map((application: ApplicationType) => ({
         ...application,
         pastEmployment: JSON.parse(
@@ -61,6 +73,9 @@ const ApplicationListViewer = () => {
       }));
       console.log(parsedData);
       setApplications(parsedData);
+    }catch(error){
+      console.log(error)
+    }
     } catch (error) {
       console.error(error);
       setErrorMessage(`Unable to get applications for job id: ${id}`);
@@ -112,6 +127,10 @@ const ApplicationListViewer = () => {
         `http://${host}:3000/api/applications/delete/${id}`,
         {
           method: "DELETE",
+          headers:{
+            "Content-type":"application/json",
+            "Authorization":`Bearer ${localStorage.getItem("authToken")}`
+          }
         }
       );
       const data = await response.json();
@@ -162,6 +181,9 @@ const ApplicationListViewer = () => {
             id="background-container"
           >
             <div className="p-2 md:p-5 bg-white md:w-7/8">
+            {!parsedApplications && (
+              <p>No applications</p>
+            )}
               {parsedApplications.map((application, index) => (
                 <div key={index} className="py-5">
                   <div className="flex justify-between border-b-2 border-gray-400">
