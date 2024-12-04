@@ -59,6 +59,7 @@ const ApplicationListViewer = () => {
     try {
       let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
       let data = await response.json();
+      console.log(data.message)
       if (data.message === 'no applications, or not found') {
         setErrorMessage('No applications found for this job.');
         setTimeout(() => setErrorMessage(null), 5000);
@@ -172,6 +173,11 @@ const ApplicationListViewer = () => {
   } else {
     return (
       <Layout>
+        {errorMessage && (
+          <div className="sticky top-0 w-full p-4" id="error">
+            <Error errorString={errorMessage} />
+          </div>
+        )}
         <div className="container max-w-full bg-maroon" id="job-page">
           <h2 className="text-center text-2xl text-white p-2" id="job-header">
             View Applications

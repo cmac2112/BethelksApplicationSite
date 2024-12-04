@@ -59,7 +59,6 @@ export const AuthProvider: React.FC<LoggedInProviderProps> = ({ children }) => {
             setUserInfo(userInfoData);
             console.log('User Info:', userInfoData);
             try {
-                console.log('before user info check');
                 const response = await fetch(`http://${import.meta.env.VITE_HOST}:3000/api/authorized/${userInfoData.email}`);
                 if (!response.ok) {
                   // Log the response text if it's not JSON
@@ -67,7 +66,12 @@ export const AuthProvider: React.FC<LoggedInProviderProps> = ({ children }) => {
                   console.error('Error response:', text);
                   throw new Error('Failed to fetch authorized user info');
                 }
-                const data = await response.json();
+                //const data = await response.json();
+                if(userInfo){
+                localStorage.setItem('name', userInfo.name)
+                }else{
+                    localStorage.getItem('name')
+                }
                 setIsLoggedIn(true)
               } catch (err) {
                 console.error('Error fetching authorized user info:', err);
@@ -101,13 +105,7 @@ export const AuthProvider: React.FC<LoggedInProviderProps> = ({ children }) => {
         if (token) {
             setIsLoggedIn(true);
         }
-        const handleBeforeUnload = () =>{
-            localStorage.removeItem('authToken')
-        }
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
+        
     }, []);
     
     return (

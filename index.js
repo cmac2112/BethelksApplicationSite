@@ -345,7 +345,49 @@ app.post("/api/apply", upload.any(), (req, res) => {
   });
 });
 
+app.post("/api/authorized/add", validateToken, (req, res)=>{
+  console.log(req.method + " request for " + req.url);
+
+  const newUser = req.body.email
+  const sql = `INSERT INTO authorizedusers (email) VALUES (?)`
+  con.query(sql, [newUser], function(err){
+    if(err){
+      console.error('error inserting new authorized user', err)
+      res.status(500).send({"error":"internal server error"})
+      return;
+    }
+    res.status(200).send({"message":"user inserted successfully"})
+
+  })
+})
+
 //#############################posts^#####################################
+
+app.delete("/api/authorized/delete/:email", validateToken, (req, res)=>{
+  const { email } = req.params;
+  console.log(req.method + " request for " + req.url + " with email " + email)
+  //ensure this operation will not make authorized users fall below 2 users
+  con.query(`SELECT * FROM authorizedusers`, function(err, rows){
+    if(err){
+      console.error('error selecting authorized users', err)
+      res.status(500).json({error:"error selecting authorized users"})
+    }
+    if(rows.length <= 2){
+      res.status(401).json({error:"there must be 2 authorized users"})
+      return;
+    }
+    con.query(`DELETE FROM authorizedusers WHERE email = ?`, [email], function(err, result){
+      if(err){
+        console.error('error deleting authorized user');
+        res.status(500).send({"error":"could not delete user"})
+        return;
+      }
+      res.status(200).send({"success":"user deleted"})
+    })
+
+  })
+})
+
 app.delete("/api/applications/delete/:id", validateToken, (req, res) => {
   const { id } = req.params;
   const intId = parseInt(id, 10);
@@ -458,6 +500,18 @@ app.get("/api/authorized/:email", (req, res) => {
     }
   });
 });
+
+app.get("/api/authorized", validateToken, (req, res) =>{
+  console.log(req.method + " reqest for " + req.url);
+  const sql = `SELECT * FROM authorizedusers`;
+  con.query(sql, function(err, result){
+    if(err){
+      console.error('error fetching authorized users', err);
+      return res.status(500).send({"error":"internal server error"})
+    }
+    res.send(result)
+  })
+})
 //validate users trying to access files
 app.get('/upload/:filename', validateToken, async (req, res) => {
   const filename = req.params.filename;

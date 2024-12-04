@@ -25,8 +25,8 @@ export const Header = () => {
       <button className="p-2" onClick={isLoggedIn ? logout : login}>
           {isLoggedIn ? 'Log out' : ''}
         </button>
-      {userInfo && (
-        <p className="p-2">Hello, {userInfo.name}</p>
+      {isLoggedIn && (
+        <p className="p-2">Hello, {userInfo?.name || localStorage.getItem('name')}</p>
       )}
       
         </div>

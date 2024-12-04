@@ -8,7 +8,7 @@ import NewJob from './components/newJob';
 import ApplicationViewer from './components/applicationViewer';
 import Success from './components/success';
 import { ApplicationProvider } from './components/applicationPage/applicationContext.tsx'
-
+import ConfigurePage from './components/configurePage/configurePage.tsx';
 function App() {
   return (
 
@@ -25,6 +25,7 @@ function App() {
         <Route path="/admin/applications/view/:id" element={<ApplicationViewer />} />
         <Route path="/admin/edit/:title/:id" element={<NewJob />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/admin/configure" element={<ConfigurePage />} />
         </Routes>
         </ApplicationProvider>
         </Router>
