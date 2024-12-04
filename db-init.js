@@ -194,10 +194,24 @@ con.query("SELECT * FROM jobApplications", function (err, rows) {
   console.log("Data received from Db:\n");
   console.log(rows);
 });
-con.query(`CREATE TABLE IF NOT EXISTS testFile(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    data LONGBLOB NOT NULL,
-    mime_type VARCHAR(50) NOT NULL);`);
+
+con.query(
+  `CREATE TABLE IF NOT EXISTS authorizedUsers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255)
+  )`,
+  function (err, rows) {
+    if (err) throw err;
+  }
+);
+
+con.query(
+  `INSERT INTO authorizedUsers (email) VALUES ('cadenamcarthur@bethelks.edu'), ('dpenner@bethelks.edu')`,
+  function (err, rows) {
+    if (err) throw err;
+    console.log("data recieved");
+    console.log(rows);
+  }
+);
 
 con.end();

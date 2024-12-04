@@ -2,17 +2,17 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import { LoggedInProvider } from './context/LoginContext.tsx'
-import { ApplicationProvider } from './components/applicationPage/applicationContext.tsx'
+import { AuthProvider } from './context/LoginContext.tsx'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 createRoot(document.getElementById('root')!).render(
 
   <StrictMode>
-    <LoggedInProvider>
-      <ApplicationProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <AuthProvider>
     <App />
-    </ApplicationProvider>
-    </LoggedInProvider>
+    </AuthProvider>
+    </GoogleOAuthProvider>
   </StrictMode>,
 
 )

@@ -23,6 +23,69 @@ let con;
 function connectWithRetry() {
   con = mysql.createConnection(connectionConfig);
 
+
+  //custom middleware to protect routes and files, this will need to validate if a user is authorized
+  //currently unchanged at the moment
+  const validateToken = async (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      console.log("missing token");
+      return res.status(401).send("Missing token");
+    }
+    try {
+      const userInfoResponse = await fetch(GOOGLE_USERINFO_API, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!userInfoResponse.ok) {
+        return res.status(401).send("Invalid token");
+      }
+  
+      const userInfo = await userInfoResponse.json();
+      if (userInfo.hd !== "bethelks.edu") {
+        return res.status(401).send("invalid email domain");
+      }
+    } catch (error) {
+      console.log("error here");
+      return res.status(401).send("unable to authenticate email domain");
+    }
+  
+  
+    try {
+      const response = await fetch(
+        `https://oauth2.googleapis.com/tokeninfo?access_token=${token}`
+      );
+  
+      if (!response.ok) {
+        console.log("invalid token, response failed");
+        return res.status(401).send("Invalid token");
+      }
+  
+      const tokenInfo = await response.json();
+      try{
+      const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+      const userInfo = await userInfoResponse.json();
+      console.log(userInfo)
+      req.img = userInfo.picture
+      req.name = userInfo.name
+      req.userId = tokenInfo.sub; // Attach token info to the request object
+      next(); // Proceed to the next middleware or route handler
+  }catch(error){
+    console.error("userInfo error", error);
+    return res.status(402).send("failed to get user info")
+  }
+    } catch (error) {
+      console.error("Token validation error:", error);
+      return res.status(401).send("Invalid token");
+    }
+  };
+
   con.connect(function (err) {
     console.log("Connecting to MySQL");
     if (err) {
@@ -286,6 +349,28 @@ app.get("/api/file", (req, res) => {
   });
 });
 //##########################################################################################
+
+app.get("/api/authorized/:email", (req, res) => {
+  const { email } = req.params;
+  console.log(req.method + " request for " + req.url);
+  
+  const sql = `SELECT * FROM authorizedusers WHERE email = ?`;
+  con.query(sql, [email], function (err, results) {
+    if (err) {
+      console.error(`Error fetching authorized user:`, err);
+      return res.status(500).send({ message: "Internal server error" });
+    }
+    
+    if (results.length > 0) {
+      // User is authorized
+      res.status(200).send({ message: "User is authorized" });
+    } else {
+      // User is not authorized
+      res.status(403).send({ message: "You are not authorized" });
+    }
+  });
+});
+
 
 // Serve static files from the React app
 //build the app with `npm run build`, then serve files from this directory

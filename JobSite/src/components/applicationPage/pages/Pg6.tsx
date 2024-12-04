@@ -1,7 +1,17 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
+import { ApplicationContext } from '../applicationContext';
 const Pg6 = () => {
+  const { handleSubmit, setErrorMessage } = useContext(ApplicationContext)
     const [agree, setAgree] = React.useState<boolean>(false);
+
+    const handleButtonClick = (e: React.FormEvent)=>{
+      if(agree){
+        handleSubmit(e)
+      }else{
+        setErrorMessage('Please answer all required sections on this page.')
+        setTimeout(()=>setErrorMessage(''), 6000)
+      }
+    }
   return (
     <>
     <p className="font-semibold text-sm p-5">
@@ -68,7 +78,8 @@ const Pg6 = () => {
             <div className="flex justify-center">
               <input
                 type="submit"
-                className="border border-maroon rounded-xl bg-maroon text-white p-2"
+                className="border border-maroon rounded-xl bg-maroon text-white p-2 hover:cursor-pointer hover:bg-gray-400"
+                onClick={handleButtonClick}
               ></input>
             </div>
     </>

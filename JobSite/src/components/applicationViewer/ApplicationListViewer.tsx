@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../layout";
-import { useLogin } from "../../context/LoginContext";
+import { useAuth } from "../../context/LoginContext";
 import { useParams } from "react-router-dom";
 import Error from "../modals/Error";
 
@@ -42,7 +42,7 @@ interface ApplicationType {
 
 //maybe scrap this page and put show applications next to edit button on landing page
 const ApplicationListViewer = () => {
-  const { isLoggedIn, toggleLogIn } = useLogin();
+  const { isLoggedIn, login } = useAuth();
   const [applications, setApplications] = useState<ApplicationType[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { id } = useParams<{ id: string }>();
@@ -143,7 +143,7 @@ const ApplicationListViewer = () => {
         >
           <div className="p-5 bg-white w-3/4">
             <p>Doesnt look like you are logged in</p>
-            <button className="text-xl text-maroon" onClick={toggleLogIn}>
+            <button className="text-xl text-maroon" onClick={login}>
               Log in Now
             </button>
           </div>
@@ -311,7 +311,7 @@ const ApplicationListViewer = () => {
                       <div key={index} className="py-3 flex justify-between border-b-2">
                         <div id="info-container-1" className="w-1/4">
                         <div className="py-2">
-                        <div className="font-semibold">Company: </div>
+                        <div className="font-semibold">Company {index + 1}: </div>
                         <p>{employment.employer}</p>
                         </div>
                         <div className="py-2">

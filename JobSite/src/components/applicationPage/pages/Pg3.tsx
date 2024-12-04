@@ -24,6 +24,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setLegalWork(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="legal-yes">
                 Yes
@@ -39,6 +40,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setLegalWork(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="legal-no">
                 No
@@ -57,6 +59,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setSponsorship(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="sponsor-yes">
                 Yes
@@ -72,6 +75,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setSponsorship(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="sponsor-no">
                 No
@@ -90,6 +94,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setApplied(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="applied-yes">
                 Yes
@@ -105,6 +110,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setApplied(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="applied-no">
                 No
@@ -123,6 +129,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setEmployed(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="employed-yes">
                 Yes
@@ -138,6 +145,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setEmployed(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="employed-no">
                 No
@@ -156,6 +164,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setRelated(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="related-yes">
                 Yes
@@ -171,6 +180,7 @@ const Pg3 = () => {
                 onChange={(e) => {
                   setRelated(e.target.value);
                 }}
+                required
               />
               <label className="px-1" htmlFor="related-no">
                 No

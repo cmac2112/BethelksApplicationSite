@@ -7,11 +7,13 @@ import ApplicationPage from './components/applicationPage';
 import NewJob from './components/newJob';
 import ApplicationViewer from './components/applicationViewer';
 import Success from './components/success';
+import { ApplicationProvider } from './components/applicationPage/applicationContext.tsx'
 
 function App() {
   return (
 
-    <Router>
+      <Router>
+        <ApplicationProvider>
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<LandingPage />} />
@@ -24,7 +26,9 @@ function App() {
         <Route path="/admin/edit/:title/:id" element={<NewJob />} />
         <Route path="/success" element={<Success />} />
         </Routes>
-    </Router>
+        </ApplicationProvider>
+        </Router>
+    
   )
 }
 export default App

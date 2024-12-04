@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../layout";
 import { Link } from "react-router-dom";
-import { useLogin } from "../../context/LoginContext";
+import { useAuth } from "../../context/LoginContext";
 import Error from "../modals/Error";
 
 interface jobPost {
@@ -34,7 +34,7 @@ const LandingPage: React.FC = () => {
   const [staff, setStaff] = useState<jobPost[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [other, setOther] = useState<jobPost[]>([]);
-  const { isLoggedIn } = useLogin();
+  const { isLoggedIn } = useAuth();
 
   //vite env variables need to be imported and defined like so
   const host = import.meta.env.VITE_HOST;
@@ -270,7 +270,7 @@ const LandingPage: React.FC = () => {
           setTimeout(() => setErrorMessage(null), 5000)
         }
       }
-      setApplicationCountsStaff(counts);
+      setApplicationCountsOther(counts);
     };
     if (faculty.length > 0) {
       fetchApplicationCountsFaculty(faculty);

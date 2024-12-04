@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useLogin } from "../../context/LoginContext";
+import { useAuth } from "../../context/LoginContext";
 import Layout from "../layout";
 import Quill from "quill";
 import 'quill/dist/quill.snow.css';
@@ -35,7 +35,7 @@ const NewJob = () => {
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
-  const { isLoggedIn, toggleLogIn } = useLogin();
+  const { isLoggedIn, login } = useAuth();
   
   const getData = async (id: string) =>{
     try{
@@ -144,7 +144,7 @@ const NewJob = () => {
         >
           <div className="p-5 bg-white w-3/4">
             <p>Doesnt look like you are logged in</p>
-            <button className="text-xl text-maroon" onClick={toggleLogIn}>
+            <button className="text-xl text-maroon" onClick={login}>
               Log in Now
             </button>
           </div>

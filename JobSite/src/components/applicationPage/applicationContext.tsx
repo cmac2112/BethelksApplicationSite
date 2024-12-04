@@ -1,5 +1,6 @@
 //hold context for a logged in user here
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 let host = import.meta.env.VITE_HOST;
 
 interface Positions {
@@ -109,6 +110,8 @@ interface ApplicationContextType {
   setGraduateTranscript: (graduateTranscript: File | null) => void;
   performanceRec: File | null;
   setPerformanceRec: (performanceRec: File | null) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+
 }
 
 export const ApplicationContext = createContext<ApplicationContextType>({
@@ -126,7 +129,7 @@ export const ApplicationContext = createContext<ApplicationContextType>({
       '{"fullTime":false,"partTime":false,"temporary":false,"evenings":false,"weekends":false,"nights":false}'
   ),
   setWorkTime: () => {},
-  handleWorkTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => {},
+  handleWorkTimeChange: () => {},
   startTime: localStorage.getItem("start") || "",
   setStartTime: () => {},
   fullName: localStorage.getItem("name") || "",
@@ -194,6 +197,7 @@ export const ApplicationContext = createContext<ApplicationContextType>({
   setGraduateTranscript: () => {},
   performanceRec: null,
   setPerformanceRec: () => {},
+  handleSubmit: () => {},
 });
 
 interface ApplicationProivderProps {
@@ -203,6 +207,7 @@ interface ApplicationProivderProps {
 export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
   children,
 }) => {
+  const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [openPositions, setOpenPositions] = useState<Positions[]>([]);
   const [isFaculty, setIsFaculty] = useState<boolean>(false);
@@ -257,9 +262,6 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
   const [related, setRelated] = useState<string>(
     localStorage.getItem("related") || ""
   );
-  const [employmentHistories, setEmploymentHistories] = useState<
-    EmploymentHistory[]
-  >([]);
   const [highSchool, setHighSchool] = useState<School>(
     JSON.parse(
       localStorage.getItem("highschool") ||
@@ -302,6 +304,21 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
   useEffect(() => {
     getPositionOpenings();
   }, []);
+  const [employmentHistories, setEmploymentHistories] = useState<EmploymentHistory[]>([
+    {
+      employer: '',
+      address: '',
+      positionTitle: '',
+      startDate: '',
+      endDate: '',
+      duties: '',
+      supervisor: '',
+      supervisorTitle: '',
+      contact: '',
+      reasonLeft: ''
+    }
+  ]);
+
 
   const getPositionOpenings = async () => {
     try {
@@ -388,8 +405,8 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
       formData.append("performanceRec", performanceRec)
     }
       */
-    //console.log(employmentHistory);
-    //formData.append("pastEmployment", JSON.stringify(employmentHistory));
+    console.log(employmentHistories);
+    formData.append("pastEmployment", JSON.stringify(employmentHistories));
     formData.append("highschool", JSON.stringify(highSchool));
     formData.append("university", JSON.stringify(undergrad));
     formData.append("gradUniversity", JSON.stringify(grad));
@@ -409,7 +426,7 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
           console.log(`${key}: ${value}`);
         }
         localStorage.clear();
-        //navigate("/success");
+        navigate("/success");
       } else {
         console.error("error submitting form");
         setErrorMessage("Bad response from server, Form not submitted");
@@ -418,6 +435,7 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
       console.error("error submitting form", error);
       setErrorMessage("Form was unable to be sent");
     }
+    console.log('submit ran')
   };
 
   return (
@@ -482,7 +500,8 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
         graduateTranscript,
         setGraduateTranscript,
         performanceRec,
-        setPerformanceRec
+        setPerformanceRec,
+        handleSubmit
       }}
     >
       {children}
