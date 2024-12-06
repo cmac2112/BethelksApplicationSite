@@ -38,13 +38,13 @@ interface ApplicationType {
   gradUniversity: string;
   other: string;
   skills: string;
-  resume: string;
-  coverLetter: string; //all file paths are stored as strings and will be 
-  references: string; //parsed into a download link for a user to download and look at them
-  statementOfTeach: string;
-  diversityStatement: string;
-  graduateTranscript: string;
-  performanceRecording: string;
+  resumeURL: string;
+  coverLetterURL: string; //all file paths are stored as strings and will be
+  referencesURL: string; //parsed into a download link for a user to download and look at them
+  statementOfTeachURL: string;
+  diversityStatementURL: string;
+  graduateTranscriptURL: string;
+  performanceRecordingURL: string;
 }
 
 //maybe scrap this page and put show applications next to edit button on landing page
@@ -55,28 +55,64 @@ const ApplicationListViewer = () => {
   const { id } = useParams<{ id: string }>();
   let host = import.meta.env.VITE_HOST;
 
+
+  const handleDownload = async (filename: string, type: string) =>{
+    console.log(filename);
+    console.log(type)
+    if(!filename){
+      setErrorMessage(`No ${type} was provdided`)
+      setTimeout(()=>{setErrorMessage('')}, 5000)
+      return;
+    }
+    try{
+      const response = await fetch(`http://${host}:3000/upload/${filename}`,
+        {
+          method: 'GET',
+          headers:{
+            "Authorization": `Bearer ${localStorage.getItem('authToken')}`
+          }
+        }
+      )
+      if(!response.ok){
+        setErrorMessage('error downloading file')
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a')
+      a.href = downloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl)
+    }catch(err){
+      console.error('error', err)
+      setErrorMessage('error handling download')
+    }
+  }
   const getApplications = async () => {
     try {
       let response = await fetch(`http://${host}:3000/api/applications/${id}`); //change url later, typically stored in .env
       let data = await response.json();
-      console.log(data.message)
-      if (data.message === 'no applications, or not found') {
-        setErrorMessage('No applications found for this job.');
+      console.log(data.message);
+      if (data.message === "no applications, or not found") {
+        setErrorMessage("No applications found for this job.");
         setTimeout(() => setErrorMessage(null), 5000);
         return;
       }
-      try{
-      const parsedData = data.map((application: ApplicationType) => ({
-        ...application,
-        pastEmployment: JSON.parse(
-          application.pastEmployment as unknown as string //weird
-        ),
-      }));
-      console.log(parsedData);
-      setApplications(parsedData);
-    }catch(error){
-      console.log(error)
-    }
+      try {
+        const parsedData = data.map((application: ApplicationType) => ({
+          ...application,
+          pastEmployment: JSON.parse(
+            application.pastEmployment as unknown as string //weird, might cause issues
+          ),
+        }));
+        console.log(parsedData);
+        setApplications(parsedData);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.error(error);
       setErrorMessage(`Unable to get applications for job id: ${id}`);
@@ -128,10 +164,10 @@ const ApplicationListViewer = () => {
         `http://${host}:3000/api/applications/delete/${id}`,
         {
           method: "DELETE",
-          headers:{
-            "Content-type":"application/json",
-            "Authorization":`Bearer ${localStorage.getItem("authToken")}`
-          }
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
         }
       );
       const data = await response.json();
@@ -187,9 +223,7 @@ const ApplicationListViewer = () => {
             id="background-container"
           >
             <div className="p-2 md:p-5 bg-white md:w-7/8">
-            {!parsedApplications && (
-              <p>No applications</p>
-            )}
+              {!parsedApplications && <p>No applications</p>}
               {parsedApplications.map((application, index) => (
                 <div key={index} className="py-5">
                   <div className="flex justify-between border-b-2 border-gray-400">
@@ -200,17 +234,33 @@ const ApplicationListViewer = () => {
                       {application.name}
                     </h2>
                     <div className="p-1">
-                    <button
-                      onClick={() => handleDelete(application.id)}
-                      className="bg-maroon text-white text-sm rounded-xl p-2 justify-end"
-                    >
-                      Delete
-                    </button>
+                      <button
+                        onClick={() => handleDelete(application.id)}
+                        className="bg-maroon text-white text-sm rounded-xl p-2 justify-end"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap py-3" id="row1">
                     <div className="w-full md:w-1/3">
+                    <p>Downloadable files</p>
+                    <p>Always use your best judgement before opening files</p>
+
+                    <div className="flex flex-col">
+                    <button className="text-start text-maroon"
+                    onClick={() =>handleDownload(application.resumeURL, 'resume')}>Resume</button> 
+                    <button className="text-start text-maroon" onClick={()=>handleDownload(application.coverLetterURL, 'cover letter')}>Cover Letter</button>
+                    
+                    <button className="text-start text-maroon" onClick={()=>handleDownload(application.referencesURL, 'references')}>References</button>
+
+                    <button className="text-start text-maroon" onClick={()=>handleDownload(application.statementOfTeachURL,'statement of teaching')}>Statement of Teaching</button>
+
+                    <button className="text-start text-maroon" onClick={()=>handleDownload(application.diversityStatementURL, 'diversity statement')}>Diversity Statement</button>
+                    <button className="text-start text-maroon" onClick={()=>handleDownload(application.graduateTranscriptURL, 'graduate transcript')}>Graduate Transcript</button>
+                    <button className="text-start text-maroon" onClick={()=>handleDownload(application.performanceRecordingURL, 'performance recording')}>Performance Recording</button>
+                    </div>
                       <p className="font-semibold">Work Time:</p>
                       <p>
                         Full Time:{" "}
@@ -336,47 +386,56 @@ const ApplicationListViewer = () => {
                   <p className="font-semibold border-b-2">Past employment</p>
                   <div className="items-center">
                     {application.pastEmployment.map((employment, index) => (
-                      <div key={index} className="py-3 flex justify-between border-b-2">
+                      <div
+                        key={index}
+                        className="py-3 flex justify-between border-b-2"
+                      >
                         <div id="info-container-1" className="w-1/4">
-                        <div className="py-2">
-                        <div className="font-semibold">Company {index + 1}: </div>
-                        <p>{employment.employer}</p>
-                        </div>
-                        <div className="py-2">
-                        <div className="font-semibold">Role: </div>
-                        <p> {employment.address}</p>
-                        </div>
-                        <div className="py-2">
-                        <div className="font-semibold">Start Date: </div>
-                        <p> {employment.startDate}</p>
-                        </div>
-                        <div className="py-2">
-                        <div className="font-semibold">End Date: </div>
-                        <p> {employment.endDate}</p>
-                        </div>
+                          <div className="py-2">
+                            <div className="font-semibold">
+                              Company {index + 1}:{" "}
+                            </div>
+                            <p>{employment.employer}</p>
+                          </div>
+                          <div className="py-2">
+                            <div className="font-semibold">Role: </div>
+                            <p> {employment.address}</p>
+                          </div>
+                          <div className="py-2">
+                            <div className="font-semibold">Start Date: </div>
+                            <p> {employment.startDate}</p>
+                          </div>
+                          <div className="py-2">
+                            <div className="font-semibold">End Date: </div>
+                            <p> {employment.endDate}</p>
+                          </div>
                         </div>
                         <div id="info-container-2" className="w-1/4">
-                        <div className="py-2">
-                        <div className="font-semibold">Supervisor: </div>
-                        <p> {employment.supervisor}</p>
+                          <div className="py-2">
+                            <div className="font-semibold">Supervisor: </div>
+                            <p> {employment.supervisor}</p>
+                          </div>
+                          <div className="py-2">
+                            <div className="font-semibold">
+                              Supervisor Title:{" "}
+                            </div>
+                            <p> {employment.supervisorTitle}</p>
+                          </div>
+                          <div className="py-2">
+                            <div className="font-semibold">
+                              Can We Contact:{" "}
+                            </div>
+                            <p> {employment.contact}</p>
+                          </div>
+                          <div className="py-2">
+                            <div className="font-semibold">Reason Left: </div>
+                            <p> {employment.reasonLeft}</p>
+                          </div>
                         </div>
-                        <div className="py-2">
-                        <div className="font-semibold">Supervisor Title: </div>
-                        <p> {employment.supervisorTitle}</p>
-                        </div>
-                        <div className="py-2">
-                        <div className="font-semibold">Can We Contact: </div>
-                        <p> {employment.contact}</p>
-                        </div>
-                        <div className="py-2">
-                        <div className="font-semibold">Reason Left: </div>
-                        <p> {employment.reasonLeft}</p>
-                        </div>
-                      </div>
 
-                      <div className="w-2/4 py-2">
-                        <div className="font-semibold">Duties: </div>
-                        <p> {employment.duties}</p>
+                        <div className="w-2/4 py-2">
+                          <div className="font-semibold">Duties: </div>
+                          <p> {employment.duties}</p>
                         </div>
                       </div>
                     ))}

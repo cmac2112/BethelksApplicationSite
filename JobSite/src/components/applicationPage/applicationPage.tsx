@@ -52,8 +52,6 @@ const applicationPage = () => {
         <div id="bg" className="bg-gray-100 flex justify-center p-5 md:p-5">
           <div className="px-5 bg-white md:w-3/4 w-full">
           <div className="py-4">
-          <button onClick={()=>setPage(6)}>end</button>
-          <button onClick={()=>setPage(1)}>start</button>
           {page == 1 ? <Pg1 /> : page == 2 ? <Pg2 /> : page == 3 ? <Pg3 /> : page == 4 ? <Pg4 /> : page == 5 ? <Pg5 /> : <Pg6 />}
           {errorMessage && <div className="text-red-500">{errorMessage}</div>}
             <div className="flex justify-between py-5">

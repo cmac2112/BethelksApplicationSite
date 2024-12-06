@@ -373,7 +373,7 @@ app.delete("/api/authorized/delete/:email", validateToken, (req, res)=>{
       res.status(500).json({error:"error selecting authorized users"})
     }
     if(rows.length <= 2){
-      res.status(401).json({error:"there must be 2 authorized users"})
+      res.status(401).json({error:"there must be at least 2 authorized users"})
       return;
     }
     con.query(`DELETE FROM authorizedusers WHERE email = ?`, [email], function(err, result){
@@ -514,6 +514,7 @@ app.get("/api/authorized", validateToken, (req, res) =>{
 })
 //validate users trying to access files
 app.get('/upload/:filename', validateToken, async (req, res) => {
+  console.log(req.method + ' request for ' + req.url)
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'upload', filename);
 
@@ -521,8 +522,8 @@ app.get('/upload/:filename', validateToken, async (req, res) => {
     if (err) {
       console.error('Error downloading file:', err);
       res.status(500).send('Error downloading file');
+      return
     }
-    res.status(201).send("file download success")
   });
 });
 

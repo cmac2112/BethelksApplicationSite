@@ -15,6 +15,8 @@ const Pg1 = () => {
     setPositionId,
   } = useContext(ApplicationContext);
 
+  console.log(position)
+
   return (
     <>
       <h2 className="p-5 text-xl" id="position-header">

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Layout from "../layout";
 
 const Success = () => {
@@ -8,6 +9,7 @@ const Success = () => {
       </div>
       <div id="bg" className="bg-gray-100 flex justify-center p-1 md:p-5">
         <p>Job application has been successfully recieved</p>
+        <Link to="/" className="text-maroon">Return Home</Link>
         
       </div>
     </Layout>

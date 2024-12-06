@@ -1,4 +1,4 @@
-//hold context for a logged in user here
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 let host = import.meta.env.VITE_HOST;
@@ -428,8 +428,8 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
         for (let [key, value] of formData.entries()) {
           console.log(`${key}: ${value}`);
         }
-        //localStorage.clear();
-        //navigate("/success");
+        localStorage.clear();
+        navigate("/success");
       } else {
         console.error("error submitting form");
         setErrorMessage("Bad response from server, Form not submitted");
