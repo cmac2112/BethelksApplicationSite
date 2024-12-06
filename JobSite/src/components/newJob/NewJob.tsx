@@ -3,8 +3,8 @@ import { useAuth } from "../../context/LoginContext";
 import Layout from "../layout";
 import Quill from "quill";
 import 'quill/dist/quill.snow.css';
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
+import Error from "../modals/Error";
 const NewJob = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [employment, setEmployment] = useState("");
@@ -12,6 +12,7 @@ const NewJob = () => {
   const [department, setDepartment] = useState("");
   const [classification, setClassification] = useState("");
   const [info, setInfo] = useState("");
+  const navigate = useNavigate();
   
 
   useEffect(()=>{
@@ -35,7 +36,7 @@ const NewJob = () => {
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
-  const { isLoggedIn, login } = useAuth();
+  const { isLoggedIn, login, errorMessage, setErrorMessage } = useAuth();
   
   const getData = async (id: string) =>{
     try{
@@ -97,7 +98,7 @@ const NewJob = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    try{
     if(quillRef.current){
       console.log(quillRef.current.root.innerHTML)
     }
@@ -127,8 +128,13 @@ const NewJob = () => {
     }
   
   )
-  const data = await response.json();
-  console.log(data);
+  console.log(response)
+  navigate('/success/post')
+}catch(err){
+  console.error(err)
+  setErrorMessage('error creating or editing job')
+  setTimeout(()=>{setErrorMessage('')},5000)
+}
 };
 
   if (!isLoggedIn) {
@@ -155,6 +161,11 @@ const NewJob = () => {
   } else {
     return (
       <Layout>
+        {errorMessage && (
+        <div className="sticky top-0 w-full p-4" id="error">
+          <Error errorString={errorMessage} />
+        </div>
+      )}
         <div className="container max-w-full bg-maroon" id="job-page">
           {!title ? <h2 className="text-center text-2xl text-white p-2" id="job-header">
             Create New Job Posting

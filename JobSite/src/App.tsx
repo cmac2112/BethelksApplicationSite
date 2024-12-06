@@ -15,17 +15,18 @@ function App() {
       <Router>
         <ApplicationProvider>
       <Routes>
-        <Route path="*" element={<NotFound />} />
+        
         <Route path="/" element={<LandingPage />} />
-        <Route path="/faculty/:title" element={<JobDescription />} />
-        <Route path="/staff/:title" element={<JobDescription />} />
-        <Route path="/other/:title" element={<JobDescription />} />
+        <Route path="/faculty/:id" element={<JobDescription />} />
+        <Route path="/staff/:id" element={<JobDescription />} />
+        <Route path="/other/:id" element={<JobDescription />} />
         <Route path="/apply" element={<ApplicationPage />} />
         <Route path="/admin/newJob" element={<NewJob />} />
         <Route path="/admin/applications/view/:id" element={<ApplicationViewer />} />
         <Route path="/admin/edit/:title/:id" element={<NewJob />} />
-        <Route path="/success" element={<Success />} />
+        <Route path="/success/:type" element={<Success />} />
         <Route path="/admin/configure" element={<ConfigurePage />} />
+        <Route path="*" element={<NotFound />} />
         </Routes>
         </ApplicationProvider>
         </Router>

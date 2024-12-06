@@ -429,7 +429,7 @@ export const ApplicationProvider: React.FC<ApplicationProivderProps> = ({
           console.log(`${key}: ${value}`);
         }
         localStorage.clear();
-        navigate("/success");
+        navigate("/success/application");
       } else {
         console.error("error submitting form");
         setErrorMessage("Bad response from server, Form not submitted");

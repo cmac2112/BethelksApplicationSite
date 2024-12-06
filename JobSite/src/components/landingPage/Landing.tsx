@@ -95,8 +95,7 @@ const LandingPage: React.FC = () => {
     <li key={faculty.id}>
       <div className="flex justify-between py-1">
         <Link
-          to={`/faculty/${faculty.title.replace(/\s+/g, "-").toLowerCase()}`}
-          state={{ job: [faculty] }}
+          to={`/faculty/${faculty.id}`}
           className="text-maroon underline hover:text-gray-500"
         >
           {typeof faculty.title === "string" ? faculty.title : faculty.title}
@@ -135,8 +134,7 @@ const LandingPage: React.FC = () => {
     <li key={staff.id}>
       <div className="flex justify-between py-1">
         <Link
-          to={`/staff/${staff.title.replace(/\s+/g, "-").toLowerCase()}`}
-          state={{ job: [staff] }}
+          to={`/staff/${staff.id}`}
           className="text-maroon underline hover:text-gray-500"
         >
           {staff.title}
@@ -176,8 +174,7 @@ const LandingPage: React.FC = () => {
     <li key={other.id}>
       <div className="flex justify-between py-1">
         <Link
-          to={`/other/${other.title.replace(/\s+/g, "-").toLowerCase()}`}
-          state={{ job: [other] }}
+          to={`/other/${other.id}`}
           className="text-maroon underline hover:text-gray-500"
         >
           {other.title}

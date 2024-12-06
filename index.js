@@ -216,6 +216,19 @@ app.get("/api/applications/:title", (req, res) => {
     }
   );
 });
+
+app.get("/api/jobs/:id", (req, res) => {
+  console.log(req.method + " request for " + req.url);
+  const { id } = req.params
+  con.query(`SELECT * FROM jobs WHERE id = ?`, [id], function (err, rows) {
+    if (err) {
+      console.error("error executing query", err);
+      res.status(500).send("error executing query");
+      return;
+    }
+    res.send(rows);
+  });
+});
 //################################gets^##################################################
 
 app.put("/api/newjob/:id", validateToken, (req, res) => {
